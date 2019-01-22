@@ -70,7 +70,7 @@ class Issue(db.Model):
     user = db.relationship("User", back_populates="Issues", lazy='noload')
     card = db.relationship("Card", back_populates="Issues", lazy='noload')
     def __repr__(self):
-        return '<ActivityLog %r>' % self.source_id
+        return '<Issues %r>' % self.source_id
 
 class ActivityLog(db.Model):
     __tablename__ = 'activity_logs'
@@ -108,4 +108,4 @@ class Activity(db.Model):
     activity_logs = db.relationship("ActivityLog", back_populates="activitys", lazy='noload')
 
     def __repr__(self):
-        return '<ActivityLog %r>' % self.source_id
+        return '<Activity %r>' % self.source_id
