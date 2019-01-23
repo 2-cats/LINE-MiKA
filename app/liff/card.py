@@ -12,6 +12,7 @@ def add_card(data):
             name=data['name'],
             nickname=data['nickname'],
             line_id=data['line_id'],
+            company_name=data['company_name'],
             title=data['title'],
             industry=data['industry'],
             summary=data['summary'],

@@ -67,6 +67,7 @@ def handle_message(event):
     # Get common LINE user information
     line_user_id = event.source.user_id
     message_text = event.message.text
+
     if event.source.type == 'user':
         if message_text == "名片管理":
             message = card_management_message(line_user_id)

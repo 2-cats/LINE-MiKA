@@ -67,7 +67,6 @@
             <input class="form-control"
                 name="nickname"
                 type="text"
-                backref
                 placeholder="一個響亮的名稱，或許是內湖金城武">
         </div>
         <div class="form-group">
@@ -75,7 +74,6 @@
             <input class="form-control"
                 name="title"
                 type="text"
-                backref
                 placeholder="工程師？或是攻城獅？或者是你的職稱" required>
         </div>
         <div class="form-group">
@@ -83,15 +81,19 @@
             <input class="form-control"
                 name="summary"
                 type="text"
-                backref
                 placeholder="掃地兼撞鐘也說不定">
+        </div>
+        <div class="form-group">
+            <label for="company_name">公司名稱</label>
+            <input class="form-control"
+                name="company_name"
+                placeholder="請輸入您的公司名稱" required>
         </div>
         <div class="form-group">
             <label for="tax_number">統一編號</label>
             <input class="form-control"
                 name="tax_number"
                 type="phone"
-                backref
                 placeholder="請輸入您的統一編號">
         </div>
         <div class="form-group">
@@ -99,7 +101,6 @@
             <input class="form-control"
                 name="email"
                 type="email"
-                backref
                 pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
                 placeholder="hello@hello.com">
         </div>
@@ -108,7 +109,6 @@
             <input class="form-control"
                 name="tel_number"
                 type="phone"
-                backref
                 pattern="^\d{1}$"
                 placeholder="請在這輸入您的公司電話號碼" >
         </div>
@@ -117,7 +117,6 @@
             <input class="form-control"
                 name="fax_number"
                 type="phone"
-                backref
                 placeholder="請在這輸入您的公司傳真號碼" >
         </div>
         <div class="form-group">
@@ -133,7 +132,6 @@
             <input class="form-control"
                 name="line_id"
                 type="text"
-                backref
                 placeholder="你也可以留下LINE@，但是記得加@">
         </div>
         <div class="form-group">
@@ -141,8 +139,7 @@
             <input class="form-control"
                 name="address"
                 type="text"
-                backref
-                placeholder="您的公司在哪？">
+                placeholder="您的公司在哪？" required>
         </div>
         
         <button type="submit" class="btn btn-primary btn-lg btn-block">創建名片</button>
