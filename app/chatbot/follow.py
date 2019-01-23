@@ -1,8 +1,24 @@
+from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             FlexSendMessage, TextComponent, URIAction)
+from .. import db
+from ..models import User
 
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
 
-def follow_message():
+def follow_message(line_user_id):
+    user = User.query.filter_by(line_user_id=line_user_id).first()
+    if user is None:
+        user = User(
+                line_user_id=line_user_id
+            )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
+    
     bubble_template = BubbleContainer(
         body=BoxComponent(
             layout='vertical',
@@ -33,7 +49,7 @@ def follow_message():
                 ButtonComponent(
                     style='link',
                     height='sm',
-                    action=URIAction(label='手動新增名片', uri='https://google.com/'),
+                    action=URIAction(label='手動新增名片', uri=app.config['ADD_CARD_LINE_LIFF_URL']),
                 )
             ]
         )

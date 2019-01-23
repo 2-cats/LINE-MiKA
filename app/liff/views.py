@@ -7,6 +7,7 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage,
 
 from . import liff
 from .. import db
+from .card import add_card
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -21,9 +22,15 @@ def line_auto_add_card():
         card_data=data
     )
 
-@liff.route("/line/add_card_manual", methods=['GET'])
+@liff.route("/line/manual_add_card", methods=['GET'])
 def line_manual_add_card():
     return render_template('line/manual_add_card.html')
+
+
+@liff.route("/line/add_card", methods=['POST'])
+def line_add_card_success():
+    add_card(request.form.to_dict())
+    return render_template('line/add_card_success.html')
 
 @liff.route("/line/add_activity", methods=['GET'])
 def line_add_activity():

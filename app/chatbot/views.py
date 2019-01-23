@@ -49,7 +49,7 @@ def handle_follow(event):
     '''
     Handle follow event
     '''
-    message = follow_message()
+    message = follow_message(event.source.user_id)
     line_bot_api.reply_message(event.reply_token, message)
     return 0
 
