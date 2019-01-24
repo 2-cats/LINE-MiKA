@@ -55,5 +55,5 @@ def follow_message(line_user_id):
         )
     )
     message = FlexSendMessage(
-        alt_text='抱歉，我聽不懂指令', contents=bubble_template)
+        alt_text='歡迎加入', contents=bubble_template)
     return message
