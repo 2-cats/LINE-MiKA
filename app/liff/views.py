@@ -14,18 +14,13 @@ app.config.from_pyfile('config.py')
 line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 handler = WebhookHandler(app.config["LINE_CHANNEL_SECRET"])
 
-@liff.route("/line/auto_add_card", methods=['GET'])
+@liff.route("/line/add_card", methods=['GET'])
 def line_auto_add_card():
-    data=request.args.get('data')
+    data = request.args.to_dict()
     return render_template(
-        'line/auto_add_card.html',
-        card_data=data
+        'line/add_card.html',
+        data=data
     )
-
-@liff.route("/line/manual_add_card", methods=['GET'])
-def line_manual_add_card():
-    return render_template('line/manual_add_card.html')
-
 
 @liff.route("/line/add_card", methods=['POST'])
 def line_add_card_success():
