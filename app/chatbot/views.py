@@ -13,7 +13,8 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 from . import chatbot
 from .. import db
 from .activity import (add_group_activity_message, group_activity_message,
-                       join_group_activity_message, my_activity_message)
+                       join_group_activity_message, my_activity_message,
+                       who_join_group_activity_message)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
@@ -69,12 +70,6 @@ def handle_message(event):
     line_user_id = event.source.user_id
     message_text = event.message.text
 
-    if message_text == 'aa':
-        message = scan_card_image_message('9235380482821')
-        line_bot_api.reply_message(event.reply_token, message)
-        return 0
-
-
     if event.source.type == 'user':
         if message_text == "名片管理":
             message = card_management_message(line_user_id)
@@ -112,12 +107,18 @@ def handle_postback(event):
     # data="action, var1, var2, ... ,varN"
     # Convet to postback_data: [action, var1, var2, ... ,varN]
     postback_data = event.postback.data.split(",") 
-    if postback_data[0] == "delete_my_card":
+    if postback_data[0] == 'delete_my_card':
         message = delete_my_card_message(line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
-    elif  postback_data[0] == "join_group_activity":
-        message = join_group_activity_message(line_user_id)
+    elif  postback_data[0] == 'join_group_activity':
+        # postback_data[1] is activity_id
+        message = join_group_activity_message(postback_data[1])
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
+    elif  postback_data[0] == 'who_join_group_activity':
+        # postback_data[1] is activity_id
+        message = who_join_group_activity_message(postback_data[1])
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 
