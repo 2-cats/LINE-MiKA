@@ -20,8 +20,8 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
 
-    cards = db.relationship("Card", back_populates="user", lazy='noload')
-    issues = db.relationship("Issue", back_populates="user", lazy='noload')
+    cards = db.relationship("Card", backref="user", lazy='noload')
+    issues = db.relationship("Issue", backref="user", lazy='noload')
 
     def __repr__(self):
         return '<User %r>' % self.line_user_id
@@ -35,6 +35,7 @@ class Card(db.Model):
     line_id = db.Column(db.String(64))
     title = db.Column(db.String(64))
     title_en = db.Column(db.String(64))
+    company_name = db.Column(db.String(64))
     department = db.Column(db.String(64))
     industry = db.Column(db.String(64))
     summary = db.Column(db.String(64))
@@ -48,12 +49,11 @@ class Card(db.Model):
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
+    image_path = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
 
-    user = db.relationship("User", back_populates="cards", lazy='noload')
-    issue = db.relationship("Issue", back_populates="cards", lazy='noload')
     def __repr__(self):
         return '<Card %r>' % self.id
 
@@ -67,8 +67,6 @@ class Issue(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
 
-    user = db.relationship("User", back_populates="Issues", lazy='noload')
-    card = db.relationship("Card", back_populates="Issues", lazy='noload')
     def __repr__(self):
         return '<Issues %r>' % self.source_id
 
@@ -81,8 +79,6 @@ class ActivityLog(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
 
-    user = db.relationship("User", back_populates="activity_logs", lazy='noload')
-    activity = db.relationship("Activity", back_populates="activity_logs", lazy='noload')
     def __repr__(self):
         return '<ActivityLog %r>' % self.source_id
 
@@ -105,7 +101,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
 
-    activity_logs = db.relationship("ActivityLog", back_populates="activitys", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", backref="activitys", lazy='noload')
 
     def __repr__(self):
         return '<Activity %r>' % self.source_id

@@ -18,6 +18,7 @@ from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
 from .follow import follow_message
+from .image import scan_card_image_message
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -49,7 +50,7 @@ def handle_follow(event):
     '''
     Handle follow event
     '''
-    message = follow_message()
+    message = follow_message(event.source.user_id)
     line_bot_api.reply_message(event.reply_token, message)
     return 0
 
@@ -67,6 +68,13 @@ def handle_message(event):
     # Get common LINE user information
     line_user_id = event.source.user_id
     message_text = event.message.text
+
+    if message_text == 'aa':
+        message = scan_card_image_message('9235380482821')
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
+
+
     if event.source.type == 'user':
         if message_text == "名片管理":
             message = card_management_message(line_user_id)
@@ -113,6 +121,13 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 
+# Handle image message event
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_image_message(event):
+    image_id = event.message.id
+    message = scan_card_image_message(image_id)
+    line_bot_api.reply_message(event.reply_token, message)
+    return 0
 
 # Handle location message event
 @handler.add(MessageEvent, message=LocationMessage)
@@ -120,15 +135,6 @@ def handle_loaction_message(event):
     """"
     Handle location message Event.
     """
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
-
-
-# Handle image message event
-@handler.add(MessageEvent, message=ImageMessage)
-def handle_image_message(event):
     line_user_id = event.source.user_id
     message = alert_no_action_message(line_user_id)
     line_bot_api.reply_message(event.reply_token, message)
