@@ -1,10 +1,19 @@
-import datetime
 
+import datetime
+import json
+
+from flask import Flask
+from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, PostbackAction,
-                            TextComponent, URIAction)
+                            TextComponent, TextSendMessage, URIAction)
 
+from .. import db
 from ..models import Activity, ActivityLog, Card, User
+
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
+line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 
 
 def add_group_activity_message(line_user_id):
@@ -161,8 +170,19 @@ def join_group_activity_message(line_user_id):
     return 0
 
 def who_join_group_activity_message(activity_id):
-    
-    return 0
+    activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id))
+
+    join_users = []
+    for activity_log in activity_logs:
+        user = line_bot_api.get_profile(activity_log.line_user_id)
+        user_dict = json.loads(str(user))
+        join_users.append(user_dict['displayName'])
+    user = '、'.join(join_users)
+
+    activity = Activity.query.filter_by(id=str(activity_id)).first()
+    return TextSendMessage(
+            text=''.join([user ,' 參加了 ', activity.title])
+        )
 
 def my_activity_message(line_user_id):
     return 0

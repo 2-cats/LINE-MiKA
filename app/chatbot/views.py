@@ -107,7 +107,6 @@ def handle_postback(event):
     # data="action, var1, var2, ... ,varN"
     # Convet to postback_data: [action, var1, var2, ... ,varN]
     postback_data = event.postback.data.split(",") 
-    print (postback_data)
     if postback_data[0] == 'delete_my_card':
         message = delete_my_card_message(line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
