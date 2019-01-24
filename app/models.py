@@ -80,7 +80,7 @@ class ActivityLog(db.Model):
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<ActivityLog %r>' % self.source_id
+        return '<ActivityLog %r>' % self.activity_id
 
 class Activity(db.Model):
     __tablename__ = 'activitys'
