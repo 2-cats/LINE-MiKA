@@ -1,15 +1,27 @@
+import datetime
+
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             FlexSendMessage, ImageComponent, TextComponent,
                             TextSendMessage, URIAction)
 
+from .. import db
 from ..models import Card, User
 
 
 def card_management_message(line_user_id):
     return 0
 
-def delete_my_card_message(line_user_id):
-    return 0
+def delete_my_card_message(card_id):
+    card = Card.query.filter_by(id=card_id).first()
+    card.deleted_at = datetime.datetime.now()
+    message = TextSendMessage(text='刪除失敗！')
+    if card:
+        try:
+            db.session.commit()
+            message = TextSendMessage(text='刪除成功！')
+        except:
+            pass
+    return message
 
 def search_card_message(line_user_id):
     return 0
