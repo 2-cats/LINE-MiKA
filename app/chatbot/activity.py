@@ -183,6 +183,48 @@ def who_join_group_activity_message(activity_id):
     return TextSendMessage(
             text=''.join([user ,' 參加了 ', activity.title])
         )
+def add_activity_message(line_user_id):
+
+    bubble_template = BubbleContainer(
+        body=BoxComponent(
+            layout='vertical',
+            contents=[
+                TextComponent(
+                    text='新增活動',
+                    weight='bold',
+                    color='#1DB446',
+                    size='md',
+                ),
+                TextComponent(
+                    text='請點我，新增活動唷！',
+                    margin='md',
+                    wrap=True,
+                    color='#666666',
+                    size='sm',
+                )
+            ]
+        ),
+        footer=BoxComponent(
+            layout='vertical',
+            spacing="sm",
+            contents=[
+
+                ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(label='新增活動', uri=app.config['ADD_ACTIVITY_LIFF_URL']),
+                )
+            ]
+        )
+    )
+
+
+    message = FlexSendMessage(
+        alt_text='新增活動！', contents=bubble_template)
+    return message
+
+
+
 
 def my_activity_message(line_user_id):
     return 0
