@@ -166,7 +166,28 @@ def group_activity_message(source_id):
     )
     return message
 
-def join_group_activity_message(line_user_id):
+def join_group_activity_message(activity_id, line_user_id):
+    user = User.query.filter_by(line_user_id=str(line_user_id)).first()
+
+    activity_log = ActivityLog.query.filter_by(
+        activity_id=str(activity_id),
+        user_id=user.id
+    ).first()
+    if activity_log is None:
+        activity_log = ActivityLog(
+                activity_id=activity_id,
+                user_id=user.id
+            )
+        db.session.add(activity_log)
+        try:
+            db.session.commit()
+        except:
+            pass
+    user = line_bot_api.get_profile(line_user_id)
+    user_dict = json.loads(str(user))
+    return TextSendMessage(
+        text=''.join([user_dict['displayName'] ,' 參加了一個活動'])
+    )
     return 0
 
 def who_join_group_activity_message(activity_id):

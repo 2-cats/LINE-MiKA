@@ -117,7 +117,7 @@ def handle_postback(event):
         return 0
     elif  postback_data[0] == 'join_group_activity':
         # postback_data[1] is activity_id
-        message = join_group_activity_message(postback_data[1])
+        message = join_group_activity_message(postback_data[1], line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
     elif  postback_data[0] == 'who_join_group_activity':
