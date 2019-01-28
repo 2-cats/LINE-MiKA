@@ -113,7 +113,7 @@ def handle_postback(event):
     # Convet to postback_data: [action, var1, var2, ... ,varN]
     postback_data = event.postback.data.split(",") 
     if postback_data[0] == 'delete_my_card':
-        message = delete_my_card_message(line_user_id)
+        message = delete_my_card_message(postback_data[1])
         line_bot_api.reply_message(event.reply_token, message)
         return 0
     elif  postback_data[0] == 'join_group_activity':
