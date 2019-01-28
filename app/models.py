@@ -15,7 +15,7 @@ line_bot_api = LineBotApi(app.config['LINE_CHANNEL_ACCESS_TOKEN'])
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key = True)
-    line_user_id = db.Column(db.String(64), unique=True)
+    line_user_id = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
