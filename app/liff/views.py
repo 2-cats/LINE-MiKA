@@ -7,8 +7,8 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage,
 
 from . import liff
 from .. import db
-from .card import add_card
-from .activity import add_activity
+from .card import add_card, report_card_issue
+
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
@@ -34,9 +34,15 @@ def line_add_activity():
 
     return render_template('line/add_activity.html')
 
+@liff.route("/line/report_card", methods=['GET'])
+def line_report_card():
+    data = request.args.to_dict()
+    return render_template(
+        'line/report_card.html',
+        data=data
+    )
 
-
-@liff.route("/line/add_activity", methods=['POST'])
-def line_add_activity_success():
-    add_activity(request.form.to_dict())
-    return render_template('line/add_activity_success.html')
+@liff.route("/line/report_card", methods=['POST'])
+def line_report_card_success():
+    report_card_issue(request.form.to_dict())
+    return render_template('line/report_card_success.html')

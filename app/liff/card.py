@@ -1,6 +1,6 @@
 
 from .. import db
-from ..models import Card, User
+from ..models import Card, User, Issue
 from .map import convert_address
 
 def add_card(data):
@@ -26,6 +26,19 @@ def add_card(data):
             tel_number=data['tel_number']
         )
     db.session.add(card)
+    try:
+        db.session.commit()
+    except:
+        pass
+
+def report_card_issue(data):
+    user = User.query.filter_by(line_user_id=data['line_user_id']).first()
+    issue = Issue(
+                card_id=data['card_id'],
+                user_id=user.id,
+                content=data['content']
+            )
+    db.session.add(issue)
     try:
         db.session.commit()
     except:
