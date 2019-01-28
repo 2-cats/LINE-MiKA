@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             FlexSendMessage, TextComponent, URIAction)
@@ -57,3 +59,12 @@ def follow_message(line_user_id):
     message = FlexSendMessage(
         alt_text='歡迎加入', contents=bubble_template)
     return message
+
+def unfollow(line_user_id):
+    user = User.query.filter_by(line_user_id=line_user_id).first()
+    user.deleted_at = datetime.datetime.now()
+    user.line_user_id=''
+    try:
+        db.session.commit()
+    except:
+        pass
