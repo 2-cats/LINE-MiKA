@@ -71,6 +71,12 @@ def handle_message(event):
     line_user_id = event.source.user_id
     message_text = event.message.text
 
+    if message_text == 'aa':
+        from .activity import join_group_activity_message
+        message = join_group_activity_message(5, line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
+
     if event.source.type == 'user':
         if message_text == "名片管理":
             message = card_management_message(line_user_id)

@@ -18,8 +18,8 @@ def add_activity(data):
         lat=location[0],
         lng=location[1],
         rel_link=data['rel_link'],
-        session_limit=data['session_limit'],
-        session_count=0
+        session_limit=1,
+        session_count=1
     )
     db.session.add(activity)
     try:
@@ -43,7 +43,7 @@ def add_group_activity(data):
         lng=location[1],
         rel_link=data['rel_link'],
         session_limit=data['session_limit'],
-        session_count=0
+        session_count=1
     )
     db.session.add(activity)
     try:

@@ -173,6 +173,9 @@ def join_group_activity_message(activity_id, line_user_id):
         activity_id=str(activity_id),
         user_id=user.id
     ).first()
+    user_profile = line_bot_api.get_profile(line_user_id)
+    user_dict = json.loads(str(user_profile))
+    content = ''.join([user_dict['displayName'] ,' 您重複參加活動囉！'])
     if activity_log is None:
         activity_log = ActivityLog(
                 activity_id=activity_id,
@@ -183,10 +186,23 @@ def join_group_activity_message(activity_id, line_user_id):
             db.session.commit()
         except:
             pass
-    user = line_bot_api.get_profile(line_user_id)
-    user_dict = json.loads(str(user))
+        activity = Activity.query.filter_by(id=activity_id).first()
+        activity.session_count = activity.session_count+1
+        try:
+            db.session.commit()
+            content = ''.join(
+                [
+                    user_dict['displayName'],
+                    ' 參加活動 ',
+                    activity.title,
+                    ' 囉！'
+                ]
+            )
+        except:
+            pass
+
     return TextSendMessage(
-        text=''.join([user_dict['displayName'] ,' 參加了一個活動'])
+        text=content
     )
     return 0
 
