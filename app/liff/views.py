@@ -9,7 +9,7 @@ from . import liff
 from .. import db
 from .activity import add_activity, add_group_activity
 from .card import add_card, report_card_issue
-
+from .activity import add_activity
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
