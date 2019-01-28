@@ -27,8 +27,11 @@ def line_add_card_success():
     add_card(request.form.to_dict())
     return render_template('line/add_card_success.html')
 
+
+
 @liff.route("/line/add_activity", methods=['GET'])
 def line_add_activity():
+
     return render_template('line/add_activity.html')
 
 @liff.route("/line/report_card", methods=['GET'])
