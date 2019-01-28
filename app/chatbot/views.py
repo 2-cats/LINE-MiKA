@@ -12,13 +12,13 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_group_activity_message, group_activity_message,
-                       join_group_activity_message, my_activity_message,
-                       who_join_group_activity_message,add_activity_message)
+from .activity import (add_activity_message, add_group_activity_message,
+                       group_activity_message, join_group_activity_message,
+                       my_activity_message, who_join_group_activity_message)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
-from .follow import follow_message
+from .follow import follow_message, unfollow
 from .image import scan_card_image_message
 
 app = Flask(__name__, instance_relative_config=True)
@@ -60,6 +60,7 @@ def handle_unfollow(event):
     '''
     Handle unfollow event
     '''
+    unfollow(event.source.user_id)
     return 0
 
 # Handle MessageEvent
@@ -129,10 +130,11 @@ def handle_postback(event):
 # Handle image message event
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
-    image_id = event.message.id
-    message = scan_card_image_message(image_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        image_id = event.message.id
+        message = scan_card_image_message(image_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle location message event
 @handler.add(MessageEvent, message=LocationMessage)
@@ -140,23 +142,26 @@ def handle_loaction_message(event):
     """"
     Handle location message Event.
     """
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle audio message event
 @handler.add(MessageEvent, message=AudioMessage)
 def handle_audio_message(event):
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle sticker message event
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
