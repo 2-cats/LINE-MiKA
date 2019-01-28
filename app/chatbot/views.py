@@ -129,10 +129,11 @@ def handle_postback(event):
 # Handle image message event
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
-    image_id = event.message.id
-    message = scan_card_image_message(image_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        image_id = event.message.id
+        message = scan_card_image_message(image_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle location message event
 @handler.add(MessageEvent, message=LocationMessage)
@@ -140,23 +141,26 @@ def handle_loaction_message(event):
     """"
     Handle location message Event.
     """
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle audio message event
 @handler.add(MessageEvent, message=AudioMessage)
 def handle_audio_message(event):
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
 
 # Handle sticker message event
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
-    line_user_id = event.source.user_id
-    message = alert_no_action_message(line_user_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    if event.source.type == 'user':
+        line_user_id = event.source.user_id
+        message = alert_no_action_message(line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
