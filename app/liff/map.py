@@ -8,7 +8,14 @@ GOOGLE_MAP_KEY = app.config['GOOGLE_MAP_KEY']
 def convert_address(address):
     gmaps = googlemaps.Client(key=GOOGLE_MAP_KEY)
     geocode_result = gmaps.geocode(address)
+    lat = 0
+    lng = 0
+    try:
+        lat = geocode_result[0]['geometry']['location']['lat'],
+        lng = geocode_result[0]['geometry']['location']['lng']
+    except:
+        pass
     return (
-        geocode_result[0]['geometry']['location']['lat'],
-        geocode_result[0]['geometry']['location']['lng']
+        lat,
+        lng
     )
