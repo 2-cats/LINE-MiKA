@@ -25,3 +25,6 @@ def add_activity(data):
         db.session.commit()
     except:
         pass
+
+def add_group_activity(data):
+    return 0

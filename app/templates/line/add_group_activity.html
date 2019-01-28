@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_card.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>新增群組活動</title>
+  </head>
+  <body>
+  <div class="container pt-2">
+    <form method='POST' action='/line/add_group_activity'>
+        <input id="line_user_id" type="hidden" name='line_user_id'>
+        <div class="form-group">
+            <label for="industry" class="required">產業類別</label>
+            <select class="form-control" name="industry" required>
+                <option></option>
+                <option>資訊相關</option>
+                <option>製造相關</option>
+                <option>生物科技</option>
+                <option>農業</option>
+                <option>漁業</option>
+                <option>房仲業</option>
+                <option>公眾人物、專業人士</option>
+                <option>餐飲</option>
+                <option>購物、零售</option>
+                <option>美容、沙龍</option>
+                <option>學校</option>
+                <option>娛樂、休閒相關</option>
+                <option>生活相關服務</option>
+                <option>醫療相關</option>
+                <option>補習相關服務</option>
+                <option>旅行社、旅館</option>
+                <option>汽機車</option>
+                <option>交通、租車</option>
+                <option>婚禮相關</option>
+                <option>法律、會計事務所</option>
+                <option>銀行、保險、金融</option>
+                <option>在地商家</option>
+                <option>活動</option>
+                <option>中央行政機關</option>
+                <option>地方行政機關</option>
+                <option>政黨</option>
+                <option>企業、組織</option>
+                <option>品牌、商品</option>
+                <option>體育相關</option>
+                <option>網站、部落格</option>
+                <option>電視</option>
+                <option>報章雜誌</option>
+                <option>廣播</option>
+                <option>其他</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="name" class="required">名稱</label>
+            <input class="form-control"
+                name="name"
+                type="text"
+                value="{{ data['name'] }}"
+                placeholder="你的名字" required>
+        </div>
+        <div class="form-group">
+            <label for="nickname">暱稱</label>
+            <input class="form-control"
+                name="nickname"
+                type="text"
+                value="{{ data['nickname'] }}"
+                placeholder="一個響亮的名稱，或許是內湖金城武">
+        </div>
+        <div class="form-group">
+            <label for="title" class="required">職稱</label>
+            <input class="form-control"
+                name="title"
+                type="text"
+                value="{{ data['title'] }}"
+                placeholder="工程師？或是攻城獅？或者是你的職稱" required>
+        </div>
+        <div class="form-group">
+            <label for="summary">營業項目</label>
+            <input class="form-control"
+                name="summary"
+                type="text"
+                value="{{ data['summary'] }}"
+                placeholder="掃地兼撞鐘也說不定">
+        </div>
+        <div class="form-group">
+            <label for="company_name" class="required">公司名稱</label>
+            <input class="form-control"
+                name="company_name"
+                value="{{ data['company_name'] }}"
+                placeholder="請輸入您的公司名稱" required>
+        </div>
+        <div class="form-group">
+            <label for="tax_number">統一編號</label>
+            <input class="form-control"
+                name="tax_number"
+                type="phone"
+                value="{{ data['tax_number'] }}"
+                placeholder="請輸入您的統一編號">
+        </div>
+        <div class="form-group">
+            <label for="email">電子信箱</label>
+            <input class="form-control"
+                name="email"
+                type="email"
+                value="{{ data['email'] }}"
+                pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
+                placeholder="hello@hello.com">
+        </div>
+        <div class="form-group">
+            <label for="tel_number">公司電話</label>
+            <input class="form-control"
+                name="tel_number"
+                type="phone"
+                value="{{ data['tel_number'] }}"
+                placeholder="請在這輸入您的公司電話號碼" >
+        </div>
+        <div class="form-group">
+            <label for="fax_number">公司傳真</label>
+            <input class="form-control"
+                name="fax_number"
+                type="phone"
+                value="{{ data['fax_number'] }}"
+                placeholder="請在這輸入您的公司傳真號碼" >
+        </div>
+        <div class="form-group">
+            <label for="phone_number" class="required">聯繫電話</label>
+            <input class="form-control"
+                name="phone_number"
+                type="phone"
+                value="{{ data['phone_number'] }}"
+                pattern="^09\d{8}$"
+                placeholder="請在這輸入您的個人聯繫電話號碼" required>
+        </div>
+        <div class="form-group">
+            <label for="line_id">LINE</label>
+            <input class="form-control"
+                name="line_id"
+                type="text"
+                value="{{ data['line_id'] }}"
+                placeholder="你也可以留下LINE@，但是記得加@">
+        </div>
+        <div class="form-group">
+            <label for="address" class="required">公司地址</label>
+            <input class="form-control"
+                name="address"
+                type="text"
+                value="{{ data['address'] }}"
+                placeholder="您的公司在哪？" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg btn-block">創建名片</button>
+        <div class="pt-4">
+            <small class="d-block mb-3 text-muted">創建名片，即代表同意 CardGO <a href="#">隱私權政策</a>，並授權名片資訊給 CardGO 收集，或是在合理範圍內使用您的資訊做分析應用</small>
+        </div>
+    </form>
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="container text-center">
+            <small class="d-block mb-3 text-muted">CardGO © 2019 </small>
+        </div>
+    </footer>
+</div>
+
+    
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  <!-- LINE liff js -->
+  <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+  
+  <!-- Include js file -->
+  <script src="{{ url_for('static', filename='js/add_card.js') }}"></script>
+
+  </body>
+</html>
