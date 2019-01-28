@@ -12,13 +12,13 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_group_activity_message, group_activity_message,
-                       join_group_activity_message, my_activity_message,
-                       who_join_group_activity_message,add_activity_message)
+from .activity import (add_activity_message, add_group_activity_message,
+                       group_activity_message, join_group_activity_message,
+                       my_activity_message, who_join_group_activity_message)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
-from .follow import follow_message
+from .follow import follow_message, unfollow
 from .image import scan_card_image_message
 
 app = Flask(__name__, instance_relative_config=True)
@@ -60,6 +60,7 @@ def handle_unfollow(event):
     '''
     Handle unfollow event
     '''
+    unfollow(event.source.user_id)
     return 0
 
 # Handle MessageEvent
