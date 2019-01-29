@@ -23,7 +23,7 @@ def delete_my_card_message(card_id):
             pass
     return message
 
-def search_card_message(line_user_id):
+def search_card_message(keyword ,line_user_id):
     return 0
 
 def show_my_card_message(line_user_id):

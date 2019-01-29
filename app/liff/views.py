@@ -38,7 +38,11 @@ def line_add_activity():
 @liff.route("/line/add_group_activity", methods=['GET', 'POST'])
 def line_add_group_activity():
     if request.method == 'GET':
-        return render_template('line/add_group_activity.html')
+        data = request.args.to_dict()
+        return render_template(
+            'line/add_group_activity.html',
+            data=data
+        )
     elif request.method == 'POST':
         add_group_activity(request.form.to_dict())
         return render_template('line/add_group_activity_success.html')
