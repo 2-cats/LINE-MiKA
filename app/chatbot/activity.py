@@ -224,19 +224,22 @@ def join_group_activity_message(activity_id, line_user_id):
         except:
             pass
         activity = Activity.query.filter_by(id=activity_id).first()
-        activity.session_count = activity.session_count+1
-        try:
-            db.session.commit()
-            content = ''.join(
-                [
-                    user_dict['displayName'],
-                    ' 參加活動 ',
-                    activity.title,
-                    ' 囉！'
-                ]
-            )
-        except:
-            pass
+        if activity.session_limit > activity.session_count:
+            activity.session_count = activity.session_count+1
+            try:
+                db.session.commit()
+                content = ''.join(
+                    [
+                        user_dict['displayName'],
+                        ' 參加活動 ',
+                        activity.title,
+                        ' 囉！'
+                    ]
+                )
+            except:
+                pass
+        else:
+            content = '活動人數已經滿了'
 
     return TextSendMessage(
         text=content
