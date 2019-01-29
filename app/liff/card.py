@@ -6,7 +6,7 @@ from .map import convert_address
 def add_card(data):
     location = convert_address(data['address'])
 
-    user = User.query.filter_by(line_user_id=data['line_user_id']).first()
+    user = User.query.filter_by(line_user_id=data['line_user_id']).order_by(User.created_at.desc()).first()
     card = Card(
             user_id=user.id,
             name=data['name'],
