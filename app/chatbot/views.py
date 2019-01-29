@@ -12,7 +12,7 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_activity_message, add_group_activity_message,
+from .activity import (add_activity_message,
                        group_activity_message, join_group_activity_message,
                        my_activity_message, who_join_group_activity_message)
 from .card import (card_management_message, delete_my_card_message,
@@ -71,19 +71,9 @@ def handle_message(event):
     line_user_id = event.source.user_id
     message_text = event.message.text
 
-    if message_text == 'aa':
-        from .activity import join_group_activity_message
-        message = join_group_activity_message(5, line_user_id)
-        line_bot_api.reply_message(event.reply_token, message)
-        return 0
-
     if event.source.type == 'user':
         if message_text == "名片管理":
             message = card_management_message(line_user_id)
-            line_bot_api.reply_message(event.reply_token, message)
-            return 0
-        if message_text == "新增活動":
-            message = add_activity_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif message_text == "我的活動":
@@ -94,20 +84,17 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
     elif event.source.type == 'group':
+        group_id = event.source.group_id
         if message_text == "我的名片":
             message = show_my_card_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif message_text == "近期活動":
-            message = group_activity_message(line_user_id)
-            line_bot_api.reply_message(event.reply_token, message)
-            return 0
-        elif message_text == "新增活動":
-            message = add_group_activity_message(line_user_id)
+            message = group_activity_message(group_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif bool(re.search('找名片', message_text)):
-            message = search_card_message(line_user_id)
+            message = search_card_message(message_text, line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
 
