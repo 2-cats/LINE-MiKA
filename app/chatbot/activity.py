@@ -250,9 +250,10 @@ def add_activity_message(line_user_id):
 
 
 def my_activity_message(line_user_id):
-    activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9)
+    activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9).all()
 
-    if Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9).count() != 0:
+
+    if activitys:
         carousel_template_columns = []
         for activity in activitys:
             bubble_template = BubbleContainer(
