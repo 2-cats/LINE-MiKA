@@ -190,7 +190,15 @@ def group_activity_message(source_id):
 
 def join_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(line_user_id=str(line_user_id)).first()
-
+    if user is None:
+        user = User(
+                line_user_id=line_user_id
+            )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
     activity_log = ActivityLog.query.filter_by(
         activity_id=str(activity_id),
         user_id=user.id
