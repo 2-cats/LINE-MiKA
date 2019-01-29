@@ -13,7 +13,7 @@ app.config.from_pyfile('config.py')
 
 
 def card_management_message(line_user_id):
-    card = Card.query.filter(User.line_user_id == line_user_id, Card.deleted_at is None).order_by(Card.created_at.desc()).first()
+    card = Card.query.filter(User.line_user_id == line_user_id, Card.deleted_at == None).order_by(Card.created_at.desc()).first()
 
     message = []
 
