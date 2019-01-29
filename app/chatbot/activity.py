@@ -5,8 +5,9 @@ import urllib
 from flask import Flask
 from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            CarouselContainer, FlexSendMessage, PostbackAction,
-                            TextComponent, TextSendMessage, URIAction)
+                            CarouselContainer, FlexSendMessage, ImageComponent,
+                            PostbackAction, TextComponent, TextSendMessage,
+                            URIAction)
 
 from .. import db
 from ..models import Activity, ActivityLog, Card, User
@@ -157,6 +158,12 @@ def group_activity_message(source_id):
             )
             carousel_template_columns.append(bubble_template)
     bubble_template = BubbleContainer(
+        hero=ImageComponent(
+            url='https://i.imgur.com/EsVTFD6.png',
+            size='full',
+            aspect_ratio='20:13',
+            aspect_mode='cover'
+        ),
         footer=BoxComponent(
             layout='vertical',
             spacing='sm',
