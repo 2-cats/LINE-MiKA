@@ -15,7 +15,7 @@
   <div class="container pt-2">
     <form method='POST' action='/line/add_group_activity'>
         <input id="line_user_id" type="hidden" name='line_user_id'>
-        <input name='source_id', value='{{ data['source_id'] }}'>
+        <input name='source_id' type="hidden" value='{{ data['source_id'] }}'>
         <div class="form-group">
             <label for="title" class="required">活動名稱</label>
             <input class="form-control"
