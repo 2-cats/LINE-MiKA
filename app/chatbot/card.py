@@ -218,7 +218,7 @@ def search_card_message(keyword ,line_user_id):
 
 def show_my_card_message(line_user_id):
     user = User.query.filter_by(line_user_id=line_user_id).first()
-    card = Card.query.filter_by(user_id=user.id).order_by(Card.created_at.desc()).first()
+    card = Card.query.filter_by(user_id=user.id, deleted_at=None).order_by(Card.created_at.desc()).first()
     message = []
     if card:
         message_item = TextSendMessage(text=''.join(['這是 ', card.name, ' 的名片']))
