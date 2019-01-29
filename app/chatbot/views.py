@@ -90,7 +90,7 @@ def handle_message(event):
             message = my_activity_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
-        message = search_card_message(line_user_id)
+        message = search_card_message(message_text, line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
     elif event.source.type == 'group':
