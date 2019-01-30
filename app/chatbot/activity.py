@@ -130,11 +130,12 @@ def group_activity_message(source_id):
                         ButtonComponent(
                             style='link',
                             height='sm',
-                            action=PostbackAction(
+                            action=URIAction(
                                 label='有誰參加',
-                                data=','.join(
+                                uri=''.join(
                                     [
-                                        'who_join_group_activity',
+                                        app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
+                                        '?activity_id=',
                                         str(activity.id)
                                     ]
                                 )
@@ -197,6 +198,8 @@ def group_activity_message(source_id):
 
 def join_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(line_user_id=str(line_user_id)).first()
+
+    # Check is user or not
     if user is None:
         user = User(
                 line_user_id=line_user_id
@@ -206,60 +209,86 @@ def join_group_activity_message(activity_id, line_user_id):
             db.session.commit()
         except:
             pass
-    activity_log = ActivityLog.query.filter_by(
-        activity_id=str(activity_id),
-        user_id=user.id
-    ).first()
+
+    # Query model activity
+    activity = Activity.query.filter_by(id=activity_id).first()
+    
+    # Get user data
     user_profile = line_bot_api.get_profile(line_user_id)
     user_dict = json.loads(str(user_profile))
-    content = ''.join([user_dict['displayName'] ,' 您重複參加活動囉！'])
-    if activity_log is None:
-        activity_log = ActivityLog(
-                activity_id=activity_id,
-                user_id=user.id
-            )
-        db.session.add(activity_log)
-        try:
-            db.session.commit()
-        except:
-            pass
-        activity = Activity.query.filter_by(id=activity_id).first()
+    # Check now time is can join activity
+    if check_time_can_join(activity.activity_time):
+
+        # Check activity session limit can join
         if activity.session_limit > activity.session_count:
-            activity.session_count = activity.session_count+1
+            activity.session_count = activity.session_count + 1
             try:
                 db.session.commit()
                 content = ''.join(
                     [
                         user_dict['displayName'],
-                        ' 參加活動 ',
+                        ' 您重複參加活動 ',
                         activity.title,
                         ' 囉！'
                     ]
                 )
+
+                # Logging user activity
+                activity_log = ActivityLog.query.filter_by(
+                    activity_id=str(activity_id),
+                    user_id=user.id
+                ).first()
+    
+                if activity_log is None:
+                    activity_log = ActivityLog(
+                        activity_id=activity_id,
+                        user_id=user.id
+                    )
+                    db.session.add(activity_log)
+                    try:
+                        db.session.commit()
+                        content = ''.join(
+                            [
+                                user_dict['displayName'],
+                                ' 成功參加活動 ',
+                                activity.title,
+                                ' 囉！'
+                            ]
+                        )
+                    except:
+                        pass
             except:
                 pass
         else:
-            content = '活動人數已經滿了'
+            content = ''.join(
+                [
+                    user_dict['displayName'],
+                    ' 想參加活動 ',
+                    activity.title,
+                    ' ，但是人數已經超過上限'
+                ]
+            )
+    else:
+        content = ''.join(
+            [
+                user_dict['displayName'],
+                ' 想參加活動 ',
+                activity.title,
+                ' ，但是活動時間已經過期'
+            ]
+        )
 
     return TextSendMessage(
         text=content
     )
     return 0
 
-def who_join_group_activity_message(activity_id):
-    activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id))
+def check_time_can_join(activity_time):
+    now = datetime.datetime.now()
+    if activity_time > now:
+        return True
+    return False
 
-    join_users = []
-    for activity_log in activity_logs:
-        user = line_bot_api.get_profile(activity_log.line_user_id)
-        user_dict = json.loads(str(user))
-        join_users.append(user_dict['displayName'])
-    user = '、'.join(join_users)
-
-    activity = Activity.query.filter_by(id=str(activity_id)).first()
-    return TextSendMessage(
-            text=''.join([user ,' 參加了 ', activity.title])
-        )
 def add_activity_message(line_user_id):
 
     bubble_template = BubbleContainer(
@@ -299,9 +328,6 @@ def add_activity_message(line_user_id):
     message = FlexSendMessage(
         alt_text='新增活動！', contents=bubble_template)
     return message
-
-
-
 
 def my_activity_message(line_user_id):
     activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9).all()
