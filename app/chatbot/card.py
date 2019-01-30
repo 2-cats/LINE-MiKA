@@ -195,7 +195,7 @@ def card_management_message(line_user_id):
             )
         )
         message = FlexSendMessage(
-            alt_text='新增活動', contents=bubble_template)
+            alt_text='新增名片', contents=bubble_template)
 
     return message
 
@@ -544,7 +544,7 @@ def show_my_card_message(line_user_id):
             alt_text='我的名片', contents=bubble_template)
         message.append(message_item)
     else:
-        BubbleContainer(
+        bubble_template=BubbleContainer(
             body=BoxComponent(
                 layout='vertical',
                 contents=[
