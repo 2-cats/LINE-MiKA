@@ -216,7 +216,8 @@ def delete_my_card_message(card_id):
     return message
 
 def search_card_message(keyword ,line_user_id):
-    cards = Card.query.filter(Card.company_name == keyword,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+    cards = Card.query.filter(Card.company_name.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+
 
     carousel_template_columns = []
     if cards:
