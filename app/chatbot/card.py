@@ -35,15 +35,6 @@ def card_management_message(line_user_id):
                 aspect_mode='cover'
             )
 
-        phone_component = ButtonComponent(
-            style='link',
-            height='sm',
-            action=URIAction(
-                label='電話',
-                uri=''.join(['tel:', card.phone_number])
-            )
-        )
-        contact_component.append(phone_component)
         if card.line_id != '':
             line_component = ButtonComponent(
                 style='link',
