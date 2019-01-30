@@ -130,7 +130,7 @@ def group_activity_message(source_id):
                         ButtonComponent(
                             style='link',
                             height='sm',
-                            action=PostbackAction(
+                            action=URIAction(
                                 label='有誰參加',
                                 uri=''.join(
                                     [
