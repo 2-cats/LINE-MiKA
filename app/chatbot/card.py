@@ -15,7 +15,9 @@ app.config.from_pyfile('config.py')
 
 
 def card_management_message(line_user_id):
-    card = Card.query.filter(User.line_user_id == line_user_id, Card.deleted_at == None).order_by(Card.created_at.desc()).first()
+    user = User.query.filter_by(line_user_id=line_user_id).first()
+    card = Card.query.filter(Card.user_id==user.id,Card.deleted_at == None).order_by(Card.created_at.desc()).first()
+    print(card)
 
     message = []
 
@@ -197,7 +199,7 @@ def card_management_message(line_user_id):
             )
         )
         message = FlexSendMessage(
-            alt_text='名片管理', contents=bubble_template)
+            alt_text='新增名片', contents=bubble_template)
 
     return message
 

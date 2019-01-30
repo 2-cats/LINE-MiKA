@@ -1,8 +1,8 @@
-"""Init
+"""init
 
-Revision ID: a15c0e554fbe
+Revision ID: 3dae597d1074
 Revises: 
-Create Date: 2019-01-23 14:59:35.586230
+Create Date: 2019-01-29 04:04:19.602852
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a15c0e554fbe'
+revision = '3dae597d1074'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,8 +43,7 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('line_user_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('activity_logs',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -65,6 +64,7 @@ def upgrade():
     sa.Column('line_id', sa.String(length=64), nullable=True),
     sa.Column('title', sa.String(length=64), nullable=True),
     sa.Column('title_en', sa.String(length=64), nullable=True),
+    sa.Column('company_name', sa.String(length=64), nullable=True),
     sa.Column('department', sa.String(length=64), nullable=True),
     sa.Column('industry', sa.String(length=64), nullable=True),
     sa.Column('summary', sa.String(length=64), nullable=True),
@@ -78,6 +78,7 @@ def upgrade():
     sa.Column('lat', sa.Float(), nullable=True),
     sa.Column('lng', sa.Float(), nullable=True),
     sa.Column('rel_link', sa.String(length=64), nullable=True),
+    sa.Column('image_path', sa.String(length=64), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),

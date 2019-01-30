@@ -66,9 +66,10 @@ def add_group_activity(data):
         activity_id=activity.id
     )
     db.session.add(activity_log)
-
-    db.session.commit()
-
+    try:
+        db.session.commit()
+    except:
+        pass
 
 def who_join_group_activity(activity_id):
     activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id)).all()
