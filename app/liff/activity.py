@@ -80,4 +80,26 @@ def who_join_group_activity(activity_id):
             users.append(user_dict)
         except:
             pass
+    users = [
+        {
+            "pictureUrl": "https://profile.line-scdn.net/0habVjI9KoPk1rExPjTS9BGldWMCAcPTgFEyB5L0gbY3sWK34YAiV0fBsTYX1OIilPXnMiKk0VZHhO",
+            "displayName": "吳冠賢(Eric)"
+        },
+        {
+            "pictureUrl": "https://profile.line-scdn.net/0habVjI9KoPk1rExPjTS9BGldWMCAcPTgFEyB5L0gbY3sWK34YAiV0fBsTYX1OIilPXnMiKk0VZHhO",
+            "displayName": "吳冠賢(Eric)"
+        },
+        {
+            "pictureUrl": "https://profile.line-scdn.net/0habVjI9KoPk1rExPjTS9BGldWMCAcPTgFEyB5L0gbY3sWK34YAiV0fBsTYX1OIilPXnMiKk0VZHhO",
+            "displayName": "吳冠賢(Eric)"
+        },
+        {
+            "pictureUrl": "https://profile.line-scdn.net/0habVjI9KoPk1rExPjTS9BGldWMCAcPTgFEyB5L0gbY3sWK34YAiV0fBsTYX1OIilPXnMiKk0VZHhO",
+            "displayName": "吳冠賢(Eric)"
+        },
+        {
+            "pictureUrl": "https://profile.line-scdn.net/0habVjI9KoPk1rExPjTS9BGldWMCAcPTgFEyB5L0gbY3sWK34YAiV0fBsTYX1OIilPXnMiKk0VZHhO",
+            "displayName": "吳冠賢(Eric)"
+        }
+    ]
     return users
