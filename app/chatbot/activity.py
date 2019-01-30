@@ -444,32 +444,7 @@ def my_activity_message(line_user_id):
                                 )
                             ),
                         ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='有誰參加',
-                                data=','.join(
-                                    [
-                                        'who_join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            )
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='加一',
-                                data=','.join(
-                                    [
-                                        'join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            ),
-                        ),
+
                     ]
                 )
             )
