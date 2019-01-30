@@ -132,9 +132,10 @@ def group_activity_message(source_id):
                             height='sm',
                             action=PostbackAction(
                                 label='有誰參加',
-                                data=','.join(
+                                uri=''.join(
                                     [
-                                        'who_join_group_activity',
+                                        app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
+                                        '?activity_id=',
                                         str(activity.id)
                                     ]
                                 )
@@ -246,20 +247,6 @@ def join_group_activity_message(activity_id, line_user_id):
     )
     return 0
 
-def who_join_group_activity_message(activity_id):
-    activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id))
-
-    join_users = []
-    for activity_log in activity_logs:
-        user = line_bot_api.get_profile(activity_log.line_user_id)
-        user_dict = json.loads(str(user))
-        join_users.append(user_dict['displayName'])
-    user = '、'.join(join_users)
-
-    activity = Activity.query.filter_by(id=str(activity_id)).first()
-    return TextSendMessage(
-            text=''.join([user ,' 參加了 ', activity.title])
-        )
 def add_activity_message(line_user_id):
 
     bubble_template = BubbleContainer(
@@ -299,9 +286,6 @@ def add_activity_message(line_user_id):
     message = FlexSendMessage(
         alt_text='新增活動！', contents=bubble_template)
     return message
-
-
-
 
 def my_activity_message(line_user_id):
     activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9)
