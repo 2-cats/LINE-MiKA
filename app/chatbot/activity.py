@@ -365,15 +365,11 @@ def my_activity_message(line_user_id):
                                     color='#666666'
                                 ),
                                 TextComponent(
-<<<<<<< HEAD
-                                    text=activity.activity_time.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年', m='月', d='日',h='時',M='分'),
-=======
                                     text=activity.activity_time.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
                                                                                                                m='月',
                                                                                                                d='日',
                                                                                                                h='時',
                                                                                                                M='分'),
->>>>>>> 4c97851b44175e0c248602daaad22c1b04155946
                                     size='sm',
                                     flex=5,
                                     margin='sm',
@@ -476,33 +472,6 @@ def my_activity_message(line_user_id):
                         ),
                     ]
                 )
-<<<<<<< HEAD
-            )
-            carousel_template_columns.append(bubble_template)
-    bubble_template = BubbleContainer(
-        body=BoxComponent(
-            layout='vertical',
-            contents=[
-                TextComponent(
-                    text='新增活動',
-                    weight='bold',
-                    color='#1DB446',
-                    size='md',
-                ),
-                TextComponent(
-                    text='請點我，新增活動唷！',
-                    margin='md',
-                    wrap=True,
-                    color='#666666',
-                    size='sm',
-                )
-            ]
-        ),
-        footer=BoxComponent(
-            layout='vertical',
-            spacing="sm",
-            contents=[
-=======
             )
             carousel_template_columns.append(bubble_template)
         bubble_template = BubbleContainer(
@@ -580,6 +549,5 @@ def my_activity_message(line_user_id):
         )
         message = FlexSendMessage(
             alt_text='新增活動', contents=bubble_template)
->>>>>>> 4c97851b44175e0c248602daaad22c1b04155946
 
         return message
