@@ -197,7 +197,7 @@ def card_management_message(line_user_id):
             )
         )
         message = FlexSendMessage(
-            alt_text='新增活動', contents=bubble_template)
+            alt_text='新增名片', contents=bubble_template)
 
     return message
 
