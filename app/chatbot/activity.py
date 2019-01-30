@@ -285,7 +285,7 @@ def join_group_activity_message(activity_id, line_user_id):
 
 def check_time_can_join(activity_time):
     now = datetime.datetime.now()
-    if activity_time > now:
+    if activity_time >= now:
         return True
     return False
 
