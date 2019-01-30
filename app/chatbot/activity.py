@@ -330,10 +330,10 @@ def add_activity_message(line_user_id):
     return message
 
 def my_activity_message(line_user_id):
-    activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9)
+    activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9).all()
 
-    carousel_template_columns = []
     if activitys:
+        carousel_template_columns = []
         for activity in activitys:
             bubble_template = BubbleContainer(
                 body=BoxComponent(
@@ -365,7 +365,15 @@ def my_activity_message(line_user_id):
                                     color='#666666'
                                 ),
                                 TextComponent(
+<<<<<<< HEAD
                                     text=activity.activity_time.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年', m='月', d='日',h='時',M='分'),
+=======
+                                    text=activity.activity_time.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
+                                                                                                               m='月',
+                                                                                                               d='日',
+                                                                                                               h='時',
+                                                                                                               M='分'),
+>>>>>>> 4c97851b44175e0c248602daaad22c1b04155946
                                     size='sm',
                                     flex=5,
                                     margin='sm',
@@ -468,6 +476,7 @@ def my_activity_message(line_user_id):
                         ),
                     ]
                 )
+<<<<<<< HEAD
             )
             carousel_template_columns.append(bubble_template)
     bubble_template = BubbleContainer(
@@ -493,20 +502,84 @@ def my_activity_message(line_user_id):
             layout='vertical',
             spacing="sm",
             contents=[
+=======
+            )
+            carousel_template_columns.append(bubble_template)
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='新增活動',
+                        weight='bold',
+                        color='#1DB446',
+                        size='md',
+                    ),
+                    TextComponent(
+                        text='請點我，新增活動唷！',
+                        margin='md',
+                        wrap=True,
+                        color='#666666',
+                        size='sm',
+                    )
+                ]
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing="sm",
+                contents=[
 
-                ButtonComponent(
-                    style='link',
-                    height='sm',
-                    action=URIAction(label='新增活動', uri=app.config['ADD_ACTIVITY_LIFF_URL']),
-                )
-            ]
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='新增活動', uri=app.config['ADD_ACTIVITY_LIFF_URL']),
+                    )
+                ]
+            )
         )
-    )
-    carousel_template_columns.append(bubble_template)
-    message = FlexSendMessage(
-        alt_text='群組活動清單',
-        contents=CarouselContainer(
-            contents=carousel_template_columns
+        carousel_template_columns.append(bubble_template)
+        message = FlexSendMessage(
+            alt_text='我的活動清單',
+            contents=CarouselContainer(
+                contents=carousel_template_columns
+            )
         )
-    )
-    return message
+        return message
+    else:
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='您尚未有任何活動！',
+                        weight='bold',
+                        color='#1DB446',
+                        size='md',
+                    ),
+                    TextComponent(
+                        text='請點我，新增活動唷！',
+                        margin='md',
+                        wrap=True,
+                        color='#666666',
+                        size='sm',
+                    )
+                ]
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing="sm",
+                contents=[
+
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='新增活動', uri=app.config['ADD_ACTIVITY_LIFF_URL']),
+                    )
+                ]
+            )
+        )
+        message = FlexSendMessage(
+            alt_text='新增活動', contents=bubble_template)
+>>>>>>> 4c97851b44175e0c248602daaad22c1b04155946
+
+        return message
