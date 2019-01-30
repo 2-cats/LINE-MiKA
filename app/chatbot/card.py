@@ -1,10 +1,12 @@
-from flask import Flask
 import datetime
 
+from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            FlexSendMessage, ImageComponent, TextComponent,
-                            TextSendMessage, URIAction,PostbackAction,CarouselContainer)
+                            CarouselContainer, FlexSendMessage, ImageComponent,
+                            PostbackAction, TextComponent, TextSendMessage,
+                            URIAction)
 from sqlalchemy import func
+
 from .. import db
 from ..models import Card, User
 
@@ -213,7 +215,7 @@ def delete_my_card_message(card_id):
             pass
     return message
 
-def search_card_message(keyword):
+def search_card_message(keyword ,line_user_id):
     cards = Card.query.filter(Card.company_name == keyword,Card.deleted_at == None).order_by(func.random()).limit(3).all()
 
     carousel_template_columns = []
@@ -361,7 +363,7 @@ def search_card_message(keyword):
                 layout='vertical',
                 contents=[
                     TextComponent(
-                        text=''.join(['很抱歉，找不到', keyword, '的名片']),
+                        text=''.join(['抱歉，找不到 ', keyword, ' 的名片']),
                         wrap=True,
                         weight='bold',
                         size='lg',
@@ -396,14 +398,6 @@ def search_card_message(keyword):
             alt_text='新增名片', contents=bubble_template)
 
     return message
-
-
-
-
-
-
-
-
 
 def show_my_card_message(line_user_id):
     user = User.query.filter_by(line_user_id=line_user_id).first()
