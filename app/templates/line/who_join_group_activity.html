@@ -15,16 +15,20 @@
 
 <body>
 <div class="container pt-2 pb-4">
-    {% for user in users %}
-        <div class="card pt-2 shadow-sm" style="width:140px">
-            <div class="pl-4">
-                <img src="{{user['pictureUrl']}}" class="userPicture img-thumbnail rounded-circle center-block">
+    <div class="row">
+        {% for user in users %}
+            <div class="col-sm pl-2">
+                <div class="card pt-2 shadow-sm" style="width:140px">
+                    <div class="pl-4">
+                        <img src="{{user['pictureUrl']}}" class="userPicture img-thumbnail rounded-circle center-block">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{user['displayName']}}</h5>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">{{user['displayName']}}</h5>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 
 <footer class="pt-4 my-md-5 pt-md-5 border-top">

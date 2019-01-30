@@ -199,8 +199,6 @@ def card_management_message(line_user_id):
 
     return message
 
-
-
 def delete_my_card_message(card_id):
     card = Card.query.filter_by(id=card_id).first()
     card.deleted_at = datetime.datetime.now()
@@ -544,7 +542,7 @@ def show_my_card_message(line_user_id):
             alt_text='我的名片', contents=bubble_template)
         message.append(message_item)
     else:
-        BubbleContainer(
+        bubble_template = BubbleContainer(
             body=BoxComponent(
                 layout='vertical',
                 contents=[
