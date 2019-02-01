@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 3dae597d1074
+Revision ID: 74fe86873fb3
 Revises: 
-Create Date: 2019-01-29 04:04:19.602852
+Create Date: 2019-02-01 09:29:46.699960
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3dae597d1074'
+revision = '74fe86873fb3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,6 @@ def upgrade():
     sa.Column('source_id', sa.String(length=64), nullable=True),
     sa.Column('title', sa.String(length=64), nullable=True),
     sa.Column('description', sa.String(length=64), nullable=True),
-    sa.Column('activity_time', sa.DateTime(), nullable=True),
     sa.Column('organizer', sa.String(length=64), nullable=True),
     sa.Column('address', sa.String(length=64), nullable=True),
     sa.Column('lat', sa.Float(), nullable=True),
@@ -32,6 +31,10 @@ def upgrade():
     sa.Column('rel_link', sa.String(length=64), nullable=True),
     sa.Column('session_limit', sa.Integer(), nullable=True),
     sa.Column('session_count', sa.Integer(), nullable=True),
+    sa.Column('group_link', sa.String(length=64), nullable=True),
+    sa.Column('public', sa.Boolean(), nullable=True),
+    sa.Column('start_at', sa.DateTime(), nullable=True),
+    sa.Column('end_at', sa.DateTime(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
@@ -79,6 +82,8 @@ def upgrade():
     sa.Column('lng', sa.Float(), nullable=True),
     sa.Column('rel_link', sa.String(length=64), nullable=True),
     sa.Column('image_path', sa.String(length=64), nullable=True),
+    sa.Column('skin_name', sa.String(length=64), nullable=True),
+    sa.Column('public', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),

@@ -24,7 +24,7 @@ class User(db.Model):
     issues = db.relationship("Issue", backref="user", lazy='noload')
 
     def __repr__(self):
-        return '<User %r>' % self.line_user_id
+        return '<User %r>' % self.id
 
 class Card(db.Model):
     __tablename__ = 'cards'
@@ -50,6 +50,8 @@ class Card(db.Model):
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
     image_path = db.Column(db.String(64))
+    skin_name = db.Column(db.String(64))
+    public = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
@@ -68,7 +70,7 @@ class Issue(db.Model):
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<Issues %r>' % self.source_id
+        return '<Issues %r>' % self.id
 
 class ActivityLog(db.Model):
     __tablename__ = 'activity_logs'
@@ -80,7 +82,7 @@ class ActivityLog(db.Model):
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<ActivityLog %r>' % self.activity_id
+        return '<ActivityLog %r>' % self.id
 
 class Activity(db.Model):
     __tablename__ = 'activitys'
@@ -89,7 +91,6 @@ class Activity(db.Model):
     source_id = db.Column(db.String(64))
     title = db.Column(db.String(64))
     description = db.Column(db.String(64))
-    activity_time = db.Column(db.DateTime)
     organizer = db.Column(db.String(64))
     address = db.Column(db.String(64))
     lat = db.Column(db.Float)
@@ -97,6 +98,10 @@ class Activity(db.Model):
     rel_link = db.Column(db.String(64))
     session_limit = db.Column(db.Integer)
     session_count = db.Column(db.Integer)
+    group_link = db.Column(db.String(64))
+    public = db.Column(db.Boolean, default=True)
+    start_at = db.Column(db.DateTime, default=datetime.utcnow)
+    end_at = db.Column(db.DateTime, default=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime)
@@ -104,4 +109,4 @@ class Activity(db.Model):
     activity_logs = db.relationship("ActivityLog", backref="activitys", lazy='noload')
 
     def __repr__(self):
-        return '<Activity %r>' % self.source_id
+        return '<Activity %r>' % self.id
