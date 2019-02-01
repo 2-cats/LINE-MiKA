@@ -13,16 +13,16 @@
 <body>
 
 <div class="container pt-2"> <!-- 置中用-->
-<form class="was-validated" action="/line/add_activity" method="post"><!-- ACTION是往哪裡發送數據-->
+<form class="validated" action="/line/add_activity" method="post"><!-- ACTION是往哪裡發送數據-->
     <input id="line_user_id" type="hidden" name='line_user_id'>
 
 
-<div class="form-group"><label>活動名稱</label> <input type="text" class="form-control" name="title"required/><br/></div>
+<div class="form-group"><label >活動名稱</label> <input type="text" class="form-control" name="title"/><br/></div>
 <div class="form-group"><label>活動時間</label> <input type="date"class="form-control" name="activity_time"required/><br/></div>
 <div class="form-group"><label>主辦單位</label> <input type="text" class="form-control"name="organizer"required/><br/></div>
 <div class="form-group"><label>活動地址</label> <input type="text"class="form-control" name="address"required/><br/></div>
 <div class="form-group"><label>相關連結</label> <input type="text"class="form-control" name="rel_link"required/><br/></div>
-<div class="form-group"><label>活動介紹</label> <br/><textarea name="description" rows="4" cols="32"  required></textarea> <br/></div>
+<div class="form-group"><label>活動介紹</label> <br/><textarea name="description" rows="4" cols="32"  class="form-control" required></textarea> <br/></div>
 
   <center><button type="submit" class="btn btn-primary btn-lg btn-block">送出</button></center>
 </form>
