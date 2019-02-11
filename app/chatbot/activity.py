@@ -294,7 +294,7 @@ def join_group_activity_message(activity_id, line_user_id):
                 user_dict['displayName'],
                 ' 想參加活動 ',
                 activity.title,
-                ' ，但是活動時間已經過期'
+                ' ，但是活動時間已經開始或是結束'
             ]
         )
 
@@ -402,32 +402,6 @@ def my_activity_message(line_user_id):
                             margin='md',
                             contents=[
                                 TextComponent(
-                                    text='人數',
-                                    wrap=True,
-                                    flex=2,
-                                    size='md',
-                                    color='#666666'
-                                ),
-                                TextComponent(
-                                    text=''.join(
-                                        [
-                                            str(activity.session_count),
-                                            '/',
-                                            str(activity.session_limit)
-                                        ]
-                                    ),
-                                    size='sm',
-                                    flex=5,
-                                    margin='sm',
-                                    color='#333333'
-                                )
-                            ]
-                        ),
-                        BoxComponent(
-                            layout='horizontal',
-                            margin='md',
-                            contents=[
-                                TextComponent(
                                     text='位置',
                                     flex=2,
                                     size='md',
@@ -463,33 +437,7 @@ def my_activity_message(line_user_id):
                                     ]
                                 )
                             ),
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='有誰參加',
-                                data=','.join(
-                                    [
-                                        'who_join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            )
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='加一',
-                                data=','.join(
-                                    [
-                                        'join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            ),
-                        ),
+                        )
                     ]
                 )
             )
