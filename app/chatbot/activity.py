@@ -237,7 +237,7 @@ def join_group_activity_message(activity_id, line_user_id):
     user_profile = line_bot_api.get_profile(line_user_id)
     user_dict = json.loads(str(user_profile))
     # Check now time is can join activity
-    if check_time_can_join(activity.activity_time):
+    if check_time_can_join(activity.start_at):
 
         # Check activity session limit can join
         if activity.session_limit > activity.session_count:
@@ -303,9 +303,9 @@ def join_group_activity_message(activity_id, line_user_id):
     )
     return 0
 
-def check_time_can_join(activity_time):
+def check_time_can_join(start_at):
     now = datetime.datetime.now()
-    if activity_time >= now:
+    if start_at >= now:
         return True
     return False
 
@@ -385,7 +385,7 @@ def my_activity_message(line_user_id):
                                     color='#666666'
                                 ),
                                 TextComponent(
-                                    text=activity.activity_time.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
+                                    text=activity.start_at.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
                                                                                                                m='月',
                                                                                                                d='日',
                                                                                                                h='時',
