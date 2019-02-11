@@ -6,6 +6,11 @@ from .map import convert_address
 def add_card(data):
     location = convert_address(data['address'])
 
+    # Check card is public?
+    public = False
+    if 'public' in data:
+        public = True
+
     user = User.query.filter_by(line_user_id=data['line_user_id']).order_by(User.created_at.desc()).first()
     card = Card(
             user_id=user.id,
@@ -23,7 +28,8 @@ def add_card(data):
             lat=location[0],
             lng=location[1],
             phone_number=data['phone_number'],
-            tel_number=data['tel_number']
+            tel_number=data['tel_number'],
+            public=public
         )
     db.session.add(card)
     try:
