@@ -45,14 +45,34 @@ def group_activity_message(source_id):
                             margin='md',
                             contents=[
                                 TextComponent(
-                                    text='時間',
+                                    text='開始日期',
                                     wrap=True,
                                     flex=2,
                                     size='md',
                                     color='#666666'
                                 ),
                                 TextComponent(
-                                    text=activity.activity_time.strftime("%Y年%m月%d日 %H:%M"),
+                                    text=activity.start_at.strftime("%Y年%m月%d日 %H:%M"),
+                                    size='sm',
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text='結束日期',
+                                    wrap=True,
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=activity.end_at.strftime("%Y年%m月%d日 %H:%M"),
                                     size='sm',
                                     flex=5,
                                     margin='sm',

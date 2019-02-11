@@ -40,12 +40,26 @@ def add_group_activity(data):
     location = convert_address(data['address'])
 
     user = User.query.filter_by(line_user_id=data['line_user_id']).first()
+    
+    # Check user is exist, Create user if not
+    if user is None:
+        user = User(
+                line_user_id=data['line_user_id']
+            )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
+
+    # Insert activity
     activity = Activity(
         source_type='group',
         source_id=data['source_id'],
         title=data['title'],
         description=data['description'],
-        activity_time=data['activity_time'],
+        start_at=data['start_at'],
+        end_at=data['end_at'],
         organizer=data['organizer'],
         address=data['address'],
         lat=location[0],
@@ -60,7 +74,7 @@ def add_group_activity(data):
     except:
         pass
 
-    activity = Activity.query.filter_by(source_id=data['source_id']).order_by(Activity.created_at.desc()).first()
+    # Log activity
     activity_log = ActivityLog(
         user_id=user.id,
         activity_id=activity.id
