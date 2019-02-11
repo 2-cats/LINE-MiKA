@@ -23,16 +23,28 @@
                 type="text" required>
         </div>
         <div class="form-group">
-            <label for="start_at" class="required">活動開始日期</label>
+            <label for="start_date_at" class="required">開始日期</label>
             <input class="form-control"
-                name="start_at"
-                type="datetime-local" required>
+                name="start_date_at"
+                type="date" required>
         </div>
         <div class="form-group">
-            <label for="end_at" class="required">活動結束日期</label>
+            <label for="start_time_at" class="required">開始時間</label>
             <input class="form-control"
-                name="end_at"
-                type="datetime-local" required>
+                name="start_time_at"
+                type="time" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date_at" class="required">結束日期</label>
+            <input class="form-control"
+                name="end_date_at"
+                type="date" required>
+        </div>
+        <div class="form-group">
+            <label for="end_time_at" class="required">結束時間</label>
+            <input class="form-control"
+                name="end_time_at"
+                type="time" required>
         </div>
         <div class="form-group">
             <label for="organizer" class="required">主辦單位</label>
@@ -69,11 +81,6 @@
         </div>
     </footer>
 </div>
-    <script>
-        $('#datepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-        });
-    </script>
     
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
