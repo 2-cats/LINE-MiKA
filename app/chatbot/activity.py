@@ -418,6 +418,30 @@ def my_activity_message(line_user_id):
                             margin='md',
                             contents=[
                                 TextComponent(
+                                    text='結束日期',
+                                    wrap=True,
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=activity.end_at.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
+                                                                                                          m='月',
+                                                                                                          d='日',
+                                                                                                          h='時',
+                                                                                                          M='分'),
+                                    size='sm',
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
                                     text='位置',
                                     flex=2,
                                     size='md',
