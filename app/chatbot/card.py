@@ -35,15 +35,6 @@ def card_management_message(line_user_id):
                 aspect_mode='cover'
             )
 
-        phone_component = ButtonComponent(
-            style='link',
-            height='sm',
-            action=URIAction(
-                label='電話',
-                uri=''.join(['tel:', card.phone_number])
-            )
-        )
-        contact_component.append(phone_component)
         if card.line_id != '':
             line_component = ButtonComponent(
                 style='link',
@@ -216,7 +207,8 @@ def delete_my_card_message(card_id):
     return message
 
 def search_card_message(keyword ,line_user_id):
-    cards = Card.query.filter(Card.company_name == keyword,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+    cards = Card.query.filter(Card.company_name.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+
 
     carousel_template_columns = []
     if cards:
