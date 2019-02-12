@@ -37,7 +37,7 @@ def scan_card_image_message(image_id, line_user_id):
 
     response = requests.post(
         app.config['OCR_SCAN_CARD_API_PATH'],
-        data = data
+        json = data
     )
 
     response_json = json.loads(response.text)
