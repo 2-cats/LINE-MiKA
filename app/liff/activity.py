@@ -42,6 +42,13 @@ def add_group_activity(data):
 
     user = User.query.filter_by(line_user_id=data['line_user_id']).first()
     
+    public = False
+    group_link = None
+    if 'public' in data:
+        public = True
+        group_link = data['group_link']
+        
+
     # Check user is exist, Create user if not
     if user is None:
         user = User(
@@ -66,6 +73,8 @@ def add_group_activity(data):
         lat=location[0],
         lng=location[1],
         rel_link=data['rel_link'],
+        group_link=group_link,
+        public=public,
         session_limit=data['session_limit'],
         session_count=1
     )
