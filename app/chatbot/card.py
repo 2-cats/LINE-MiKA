@@ -206,8 +206,32 @@ def delete_my_card_message(card_id):
     return message
 
 def search_card_message(keyword ,line_user_id):
-    cards = Card.query.filter(Card.company_name.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+###
+#　　　　　　　　┏┓　　　┏┓+ +
+#　　　　　　　┏┛┻━━━┛┻┓ + +
+#　　　　　　　┃　　　　　　　┃ 　
+#　　　　　　　┃　　　━　　　┃ ++ + + +
+#　　　　　　 ████━████ ┃+
+#　　　　　　　┃　　　　　　　┃ + 注意喔！
+#　　　　　　　┃　　　┻　　　┃
+#　　　　　　　┃　　　　　　　┃ + +
+#　　　　　　　┗━┓　　　┏━┛
+#　　　　　　　　　┃　　　┃　　　　　　　　　　　
+#　　　　　　　　　┃　　　┃ + + + +
+#　　　　　　　　　┃　　　┃　　　　關鍵字我會給 list ，但是這邊還是只接收 string 　　　　
+#　　　　　　　　　┃　　　┃ + 　　所以暫時用 keyword[0] 作為搜尋字串
+#　　　　　　　　　┃　　　┃
+#　　　　　　　　　┃　　　┃　　+　　　　　　　　　
+#　　　　　　　　　┃　 　　┗━━━┓ + +
+#　　　　　　　　　┃ 　　　　　　　┣┓
+#　　　　　　　　　┃ 　　　　　　　┏┛
+#　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
+#　　　　　　　　　　┃┫┫　┃┫┫
+#　　　　　　　　　　┗┻┛　┗┻┛+ + + +
+##
+    keyword = keyword[0]
 
+    cards = Card.query.filter(Card.company_name.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
 
     carousel_template_columns = []
     if cards:
@@ -354,33 +378,17 @@ def search_card_message(keyword ,line_user_id):
                 layout='vertical',
                 contents=[
                     TextComponent(
-                        text=''.join(['抱歉，找不到 ', keyword, ' 的名片']),
+                        text=''.join(['沒有名片']),
                         wrap=True,
                         weight='bold',
                         size='lg',
                         color='#1DB446',
                     ),
                     TextComponent(
-                        text='如果有需要，試著新增一張名片吧',
+                        text='抱歉，我找不到你想要找的名片',
                         wrap=True,
                         size='md',
                         margin='md'
-                    )
-                ]
-            ),
-            footer=BoxComponent(
-                layout='vertical',
-                spacing="sm",
-                contents=[
-                    ButtonComponent(
-                        style='link',
-                        height='sm',
-                        action=URIAction(label='智慧新增名片', uri='line://nv/camera/'),
-                    ),
-                    ButtonComponent(
-                        style='link',
-                        height='sm',
-                        action=URIAction(label='手動新增名片', uri=app.config['ADD_CARD_LINE_LIFF_URL']),
                     )
                 ]
             )
