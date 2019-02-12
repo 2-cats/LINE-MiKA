@@ -86,8 +86,10 @@ def handle_message(event):
             message = search_card_message(keyword_list, line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
-        elif bool(re.search('找活動 ', message_text)):
-            message = search_activity_message(message_text.replace('找活動 ', ''), line_user_id)
+        elif bool(re.search('找活動', message_text)):
+            message_text = message_text.replace('找活動', '')
+            message_text = message_text.replace(' ', '')
+            message = search_activity_message(message_text, line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         message = search_card_message(message_text, line_user_id)
