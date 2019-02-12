@@ -706,13 +706,14 @@ def search_activity_message(keyword ,source_id):
                         text='沒有結果',
                         wrap=True,
                         weight='bold',
-                        size='md',
+                        size='lg',
                         color='#1DB446',
                     ),
                     TextComponent(
                         text=''.join(['抱歉，找不到有關 ', keyword, ' 的活動']),
+                        margin='md',
                         wrap=True,
-                        size='sm',
+                        size='md',
                     )
                 ]
             ),
