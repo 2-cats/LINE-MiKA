@@ -16,6 +16,20 @@
     <form method='POST' action='/line/add_group_activity'>
         <input id="line_user_id" type="hidden" name='line_user_id'>
         <input name='source_id' type="hidden" value='{{ data['source_id'] }}'>
+        <div class="form-check">
+            <input class="form-check-input"
+                id="public-click"
+                name="public"
+                type="checkbox">
+            <label for="public"><b>公開活動</b>讓更多使用者知道你的群組在辦活動！</label>
+        </div>
+        <div class="form-group" id="group-link">
+            <label for="group_link" class="required">群組網址</label>
+            <input class="form-control"
+                id="group_link_form"
+                name="group_link"
+                type="text">
+        </div>
         <div class="form-group">
             <label for="title" class="required">活動名稱</label>
             <input class="form-control"
