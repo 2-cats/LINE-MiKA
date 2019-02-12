@@ -12,6 +12,7 @@ from sqlalchemy import func
 
 from .. import db
 from ..models import Activity, ActivityLog, Card, User
+from sqlalchemy import func
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
