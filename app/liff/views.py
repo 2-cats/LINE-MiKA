@@ -25,8 +25,12 @@ def line_add_card():
             data=data
         )
     elif request.method == 'POST':
-        add_card(request.form.to_dict())
-        return render_template('line/add_card_success.html')
+        result = add_card(request.form.to_dict())
+        if result['status'] == "success":
+            return render_template('line/add_card_success.html')
+        else:
+            return render_template('line/add_card_fail.html', message=result['message'])
+
 
 @liff.route("/line/add_activity", methods=['GET', 'POST'])
 def line_add_activity():

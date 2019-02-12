@@ -17,7 +17,6 @@ app.config.from_pyfile('config.py')
 def card_management_message(line_user_id):
     user = User.query.filter_by(line_user_id=line_user_id).first()
     card = Card.query.filter(Card.user_id==user.id,Card.deleted_at == None).order_by(Card.created_at.desc()).first()
-    print(card)
 
     message = []
 
