@@ -119,8 +119,9 @@ def handle_postback(event):
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
     if event.source.type == 'user':
+        line_user_id = event.source.user_id
         image_id = event.message.id
-        message = scan_card_image_message(image_id)
+        message = scan_card_image_message(image_id, line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 

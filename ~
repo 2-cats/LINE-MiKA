@@ -1,9 +1,0 @@
-erver {
-    listen 80;
-    server_name cardgo.goodlinker.io;
-
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:/home/ubuntu/cardgo/cardgo.sock;
-    }
-}
