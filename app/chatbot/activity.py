@@ -8,6 +8,7 @@ from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
                             PostbackAction, TextComponent, TextSendMessage,
                             URIAction)
+from sqlalchemy import func
 
 from .. import db
 from ..models import Activity, ActivityLog, Card, User
@@ -561,12 +562,11 @@ def my_activity_message(line_user_id):
 
         return message
 
-def search_activity_message(message_text ,source_id):
-    keyword = (message_text[4:])
+def search_activity_message(keyword ,source_id):
     activitys = Activity.query.filter(Activity.title.like('%{}%'.format(keyword)) ,Activity.public == 1,Activity.deleted_at == None).order_by(func.random()).limit(3).all()
 
-
     carousel_template_columns = []
+    
     if activitys:
         for activity in activitys:
             bubble_template = BubbleContainer(
@@ -683,50 +683,16 @@ def search_activity_message(message_text ,source_id):
                             style='link',
                             height='sm',
                             action=URIAction(
-                                label='位置導航',
-                                uri=''.join(
-                                    [
-                                        'https://www.google.com/maps/search/?api=1&query=',
-                                        str(activity.lat),
-                                        ',',
-                                        str(activity.lng)
-                                    ]
-                                )
-                            ),
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=URIAction(
-                                label='有誰參加',
-                                uri=''.join(
-                                    [
-                                        app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
-                                        '?activity_id=',
-                                        str(activity.id)
-                                    ]
-                                )
+                                label='前往活動群組',
+                                uri=str(activity.group_link)
                             )
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='加一',
-                                data=','.join(
-                                    [
-                                        'join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            ),
-                        ),
+                        )
                     ]
                 )
             )
             carousel_template_columns.append(bubble_template)
         message = FlexSendMessage(
-            alt_text='搜尋活動清單',
+            alt_text='搜尋活動結果',
             contents=CarouselContainer(
                 contents=carousel_template_columns
             )
@@ -738,11 +704,16 @@ def search_activity_message(message_text ,source_id):
                 layout='vertical',
                 contents=[
                     TextComponent(
-                        text=''.join(['抱歉，找不到 ', keyword, ' 的活動']),
+                        text='沒有結果',
                         wrap=True,
                         weight='bold',
-                        size='lg',
+                        size='md',
                         color='#1DB446',
+                    ),
+                    TextComponent(
+                        text=''.join(['抱歉，找不到有關 ', keyword, ' 的活動']),
+                        wrap=True,
+                        size='sm',
                     )
                 ]
             ),
@@ -751,4 +722,3 @@ def search_activity_message(message_text ,source_id):
             alt_text='新增活動', contents=bubble_template)
 
     return message
-

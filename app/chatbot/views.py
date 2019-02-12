@@ -12,9 +12,9 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_activity_message,
-                       group_activity_message, join_group_activity_message,
-                       my_activity_message)
+from .activity import (add_activity_message, group_activity_message,
+                       join_group_activity_message, my_activity_message,
+                       search_activity_message)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
@@ -80,9 +80,20 @@ def handle_message(event):
             message = my_activity_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
+        elif bool(re.search('找名片', message_text)):
+            keywords = message_text.replace('找名片 ', '')
+            keyword_list = keywords.split(' ')
+            message = search_card_message(keyword_list, line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif bool(re.search('找活動', message_text)):
+            message = search_activity_message(message_text.replace('找活動 ', ''), line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
         message = search_card_message(message_text, line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
+        
     elif event.source.type == 'group':
         group_id = event.source.group_id
         if message_text == "我的名片":
@@ -91,10 +102,6 @@ def handle_message(event):
             return 0
         elif message_text == "近期活動":
             message = group_activity_message(group_id)
-            line_bot_api.reply_message(event.reply_token, message)
-            return 0
-        elif bool(re.search('找名片', message_text)):
-            message = search_card_message(message_text.replace('找名片 ', ''), line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
 
