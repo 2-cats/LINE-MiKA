@@ -10,7 +10,7 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
 def follow_message(line_user_id):
-    user = User.query.filter_by(line_user_id=line_user_id).first()
+    user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
     if user is None:
         user = User(
                 line_user_id=line_user_id
@@ -61,9 +61,8 @@ def follow_message(line_user_id):
     return message
 
 def unfollow(line_user_id):
-    user = User.query.filter_by(line_user_id=line_user_id).first()
+    user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
     user.deleted_at = datetime.datetime.now()
-    user.line_user_id=''
     try:
         db.session.commit()
     except:
