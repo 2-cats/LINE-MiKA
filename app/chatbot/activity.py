@@ -20,7 +20,8 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 
 
 def group_activity_message(source_id):
-    activitys =  Activity.query.filter_by(source_id=source_id).order_by(Activity.created_at.desc()).limit(9)
+    now = datetime.datetime.now()
+    activitys =  Activity.query.filter(Activity.source_id==source_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.created_at.asc()).limit(9)
     carousel_template_columns = []
     if activitys:
         for activity in activitys:
