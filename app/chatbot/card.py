@@ -529,7 +529,7 @@ def show_my_card_message(line_user_id):
                 alt_text='我的名片', contents=bubble_template)
             message.append(message_item)
 
-            if card.image_path is not None:
+            if card.image_path != '':
                 message_item = ImageSendMessage(
                     original_content_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                     preview_image_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path])
