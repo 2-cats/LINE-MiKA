@@ -6,13 +6,12 @@ from flask import Flask
 from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
-                            PostbackAction, TextComponent, TextSendMessage,
-                            URIAction)
+                            PostbackAction, SeparatorComponent, TextComponent,
+                            TextSendMessage, URIAction)
 from sqlalchemy import func
 
 from .. import db
 from ..models import Activity, ActivityLog, Card, User
-from sqlalchemy import func
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -135,6 +134,41 @@ def group_activity_message(source_id):
                     layout='vertical',
                     spacing='sm',
                     contents=[
+                        BoxComponent(
+                            layout='horizontal',
+                            spacing='sm',
+                            contents=[
+                                ButtonComponent(
+                                    style='link',
+                                    height='sm',
+                                    action=PostbackAction(
+                                        label='加一',
+                                        data=','.join(
+                                            [
+                                                'join_group_activity',
+                                                str(activity.id)
+                                            ]
+                                        )
+                                    ),
+                                ),
+                                SeparatorComponent(
+
+                                ),
+                                ButtonComponent(
+                                    style='link',
+                                    height='sm',
+                                    action=PostbackAction(
+                                        label='減一',
+                                        data=','.join(
+                                            [
+                                                'leave_group_activity',
+                                                str(activity.id)
+                                            ]
+                                        )
+                                    ),
+                                )
+                            ]
+                        ),
                         ButtonComponent(
                             style='link',
                             height='sm',
@@ -163,20 +197,7 @@ def group_activity_message(source_id):
                                     ]
                                 )
                             )
-                        ),
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=PostbackAction(
-                                label='加一',
-                                data=','.join(
-                                    [
-                                        'join_group_activity',
-                                        str(activity.id)
-                                    ]
-                                )
-                            ),
-                        ),
+                        )
                     ]
                 )
             )
@@ -220,7 +241,7 @@ def group_activity_message(source_id):
     return message
 
 def join_group_activity_message(activity_id, line_user_id):
-    user = User.query.filter_by(line_user_id=str(line_user_id)).first()
+    user = User.query.filter_by(line_user_id=str(line_user_id),deleted_at=None).first()
 
     # Check is user or not
     if user is None:
@@ -259,7 +280,8 @@ def join_group_activity_message(activity_id, line_user_id):
                 # Logging user activity
                 activity_log = ActivityLog.query.filter_by(
                     activity_id=str(activity_id),
-                    user_id=user.id
+                    user_id=user.id,
+                    deleted_at=None
                 ).first()
     
                 if activity_log is None:
@@ -304,7 +326,67 @@ def join_group_activity_message(activity_id, line_user_id):
     return TextSendMessage(
         text=content
     )
-    return 0
+
+def leave_group_activity_message(activity_id, line_user_id):
+    user = User.query.filter_by(line_user_id=str(line_user_id), deleted_at=None).first()
+
+    # Check is user or not
+    if user is None:
+        user = User(
+                line_user_id=line_user_id
+            )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
+
+    # Query model activity
+    activity = Activity.query.filter_by(id=activity_id).first()
+    
+    # Get user data
+    user_profile = line_bot_api.get_profile(line_user_id)
+    user_dict = json.loads(str(user_profile))
+
+    activity.session_count = activity.session_count - 1
+    db.session.add(activity)
+    try:
+        db.session.commit()    
+        # Logging user activity
+        activity_log = ActivityLog.query.filter_by(
+            activity_id=str(activity_id),
+            user_id=user.id,
+            deleted_at=None
+        ).first()
+        if activity_log:
+            activity_log.deleted_at = datetime.datetime.now()
+            db.session.add(activity_log)
+            try:
+                db.session.commit()
+                content = ''.join(
+                    [
+                        user_dict['displayName'],
+                        ' 退出活動 ',
+                        activity.title
+                    ]
+                )
+            except:
+                pass
+        else:
+            content = ''.join(
+                [
+                    user_dict['displayName'],
+                    ' 你沒參加過活動 ',
+                    activity.title,
+                    ' 喔'
+                ]
+            )
+    except:
+        pass
+
+    return TextSendMessage(
+        text=content
+    )
 
 def check_time_can_join(start_at):
     now = datetime.datetime.now()
