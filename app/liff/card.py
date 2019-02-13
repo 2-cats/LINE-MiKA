@@ -43,7 +43,8 @@ def add_card(data):
                 lng=location[1],
                 phone_number=data['phone_number'],
                 tel_number=data['tel_number'],
-                public=public
+                public=public,
+                image_path=data['image_path']
             )
         db.session.add(card)
         try:

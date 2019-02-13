@@ -3,8 +3,8 @@ import datetime
 from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
-                            PostbackAction, TextComponent, TextSendMessage,
-                            URIAction)
+                            ImageSendMessage, PostbackAction, TextComponent,
+                            TextSendMessage, URIAction)
 from sqlalchemy import func
 
 from .. import db
@@ -15,8 +15,8 @@ app.config.from_pyfile('config.py')
 
 
 def card_management_message(line_user_id):
-    user = User.query.filter_by(line_user_id=line_user_id).first()
-    card = Card.query.filter(Card.user_id==user.id,Card.deleted_at == None).order_by(Card.created_at.desc()).first()
+    user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
+    card = Card.query.filter_by(user_id=user.id, deleted_at=None).order_by(Card.created_at.desc()).first()
 
     message = []
 
@@ -28,7 +28,7 @@ def card_management_message(line_user_id):
 
         if card.image_path is not None:
             image_component = ImageComponent(
-                url=card.image_path,
+                url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                 size='full',
                 aspect_ratio='20:13',
                 aspect_mode='cover'
@@ -243,7 +243,7 @@ def search_card_message(keyword ,line_user_id):
 
             if card.image_path is not None:
                 image_component = ImageComponent(
-                    url=card.image_path,
+                    url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                     size='full',
                     aspect_ratio='20:13',
                     aspect_mode='cover'
@@ -412,14 +412,6 @@ def show_my_card_message(line_user_id):
             line_component = []
             contact_component = []
 
-            if card.image_path is not None:
-                image_component = ImageComponent(
-                    url=card.image_path,
-                    size='full',
-                    aspect_ratio='20:13',
-                    aspect_mode='cover'
-                )
-
             phone_component = ButtonComponent(
                 style='link',
                 height='sm',
@@ -452,7 +444,6 @@ def show_my_card_message(line_user_id):
                 contact_component.append(email_component)
 
             bubble_template = BubbleContainer(
-                hero=image_component,
                 body=BoxComponent(
                     layout='vertical',
                     contents=[
@@ -537,6 +528,13 @@ def show_my_card_message(line_user_id):
             message_item = FlexSendMessage(
                 alt_text='我的名片', contents=bubble_template)
             message.append(message_item)
+
+            if card.image_path is not None:
+                message_item = ImageSendMessage(
+                    original_content_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
+                    preview_image_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path])
+                )
+                message.append(message_item)
         else:
             bubble_template = BubbleContainer(
                 body=BoxComponent(
