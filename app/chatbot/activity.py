@@ -260,36 +260,33 @@ def join_group_activity_message(activity_id, line_user_id):
     # Get user data
     user_profile = line_bot_api.get_profile(line_user_id)
     user_dict = json.loads(str(user_profile))
+
     # Check now time is can join activity
     if check_time_can_join(activity.start_at):
-
         # Check activity session limit can join
         if activity.session_limit > activity.session_count:
-            activity.session_count = activity.session_count + 1
-            try:
-                db.session.commit()
-                content = ''.join(
-                    [
-                        user_dict['displayName'],
-                        ' 您重複參加活動 ',
-                        activity.title,
-                        ' 囉！'
-                    ]
+            
+            # Query activity log
+            activity_log = ActivityLog.query.filter_by(
+                activity_id=str(activity_id),
+                user_id=user.id,
+                deleted_at=None
+            ).first()
+
+            if activity_log is None:
+                activity_log = ActivityLog(
+                    activity_id=activity_id,
+                    user_id=user.id
                 )
 
-                # Logging user activity
-                activity_log = ActivityLog.query.filter_by(
-                    activity_id=str(activity_id),
-                    user_id=user.id,
-                    deleted_at=None
-                ).first()
-    
-                if activity_log is None:
-                    activity_log = ActivityLog(
-                        activity_id=activity_id,
-                        user_id=user.id
-                    )
-                    db.session.add(activity_log)
+                # Update activity log
+                db.session.add(activity_log)
+                try:
+                    activity.session_count = activity.session_count + 1
+                    db.session.commit()
+
+                    # Update activity
+                    db.session.add(activity)
                     try:
                         db.session.commit()
                         content = ''.join(
@@ -302,8 +299,17 @@ def join_group_activity_message(activity_id, line_user_id):
                         )
                     except:
                         pass
-            except:
-                pass
+                except:
+                    pass
+            else:
+                content = ''.join(
+                    [
+                        user_dict['displayName'],
+                        ' 您重複參加活動 ',
+                        activity.title,
+                        ' 囉！'
+                    ]
+                )
         else:
             content = ''.join(
                 [
@@ -348,42 +354,52 @@ def leave_group_activity_message(activity_id, line_user_id):
     user_profile = line_bot_api.get_profile(line_user_id)
     user_dict = json.loads(str(user_profile))
 
-    activity.session_count = activity.session_count - 1
-    db.session.add(activity)
-    try:
-        db.session.commit()    
-        # Logging user activity
-        activity_log = ActivityLog.query.filter_by(
-            activity_id=str(activity_id),
-            user_id=user.id,
-            deleted_at=None
-        ).first()
-        if activity_log:
-            activity_log.deleted_at = datetime.datetime.now()
-            db.session.add(activity_log)
+    # Query activity log
+    activity_log = ActivityLog.query.filter_by(
+        activity_id=str(activity_id),
+        user_id=user.id,
+        deleted_at=None
+    ).first()
+
+    if activity_log:
+        activity_log.deleted_at = datetime.datetime.now()
+
+        # Update activity log
+        db.session.add(activity_log)
+        try:
+            
+            db.session.commit()
+            activity.session_count = activity.session_count - 1
+            other_message = ''
+            if activity.session_count == 0:    
+                activity.deleted_at = datetime.datetime.now()
+                other_message = '，因為沒人參與活動，所以活動提前結束。'
+
+            # Update activity
+            db.session.add(activity)
             try:
                 db.session.commit()
                 content = ''.join(
                     [
                         user_dict['displayName'],
                         ' 退出活動 ',
-                        activity.title
+                        activity.title,
+                        other_message 
                     ]
                 )
             except:
                 pass
-        else:
-            content = ''.join(
-                [
-                    user_dict['displayName'],
-                    ' 你沒參加過活動 ',
-                    activity.title,
-                    ' 喔'
-                ]
-            )
-    except:
-        pass
-
+        except:
+            pass
+    else:
+        content = ''.join(
+            [
+                user_dict['displayName'],
+                ' 你沒參加過活動 ',
+                activity.title,
+                ' 喔'
+            ]
+        )
     return TextSendMessage(
         text=content
     )
@@ -435,7 +451,8 @@ def add_activity_message(line_user_id):
     return message
 
 def my_activity_message(line_user_id):
-    activitys = Activity.query.filter_by(source_id=line_user_id).order_by(Activity.created_at.desc()).limit(9).all()
+    now = datetime.datetime.now()
+    activitys = Activity.query.filter(Activity.source_id==line_user_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.created_at.asc()).limit(9).all()
 
     if activitys:
         carousel_template_columns = []
@@ -463,27 +480,7 @@ def my_activity_message(line_user_id):
                             margin='md',
                             contents=[
                                 TextComponent(
-                                    text='開始時間',
-                                    wrap=True,
-                                    flex=2,
-                                    size='md',
-                                    color='#666666'
-                                ),
-                                TextComponent(
-                                    text=activity.start_at.strftime("%Y/%m/%d %H:%M"),
-                                    size='sm',
-                                    flex=5,
-                                    margin='sm',
-                                    color='#333333'
-                                )
-                            ]
-                        ),
-                        BoxComponent(
-                            layout='horizontal',
-                            margin='md',
-                            contents=[
-                                TextComponent(
-                                    text='結束時間',
+                                    text='開始日期',
                                     wrap=True,
                                     flex=2,
                                     size='md',
@@ -510,11 +507,7 @@ def my_activity_message(line_user_id):
                                     color='#666666'
                                 ),
                                 TextComponent(
-                                    text=activity.end_at.strftime('%Y{y}%m{m}%d{d} %H{h}:%M{M}').format(y='年',
-                                                                                                          m='月',
-                                                                                                          d='日',
-                                                                                                          h='時',
-                                                                                                          M='分'),
+                                    text=activity.start_at.strftime("%Y/%m/%d %H:%M"),
                                     size='sm',
                                     flex=5,
                                     margin='sm',
