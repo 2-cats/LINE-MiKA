@@ -15,8 +15,8 @@ app.config.from_pyfile('config.py')
 
 
 def card_management_message(line_user_id):
-    user = User.query.filter_by(line_user_id=line_user_id).first()
-    card = Card.query.filter(Card.user_id==user.id,Card.deleted_at == None).order_by(Card.created_at.desc()).first()
+    user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
+    card = Card.query.filter_by(user_id=user.id, deleted_at=None).order_by(Card.created_at.desc()).first()
 
     message = []
 
@@ -28,7 +28,7 @@ def card_management_message(line_user_id):
 
         if card.image_path is not None:
             image_component = ImageComponent(
-                url=card.image_path,
+                url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                 size='full',
                 aspect_ratio='20:13',
                 aspect_mode='cover'

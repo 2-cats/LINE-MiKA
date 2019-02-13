@@ -28,8 +28,7 @@ def scan_card_image_message(image_id, line_user_id):
 
     # Upload image to s3
     client = boto3.client('s3', region_name='ap-southeast-1')
-    client.upload_file(SCAN_CARD_TMP_PATH, BUCKET_NAME, file_name)
-
+    client.upload_file(SCAN_CARD_TMP_PATH, BUCKET_NAME, file_name) 
     # Post to OCR API
     data = {
         "image_url": ''.join([app.config['OCR_SCAN_CARD_RESOURCE'], file_name]),
@@ -85,7 +84,8 @@ def scan_card_image_message(image_id, line_user_id):
                                     '&tax_number=', urllib.parse.quote_plus(response_json['card']['office']['tax_number']),
                                     '&phone_number=', urllib.parse.quote_plus(response_json['card']['personal']['phone_number']),
                                     '&line_id=', urllib.parse.quote_plus(response_json['card']['office']['line_id']),
-                                    '&address=', urllib.parse.quote_plus(response_json['card']['office']['address'])
+                                    '&address=', urllib.parse.quote_plus(response_json['card']['office']['address']),
+                                    '&image_path=', urllib.parse.quote_plus(file_name)
                                 ]
                             )
                         )
