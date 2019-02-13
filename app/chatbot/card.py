@@ -26,7 +26,7 @@ def card_management_message(line_user_id):
         line_component = []
         contact_component = []
 
-        if card.image_path is not None:
+        if card.image_path != '':
             image_component = ImageComponent(
                 url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                 size='full',
@@ -241,7 +241,7 @@ def search_card_message(keyword ,line_user_id):
             line_component = []
             contact_component = []
 
-            if card.image_path is not None:
+            if card.image_path != '':
                 image_component = ImageComponent(
                     url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
                     size='full',
