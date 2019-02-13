@@ -96,7 +96,7 @@ def add_group_activity(data):
         pass
 
 def who_join_group_activity(activity_id):
-    activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id)).all()
+    activity_logs = User.query.join(ActivityLog, User.id==ActivityLog.user_id).filter(ActivityLog.activity_id==str(activity_id), ActivityLog.deleted_at==None).all()
     users = []
     for activity_log in activity_logs:
         try:
