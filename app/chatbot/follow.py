@@ -32,7 +32,7 @@ def follow_message(line_user_id):
                     size='lg',
                 ),
                 TextComponent(
-                    text='您好，我是 CardGO！你可以叫我卡狗，我的任務是努力為大家整理、搜尋名片、連結群組上的每位朋友！第一次使用，不妨先傳一張名片讓我認識你吧！',
+                    text='您好，我是 MiKA！你可以叫我咪卡，我的任務是努力為大家整理、搜尋名片、連結群組上的每位朋友！第一次使用，不妨先傳一張名片讓我認識你吧！',
                     wrap=True,
                     size='md',
                     margin='md'
