@@ -9,6 +9,9 @@ from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             FlexSendMessage, TextComponent, URIAction)
 
+from .. import db
+from ..models import SendPictureLog, User
+
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
@@ -64,6 +67,14 @@ def scan_card_confirm_message():
     return message
 
 def scan_card_image_message(image_id, line_user_id):
+    if check_image_can_update(app.config["UPLOAD_IMAGE_LIMIT"], line_user_id):
+        save_picture_log(line_user_id)
+        message = scan_card_image(image_id, line_user_id)
+    else:
+        message = prohibit_upload_image()
+    return message
+
+def scan_card_image(image_id, line_user_id):
     image_file = line_bot_api.get_message_content(image_id)
     img_data = image_file.content
 
@@ -151,7 +162,7 @@ def scan_card_image_message(image_id, line_user_id):
                         size='md',
                     ),
                     TextComponent(
-                        text='發生了一些不可預期的錯誤，請稍後再嘗試使用此功能',
+                        text=response_json['message'],
                         margin='md',
                         wrap=True,
                         color='#666666',
@@ -163,3 +174,54 @@ def scan_card_image_message(image_id, line_user_id):
     message = FlexSendMessage(
         alt_text='名片掃描完成！', contents=bubble_template)
     return message
+
+def prohibit_upload_image():
+    bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='錯誤',
+                        weight='bold',
+                        color='#1DB446',
+                        size='lg',
+                    ),
+                    TextComponent(
+                        text='你已經超過每五分鐘上傳上限，請稍後再嘗試',
+                        margin='md',
+                        wrap=True,
+                        color='#666666',
+                        size='md',
+                    )
+                ]
+            )
+        )
+    message = FlexSendMessage(
+        alt_text='名片掃描完成！', contents=bubble_template)
+    return message
+
+def check_image_can_update(frequency_limit, line_user_id):
+    now = datetime.datetime.now()
+    check_time = now - datetime.timedelta(minutes=5)
+    send_picture_logs_count = SendPictureLog.query.join(
+        User,
+        User.id==SendPictureLog.user_id
+    ).filter(
+        User.line_user_id==line_user_id,
+        User.deleted_at==None,
+        SendPictureLog.created_at>=check_time
+    ).count()
+    if frequency_limit >= send_picture_logs_count:
+        return True
+    return False
+
+def save_picture_log(line_user_id):
+    user = User.query.filter_by(line_user_id=str(line_user_id),deleted_at=None).first()
+    user = SendPictureLog(
+        user_id=user.id
+    )
+    db.session.add(user)
+    try:
+        db.session.commit()
+    except:
+            pass
