@@ -16,8 +16,8 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key = True)
     line_user_id = db.Column(db.String(64))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     cards = db.relationship("Card", backref="user", lazy='noload')
@@ -52,8 +52,8 @@ class Card(db.Model):
     image_path = db.Column(db.String(64))
     skin_name = db.Column(db.String(64))
     public = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
@@ -65,8 +65,8 @@ class Issue(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
     content = db.Column(db.String(64))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
@@ -77,8 +77,8 @@ class ActivityLog(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     activity_id = db.Column(db.Integer, db.ForeignKey('activitys.id'))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
@@ -100,13 +100,24 @@ class Activity(db.Model):
     session_count = db.Column(db.Integer)
     group_link = db.Column(db.String(64))
     public = db.Column(db.Boolean, default=True)
-    start_at = db.Column(db.DateTime, default=datetime.utcnow)
-    end_at = db.Column(db.DateTime, default=datetime.utcnow)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    start_at = db.Column(db.DateTime, default=datetime.now)
+    end_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     activity_logs = db.relationship("ActivityLog", backref="activitys", lazy='noload')
 
     def __repr__(self):
         return '<Activity %r>' % self.id
+
+class SendPictureLog(db.Model):
+    __tablename__ = 'send_picture_logs'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<SendPictureLog %r>' % self.id
