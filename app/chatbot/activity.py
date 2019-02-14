@@ -799,3 +799,183 @@ def search_activity_message(keyword ,source_id):
             alt_text='新增活動', contents=bubble_template)
 
     return message
+
+
+def my_join(line_user_id):
+    now = datetime.datetime.now()
+    #activitys =  Activity.query.filter(Activity.source_id==source_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.start_at.asc()).limit(9)
+    #activity_logs = User.query.join(ActivityLog, User.id == ActivityLog.user_id).filter(ActivityLog.activity_id == str(activity_id), ActivityLog.deleted_at == None).all()
+    #user = ActivityLog.query.filter_by(user_id=line_user_id, deleted_at=None).all()
+    #print(user)
+    user_id=User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
+    activitys=Activity.query.join(ActivityLog,ActivityLog.activity_id==Activity.id).filter(ActivityLog.user_id==user_id.id,Activity.deleted_at==None, Activity.start_at>now, ActivityLog.deleted_at==None).order_by(Activity.start_at.asc()).limit(10).all()
+
+    carousel_template_columns = []
+    if activitys:
+        for activity in activitys:
+            bubble_template = BubbleContainer(
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=activity.title,
+                            wrap=True,
+                            weight= 'bold',
+                            size='md',
+                            color='#1DB446'
+                        ),
+                        TextComponent(
+                            text=activity.description,
+                            size='sm',
+                            wrap=True,
+                            margin='md',
+                            color='#666666'
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text='開始時間',
+                                    wrap=True,
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=activity.start_at.strftime("%Y/%m/%d %H:%M"),
+                                    size='sm',
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text='結束時間',
+                                    wrap=True,
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=activity.end_at.strftime("%Y/%m/%d %H:%M"),
+                                    size='sm',
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text='人數',
+                                    wrap=True,
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=''.join(
+                                        [
+                                            str(activity.session_count),
+                                            '/',
+                                            str(activity.session_limit)
+                                        ]
+                                    ),
+                                    size='sm',
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text='位置',
+                                    flex=2,
+                                    size='md',
+                                    color='#666666'
+                                ),
+                                TextComponent(
+                                    text=activity.address,
+                                    size='sm',
+                                    wrap=True,
+                                    flex=5,
+                                    margin='sm',
+                                    color='#333333'
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    spacing='sm',
+                    contents=[
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(
+                                label='位置導航',
+                                uri=''.join(
+                                    [
+                                        'https://www.google.com/maps/search/?api=1&query=',
+                                        str(activity.lat),
+                                        ',',
+                                        str(activity.lng)
+                                    ]
+                                )
+                            ),
+                        ),
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(
+                                label='有誰參加',
+                                uri=''.join(
+                                    [
+                                        app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
+                                        '?activity_id=',
+                                        str(activity.id)
+                                    ]
+                                )
+                            )
+                        )
+                    ]
+                )
+            )
+            carousel_template_columns.append(bubble_template)
+            message = FlexSendMessage(
+                alt_text='群組活動清單',
+                contents=CarouselContainer(
+                    contents=carousel_template_columns
+                )
+            )
+    else:
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='您尚未有任何活動！',
+                        weight='bold',
+                        color='#1DB446',
+                        size='md',
+                    )
+                ]
+            ),
+        )
+        message = FlexSendMessage(
+            alt_text='新增活動', contents=bubble_template)
+    return message
