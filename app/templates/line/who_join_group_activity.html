@@ -17,13 +17,15 @@
 <div class="container pt-2">
     <div class="row">
         {% for user in users %}
-            <div class="col-4 pr-1  pb-3">
-                <div class="card shadow-sm" style="width:120px">
-                    <div class="pl-4">
+            <div class="col-4 pr-1 pb-3">
+                <div class="card shadow-sm" id="userCard">
+                    <div class="pl-3 pt-3">
                         <img src="{{user['pictureUrl']}}" class="userPicture img-thumbnail rounded-circle center-block">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{user['displayName']}}</h5>
+                        <div class="card-body-display-name">
+                            <h5 class="card-title flex-5">{{user['displayName']}}</h5>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,3 +3,13 @@
     height:70px
 }
 
+.card-body{
+    max-height: 100px;
+    min-height: 100px;
+}
+
+.card-body-display-name{
+    height: 50px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
