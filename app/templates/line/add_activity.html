@@ -4,7 +4,7 @@
 <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_card.css') }}">
 <title>新增活動</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
@@ -17,15 +17,15 @@
     <input id="line_user_id" type="hidden" name='line_user_id'>
 
 
-<div class="form-group"><label >活動名稱</label> <input type="text" class="form-control" name="title"required/><br/></div>
-<div class="form-group"><label>開始日期</label> <input type="date"class="form-control" name="start_date_at"required/><br/></div>
-<div class="form-group"><label>結束日期</label> <input type="date"class="form-control" name="end_date_at"required/><br/></div>
-<div class="form-group"><label>開始時間</label> <input type="time"class="form-control" name="start_time_at"required/><br/></div>
-<div class="form-group"><label>結束時間</label> <input type="time"class="form-control" name="end_time_at"required/><br/></div>
-<div class="form-group"><label>主辦單位</label> <input type="text" class="form-control"name="organizer"required/><br/></div>
-<div class="form-group"><label>活動地址</label> <input type="text"class="form-control" name="address"required/><br/></div>
+<div class="form-group"><label class="required" >活動名稱</label> <input type="text" class="form-control" name="title"required/><br/></div>
+<div class="form-group"><label class="required">開始日期</label> <input type="date"class="form-control" name="start_date_at"required/><br/></div>
+<div class="form-group"><label class="required">結束日期</label> <input type="date"class="form-control" name="end_date_at"required/><br/></div>
+<div class="form-group"><label class="required">開始時間</label> <input type="time"class="form-control" name="start_time_at"required/><br/></div>
+<div class="form-group"><label class="required">結束時間</label> <input type="time"class="form-control" name="end_time_at"required/><br/></div>
+<div class="form-group"><label class="required">主辦單位</label> <input type="text" class="form-control"name="organizer"required/><br/></div>
+<div class="form-group"><label class="required">活動地址</label> <input type="text"class="form-control" name="address"required/><br/></div>
 <div class="form-group"><label>相關連結</label> <input type="text"class="form-control" name="rel_link"required/><br/></div>
-<div class="form-group"><label>活動介紹</label> <br/><textarea name="description" rows="4" cols="32"  class="form-control" required></textarea> <br/></div>
+<div class="form-group"><label class="required">活動介紹</label> <br/><textarea name="description" rows="4" cols="32"  class="form-control" required></textarea> <br/></div>
 
   <center><button type="submit" class="btn btn-primary btn-lg btn-block">送出</button></center>
 </form>
