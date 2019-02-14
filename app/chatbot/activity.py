@@ -803,10 +803,6 @@ def search_activity_message(keyword ,source_id):
 
 def my_join(line_user_id):
     now = datetime.datetime.now()
-    #activitys =  Activity.query.filter(Activity.source_id==source_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.start_at.asc()).limit(9)
-    #activity_logs = User.query.join(ActivityLog, User.id == ActivityLog.user_id).filter(ActivityLog.activity_id == str(activity_id), ActivityLog.deleted_at == None).all()
-    #user = ActivityLog.query.filter_by(user_id=line_user_id, deleted_at=None).all()
-    #print(user)
     user_id=User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
     activitys=Activity.query.join(ActivityLog,ActivityLog.activity_id==Activity.id).filter(ActivityLog.user_id==user_id.id,Activity.deleted_at==None, Activity.start_at>now, ActivityLog.deleted_at==None).order_by(Activity.start_at.asc()).limit(10).all()
 
