@@ -114,8 +114,7 @@ def handle_postback(event):
     line_user_id = event.source.user_id
     # data="action, var1, var2, ... ,varN"
     # Convet to postback_data: [action, var1, var2, ... ,varN]
-    postback_data = event.postback.data.split(",") 
-    print (postback_data[0])
+    postback_data = event.postback.data.split(",")
     if postback_data[0] == 'delete_my_card':
         message = delete_my_card_message(postback_data[1])
         line_bot_api.reply_message(event.reply_token, message)
@@ -131,7 +130,6 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
     elif  postback_data[0] == 'scan_card_confirm':
-        print ('--')
         message = scan_card_confirm_message()
         line_bot_api.reply_message(event.reply_token, message)
         return 0

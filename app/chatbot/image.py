@@ -25,25 +25,33 @@ def scan_card_confirm_message():
                     text='⚠️ 掃描確認',
                     weight='bold',
                     color='#1DB446',
-                    size='md',
+                    size='lg',
                 ),
                 TextComponent(
-                    text='名片請記得在光源充足的地方拍攝、拍攝時盡量避免歪斜，這樣咪卡才能看懂你的名片喔！\n\n另外，我還在努力學習中，所以辨識你的名片大約需要花你三到五秒時間喔 😭',
+                    text='咪卡還在努力學習中，所以辨識你的名片大約需要花你三到五秒時間喔 😭',
                     margin='md',
                     wrap=True,
                     color='#666666',
-                    size='sm',
+                    size='md',
                 )
             ]
         ),
         footer=BoxComponent(
-            layout='vertical',
+            layout='horizontal',
             contents=[
                 ButtonComponent(
                     style='link',
                     height='sm',
                     action=URIAction(
-                        label='好，開始掃名片',
+                        label='圖庫載入名片',
+                        uri='line://nv/cameraRoll/single'
+                    )
+                ),
+                ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='相機掃名片',
                         uri='line://nv/camera/'
                     )
                 )
