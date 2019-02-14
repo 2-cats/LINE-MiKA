@@ -60,7 +60,7 @@ def scan_card_confirm_message():
     )
     
     message = FlexSendMessage(
-        alt_text='名片掃描完成！', contents=bubble_template)
+        alt_text='名片掃描前確認', contents=bubble_template)
     return message
 
 def scan_card_image_message(image_id, line_user_id):
