@@ -16,6 +16,45 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 BUCKET_NAME = 'lassie-image'
 SCAN_CARD_TMP_PATH = 'app/static/tmp/card_tmp.png'
 
+def scan_card_confirm_message():
+    bubble_template = BubbleContainer(
+        body=BoxComponent(
+            layout='vertical',
+            contents=[
+                TextComponent(
+                    text='⚠️ 掃描確認',
+                    weight='bold',
+                    color='#1DB446',
+                    size='md',
+                ),
+                TextComponent(
+                    text='名片請記得在光源充足的地方拍攝、拍攝時盡量避免歪斜，這樣咪卡才能看懂你的名片喔！\n\n另外，我還在努力學習中，所以辨識你的名片大約需要花你三到五秒時間喔 😭',
+                    margin='md',
+                    wrap=True,
+                    color='#666666',
+                    size='sm',
+                )
+            ]
+        ),
+        footer=BoxComponent(
+            layout='vertical',
+            contents=[
+                ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='好，開始掃名片',
+                        uri='line://nv/camera/'
+                    )
+                )
+            ]
+        )
+    )
+    
+    message = FlexSendMessage(
+        alt_text='名片掃描完成！', contents=bubble_template)
+    return message
+
 def scan_card_image_message(image_id, line_user_id):
     image_file = line_bot_api.get_message_content(image_id)
     img_data = image_file.content

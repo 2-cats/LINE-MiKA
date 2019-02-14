@@ -178,7 +178,10 @@ def card_management_message(line_user_id):
                     ButtonComponent(
                         style='link',
                         height='sm',
-                        action=URIAction(label='智慧新增名片', uri='line://nv/camera/'),
+                        action=PostbackAction(
+                            label='智慧新增名片',
+                            data='scan_card_confirm,'
+                        ),
                     ),
                     ButtonComponent(
                         style='link',

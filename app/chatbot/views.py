@@ -20,7 +20,7 @@ from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
 from .follow import follow_message, unfollow
-from .image import scan_card_image_message
+from .image import scan_card_confirm_message, scan_card_image_message
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -115,6 +115,7 @@ def handle_postback(event):
     # data="action, var1, var2, ... ,varN"
     # Convet to postback_data: [action, var1, var2, ... ,varN]
     postback_data = event.postback.data.split(",") 
+    print (postback_data[0])
     if postback_data[0] == 'delete_my_card':
         message = delete_my_card_message(postback_data[1])
         line_bot_api.reply_message(event.reply_token, message)
@@ -127,6 +128,11 @@ def handle_postback(event):
     elif  postback_data[0] == 'leave_group_activity':
         # postback_data[1] is activity_id
         message = leave_group_activity_message(postback_data[1], line_user_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
+    elif  postback_data[0] == 'scan_card_confirm':
+        print ('--')
+        message = scan_card_confirm_message()
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 

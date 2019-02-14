@@ -2,7 +2,9 @@ import datetime
 
 from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            FlexSendMessage, TextComponent, URIAction)
+                            FlexSendMessage, PostbackAction, TextComponent,
+                            URIAction)
+
 from .. import db
 from ..models import User
 
@@ -46,7 +48,10 @@ def follow_message(line_user_id):
                 ButtonComponent(
                     style='link',
                     height='sm',
-                    action=URIAction(label='智慧新增名片', uri='line://nv/camera/'),
+                    action=PostbackAction(
+                        label='智慧新增名片',
+                        data='scan_card_confirm,'
+                    ),
                 ),
                 ButtonComponent(
                     style='link',
