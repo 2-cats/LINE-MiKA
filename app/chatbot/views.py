@@ -185,13 +185,13 @@ def handle_sticker_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 
-# @handler.add(LeaveEvent)
-# def handle_leave(event):
-#     '''
-#     Handle leave event
-#     '''
-#     user_leave_and_private_activity(event.source.user_id)
-#     return 0
+@handler.add(LeaveEvent)
+def handle_leave(event):
+    '''
+    Handle leave event
+    '''
+    user_leave_and_private_activity(event.source.user_id)
+    return 0
 
 @handler.add(JoinEvent)
 def handle_join(event):
