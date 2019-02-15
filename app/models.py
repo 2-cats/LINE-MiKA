@@ -52,6 +52,7 @@ class Card(db.Model):
     image_path = db.Column(db.String(64))
     skin_name = db.Column(db.String(64))
     public = db.Column(db.Boolean, default=True)
+    view_count = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
