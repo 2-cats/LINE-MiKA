@@ -15,7 +15,7 @@ from .. import db
 from .activity import (add_activity_message, group_activity_message,
                        join_group_activity_message,
                        leave_group_activity_message, my_activity_message,
-                       search_activity_message,
+                       my_join_group_activity, search_activity_message,
                        user_leave_and_private_activity)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
@@ -74,12 +74,16 @@ def handle_message(event):
     message_text = event.message.text
 
     if event.source.type == 'user':
-        if message_text == "名片管理":
+        if message_text == "我的名片":
             message = card_management_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif message_text == "我的活動":
             message = my_activity_message(line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "我的群組活動":
+            message = my_join_group_activity(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif bool(re.search('找名片 ', message_text)):
