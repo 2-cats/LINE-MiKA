@@ -40,8 +40,8 @@ def add_activity(data):
 def add_group_activity(data):
     location = convert_address(data['address'])
 
-    user = User.query.filter_by(line_user_id=data['line_user_id']).first()
-    
+    user = User.query.filter_by(line_user_id=data['line_user_id'], deleted_at=None).first()
+
     public = False
     group_link = None
     if 'public' in data:
