@@ -457,6 +457,35 @@ def my_activity_message(line_user_id):
     if activitys:
         carousel_template_columns = []
         for activity in activitys:
+            button_list = []
+
+            if activity.rel_link != "":
+                item = ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='相關連結',
+                        uri=activity.rel_link
+                        )
+                    )
+                button_list.append(item)
+            item = ButtonComponent(
+                style='link',
+                height='sm',
+                action=URIAction(
+                    label='位置導航',
+                    uri=''.join(
+                        [
+                            'https://www.google.com/maps/search/?api=1&query=',
+                            str(activity.lat),
+                            ',',
+                            str(activity.lng)
+                        ]
+                    )
+                ),
+            )
+            button_list.append(item)
+
             bubble_template = BubbleContainer(
                 body=BoxComponent(
                     layout='vertical',
@@ -540,23 +569,7 @@ def my_activity_message(line_user_id):
                 footer=BoxComponent(
                     layout='vertical',
                     spacing='sm',
-                    contents=[
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=URIAction(
-                                label='位置導航',
-                                uri=''.join(
-                                    [
-                                        'https://www.google.com/maps/search/?api=1&query=',
-                                        str(activity.lat),
-                                        ',',
-                                        str(activity.lng)
-                                    ]
-                                )
-                            ),
-                        )
-                    ]
+                    contents=button_list
                 )
             )
             carousel_template_columns.append(bubble_template)
