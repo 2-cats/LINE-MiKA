@@ -813,7 +813,6 @@ def search_activity_message(keyword ,source_id):
 
     return message
 
-
 def my_join_group_activity(line_user_id):
     now = datetime.datetime.now()
     user_id=User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
