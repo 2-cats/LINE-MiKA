@@ -101,6 +101,7 @@
             <input class="form-control"
                 name="tax_number"
                 type="phone"
+                pattern="[0-9]{8}"
                 value="{{ data['tax_number'] }}"
                 placeholder="請輸入您的統一編號">
         </div>
@@ -118,6 +119,7 @@
             <input class="form-control"
                 name="tel_number"
                 type="phone"
+                pattern="^\(?(\d{2})\)?[\s\-]?(\d{4})\-?(\d{4})$"
                 value="{{ data['tel_number'] }}"
                 placeholder="請在這輸入您的公司電話號碼" >
         </div>
@@ -126,16 +128,17 @@
             <input class="form-control"
                 name="fax_number"
                 type="phone"
+                pattern="[0-9]{8}"
                 value="{{ data['fax_number'] }}"
                 placeholder="請在這輸入您的公司傳真號碼" >
         </div>
         <div class="form-group">
-            <label for="phone_number" class="required">聯繫手機</label>
+            <label for="phone_number" class="required">聯繫電話</label>
             <input class="form-control"
                 name="phone_number"
                 type="phone"
                 value="{{ data['phone_number'] }}"
-                pattern="^09\d{8}$"
+                pattern="(^09\d{8}$)|(^\(?(\d{2})\)?[\s\-]?(\d{4})\-?(\d{4})$)"
                 placeholder="請在這輸入您的個人聯繫電話號碼">
         </div>
         <div class="form-group">
@@ -143,6 +146,7 @@
             <input class="form-control"
                 name="line_id"
                 type="text"
+                pattern="@+[0-9A-Za-z]+"
                 value="{{ data['line_id'] }}"
                 placeholder="你也可以留下LINE@，但是記得加@">
         </div>
