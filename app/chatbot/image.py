@@ -31,7 +31,7 @@ def scan_card_confirm_message():
                     size='lg',
                 ),
                 TextComponent(
-                    text='咪卡還在努力學習中，所以辨識你的名片大約需要花你三到五秒時間喔 😭',
+                    text='咪卡還在努力學習中，所以辨識你的名片大約需要花你三到五秒時間喔 💪',
                     margin='md',
                     wrap=True,
                     color='#666666',

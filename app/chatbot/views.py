@@ -21,6 +21,7 @@ from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
 from .follow import follow_message, unfollow
+from .helper import group_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
 
 app = Flask(__name__, instance_relative_config=True)
@@ -104,14 +105,19 @@ def handle_message(event):
         
     elif event.source.type == 'group':
         group_id = event.source.group_id
-        if message_text == "我的名片":
+        if message_text == "我的名片" or message_text == "教練我想發名片":
             message = show_my_card_message(line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "@MiKA" or message_text == "咪卡" or message_text == "MiKA":
+            message = group_helper_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif message_text == "近期活動":
             message = group_activity_message(group_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
+        
 
 # Postback Event
 @handler.add(PostbackEvent)
@@ -179,10 +185,19 @@ def handle_sticker_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 
-@handler.add(LeaveEvent)
-def handle_leave(event):
+# @handler.add(LeaveEvent)
+# def handle_leave(event):
+#     '''
+#     Handle leave event
+#     '''
+#     user_leave_and_private_activity(event.source.user_id)
+#     return 0
+
+@handler.add(JoinEvent)
+def handle_join(event):
     '''
-    Handle leave event
+    Handle join event
     '''
-    user_leave_and_private_activity(event.source.user_id)
+    message = group_helper_message(event.source.user_id)
+    line_bot_api.reply_message(event.reply_token, message)
     return 0
