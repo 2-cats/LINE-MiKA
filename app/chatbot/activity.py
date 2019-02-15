@@ -799,3 +799,20 @@ def search_activity_message(keyword ,source_id):
             alt_text='新增活動', contents=bubble_template)
 
     return message
+
+
+def user_leave_and_private_activity(line_user_id):
+    activitys = Activity.query.filter_by(
+        source_id=line_user_id,
+        deleted_at=None,
+        public=True
+    ).all()
+    
+    for activity in activitys:
+        activity.public = False
+        activity.group_link=None
+        db.session.add(activity)
+    try:
+        db.session.commit()
+    except:
+        pass

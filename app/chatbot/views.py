@@ -6,16 +6,17 @@ from flask_mqtt import Mqtt
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
-                            LocationMessage, MessageEvent, PostbackEvent,
-                            StickerMessage, TextMessage, TextSendMessage,
-                            UnfollowEvent)
+                            LeaveEvent, LocationMessage, MessageEvent,
+                            PostbackEvent, StickerMessage, TextMessage,
+                            TextSendMessage, UnfollowEvent)
 
 from . import chatbot
 from .. import db
 from .activity import (add_activity_message, group_activity_message,
                        join_group_activity_message,
                        leave_group_activity_message, my_activity_message,
-                       search_activity_message)
+                       search_activity_message,
+                       user_leave_and_private_activity)
 from .card import (card_management_message, delete_my_card_message,
                    search_card_message, show_my_card_message)
 from .error_message import alert_no_action_message
@@ -173,3 +174,11 @@ def handle_sticker_message(event):
         message = alert_no_action_message(line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
+
+@handler.add(LeaveEvent)
+def handle_leave(event):
+    '''
+    Handle leave event
+    '''
+    user_leave_and_private_activity(event.source.user_id)
+    return 0
