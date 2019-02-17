@@ -545,23 +545,34 @@ def show_my_card_message(line_user_id):
                     contents=[
                         TextComponent(
                             text='找不到名片',
-                            wrap=True,
                             weight='bold',
                             color='#1DB446',
                             size='md',
                         ),
                         TextComponent(
-                            text='我找不到你的名片，請先追蹤我之後綁定名片',
+                            text='請先跟咪卡新增一張名片，下次你就可以在群組秀名片囉！',
                             margin='md',
                             wrap=True,
                             color='#666666',
                             size='sm',
                         )
                     ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    spacing="sm",
+                    contents=[
+
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(label='好！加好友！', uri=app.config['LINE_AT_ID']),
+                        )
+                    ]
                 )
             )
             message_item = FlexSendMessage(
-                alt_text='我找不到你的名片', contents=bubble_template)
+                alt_text='找不到名片', contents=bubble_template)
             message.append(message_item)
     else:
         bubble_template = BubbleContainer(
@@ -570,22 +581,33 @@ def show_my_card_message(line_user_id):
                 contents=[
                     TextComponent(
                         text='找不到名片',
-                        wrap=True,
                         weight='bold',
                         color='#1DB446',
                         size='md',
                     ),
                     TextComponent(
-                        text='我找不到你的名片，請先追蹤我之後綁定名片',
+                        text='請先跟咪卡我成為好友並且新增名片，下次你也可以在群組秀名片囉！',
                         margin='md',
                         wrap=True,
                         color='#666666',
                         size='sm',
                     )
                 ]
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing="sm",
+                contents=[
+
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='好！加好友！', uri=app.config['LINE_AT_ID']),
+                    )
+                ]
             )
         )
         message_item = FlexSendMessage(
-            alt_text='我找不到你的名片', contents=bubble_template)
+            alt_text='找不到名片', contents=bubble_template)
         message.append(message_item)
     return message

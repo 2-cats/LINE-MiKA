@@ -258,8 +258,45 @@ def join_group_activity_message(activity_id, line_user_id):
     activity = Activity.query.filter_by(id=activity_id).first()
     
     # Get user data
-    user_profile = line_bot_api.get_profile(line_user_id)
-    user_dict = json.loads(str(user_profile))
+    try:
+        user_profile = line_bot_api.get_profile(line_user_id)
+        user_dict = json.loads(str(user_profile))
+    except:
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='加入失敗',
+                        weight='bold',
+                        color='#1DB446',
+                        size='md',
+                    ),
+                    TextComponent(
+                        text='請先跟咪卡我成為好友，才能加入活動喔',
+                        margin='md',
+                        wrap=True,
+                        color='#666666',
+                        size='sm',
+                    )
+                ]
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing="sm",
+                contents=[
+
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='好！加好友！', uri=app.config['LINE_AT_ID']),
+                    )
+                ]
+            )
+        )
+        message = FlexSendMessage(
+            alt_text='加入失敗', contents=bubble_template)
+        return message
 
     # Check now time is can join activity
     if check_time_can_join(activity.start_at):
@@ -351,8 +388,45 @@ def leave_group_activity_message(activity_id, line_user_id):
     activity = Activity.query.filter_by(id=activity_id).first()
     
     # Get user data
-    user_profile = line_bot_api.get_profile(line_user_id)
-    user_dict = json.loads(str(user_profile))
+    try:
+        user_profile = line_bot_api.get_profile(line_user_id)
+        user_dict = json.loads(str(user_profile))
+    except:
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text='退出失敗',
+                        weight='bold',
+                        color='#1DB446',
+                        size='md',
+                    ),
+                    TextComponent(
+                        text='請先跟咪卡我成為好友，我才知道你加入了什麼活動喔',
+                        margin='md',
+                        wrap=True,
+                        color='#666666',
+                        size='sm',
+                    )
+                ]
+            ),
+            footer=BoxComponent(
+                layout='vertical',
+                spacing="sm",
+                contents=[
+
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(label='好！加好友！', uri=app.config['LINE_AT_ID']),
+                    )
+                ]
+            )
+        )
+        message = FlexSendMessage(
+            alt_text='退出失敗', contents=bubble_template)
+        return message
 
     # Query activity log
     activity_log = ActivityLog.query.filter_by(
