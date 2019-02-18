@@ -56,6 +56,55 @@ def add_card(data):
             'message': '新增成功'
         }
 
+def edit_card(data):
+    card = Card.query.filter_by(
+        id=data['id']
+    ).first()
+    return card
+
+def update_card(data):
+    location = convert_address(data['address'])
+    # Check card is public?
+    public = False
+    if 'public' in data:
+        public = True
+    card = Card.query.filter_by(
+        id=data['card_id']
+    ).first()
+    if card:
+        card.name=data['name']
+        card.nickname=data['nickname']
+        card.line_id=data['line_id']
+        card.company_name=data['company_name']
+        card.title=data['title']
+        card.industry=data['industry']
+        card.summary=data['summary']
+        card.email=data['email']
+        card.fax_number=data['fax_number']
+        card.tax_number=data['tax_number']
+        card.address=data['address']
+        card.lat=location[0]
+        card.lng=location[1]
+        card.phone_number=data['phone_number']
+        card.tel_number=data['tel_number']
+        card.public=public
+        card.image_path=data['image_path']
+
+        db.session.add(card)
+        try:
+            db.session.commit()
+        except:
+            pass
+        return {
+            'status': 'success',
+            'message': '新增成功'
+        }
+    else:
+         return {
+            'status': 'fail',
+            'message': '錯誤的名片 ID'
+        }
+
 def report_card_issue(data):
     user = User.query.filter_by(line_user_id=data['line_user_id']).first()
     issue = Issue(
