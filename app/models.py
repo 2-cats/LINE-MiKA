@@ -22,7 +22,9 @@ class User(db.Model):
 
     cards = db.relationship("Card", backref="user", lazy='noload')
     issues = db.relationship("Issue", backref="user", lazy='noload')
-
+    activity_logs = db.relationship("ActivityLog", backref="user", lazy='noload')
+    send_picture_logs = db.relationship("SendPictureLogs", backref="user", lazy='noload')
+    orders = db.relationship("Orders", backref="user", lazy='noload')
     def __repr__(self):
         return '<User %r>' % self.id
 
@@ -50,12 +52,15 @@ class Card(db.Model):
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
     image_path = db.Column(db.String(64))
-    skin_name = db.Column(db.String(64))
+    anime_path = db.Column(db.String(64), default='card/anime/default.gif')
+    cosplay_path = db.Column(db.String(64), default='card/cosplay/default.png')
     public = db.Column(db.Boolean, default=True)
     view_count = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
+
+    issues = db.relationship("Issue", backref="card", lazy='noload')
 
     def __repr__(self):
         return '<Card %r>' % self.id
@@ -122,3 +127,40 @@ class SendPictureLog(db.Model):
 
     def __repr__(self):
         return '<SendPictureLog %r>' % self.id
+
+class Product(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
+    product_type = db.Column(db.String(64))
+    description = db.Column(db.String(64))
+    product_code = db.Column(db.String(64))
+    price= db.Column(db.Integer)
+    recommend = db.Column(db.Boolean, default=False)
+    author = db.Column(db.String(64))
+    image_path = db.Column(db.String(64))
+    demo_image_path = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    orders = db.relationship("Orders", backref="product", lazy='noload')
+
+    def __repr__(self):
+        return '<Product %r>' % self.id
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    order_number = db.Column(db.String(64))
+    amount = db.Column(db.Integer)
+    currency = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    canceled_at = db.Column(db.DateTime)
+    deleted_at = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<Order %r>' % self.id
