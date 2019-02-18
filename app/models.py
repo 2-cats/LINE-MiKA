@@ -20,11 +20,11 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    cards = db.relationship("Card", backref="user", lazy='noload')
-    issues = db.relationship("Issue", backref="user", lazy='noload')
-    activity_logs = db.relationship("ActivityLog", backref="user", lazy='noload')
-    send_picture_logs = db.relationship("SendPictureLogs", backref="user", lazy='noload')
-    orders = db.relationship("Orders", backref="user", lazy='noload')
+    cards = db.relationship("Card", backref="user.id", lazy='noload')
+    issues = db.relationship("Issue", backref="user.id", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", backref="user.id", lazy='noload')
+    send_picture_logs = db.relationship("SendPictureLog", backref="user.id", lazy='noload')
+    orders = db.relationship("Order", backref="user.id", lazy='noload')
     def __repr__(self):
         return '<User %r>' % self.id
 
@@ -52,15 +52,15 @@ class Card(db.Model):
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
     image_path = db.Column(db.String(64))
-    anime_path = db.Column(db.String(64), default='card/anime/default.gif')
-    cosplay_path = db.Column(db.String(64), default='card/cosplay/default.png')
+    anime_path = db.Column(db.String(64), default="static/img/card/cosplay/default.png")
+    cosplay_path = db.Column(db.String(64), default="static/img/card/cosplay/default.png")
     public = db.Column(db.Boolean, default=True)
     view_count = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    issues = db.relationship("Issue", backref="card", lazy='noload')
+    issues = db.relationship("Issue", backref="card.id", lazy='noload')
 
     def __repr__(self):
         return '<Card %r>' % self.id
@@ -112,7 +112,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    activity_logs = db.relationship("ActivityLog", backref="activitys", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", backref="activitys.id", lazy='noload')
 
     def __repr__(self):
         return '<Activity %r>' % self.id
@@ -144,7 +144,7 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    orders = db.relationship("Orders", backref="product", lazy='noload')
+    orders = db.relationship("Order", backref="product.id", lazy='noload')
 
     def __repr__(self):
         return '<Product %r>' % self.id

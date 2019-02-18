@@ -26,14 +26,6 @@ def card_management_message(line_user_id):
         line_component = []
         contact_component = []
 
-        if card.image_path != '':
-            image_component = ImageComponent(
-                url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
-                size='full',
-                aspect_ratio='20:13',
-                aspect_mode='cover'
-            )
-
         if card.line_id != '':
             line_component = ButtonComponent(
                 style='link',
@@ -83,7 +75,12 @@ def card_management_message(line_user_id):
         contact_component.append(update_my_card)
 
         bubble_template = BubbleContainer(
-            hero=image_component,
+            hero=ImageComponent(
+                url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                size='full',
+                aspect_ratio='20:13',
+                aspect_mode='cover'
+            ),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
@@ -259,15 +256,6 @@ def search_card_message(keyword ,line_user_id):
             image_component = []
             line_component = []
             contact_component = []
-
-            if card.image_path != '':
-                image_component = ImageComponent(
-                    url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
-                    size='full',
-                    aspect_ratio='20:13',
-                    aspect_mode='cover'
-                )
-
             phone_component = ButtonComponent(
                 style='link',
                 height='sm',
@@ -300,7 +288,12 @@ def search_card_message(keyword ,line_user_id):
                 contact_component.append(email_component)
 
             bubble_template = BubbleContainer(
-                hero=image_component,
+                hero=ImageComponent(
+                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    size='full',
+                    aspect_ratio='20:13',
+                    aspect_mode='cover'
+                ),
                 body=BoxComponent(
                     layout='vertical',
                     contents=[
@@ -463,6 +456,12 @@ def show_my_card_message(line_user_id):
                 contact_component.append(email_component)
 
             bubble_template = BubbleContainer(
+                hero=ImageComponent(
+                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    size='full',
+                    aspect_ratio='20:13',
+                    aspect_mode='cover'
+                ),
                 body=BoxComponent(
                     layout='vertical',
                     contents=[
@@ -547,13 +546,6 @@ def show_my_card_message(line_user_id):
             message_item = FlexSendMessage(
                 alt_text='我的名片', contents=bubble_template)
             message.append(message_item)
-
-            if card.image_path != '':
-                message_item = ImageSendMessage(
-                    original_content_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path]),
-                    preview_image_url=''.join([app.config['OCR_SCAN_CARD_RESOURCE'], card.image_path])
-                )
-                message.append(message_item)
         else:
             bubble_template = BubbleContainer(
                 body=BoxComponent(
