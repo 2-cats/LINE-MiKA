@@ -104,17 +104,18 @@ def handle_message(event):
         return 0
         
     elif event.source.type == 'group':
+        message_text = message_text.lower()
         group_id = event.source.group_id
         if message_text == "我的名片" or message_text == "教練我想發名片":
             message = show_my_card_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
-        elif message_text == "@MiKA" or message_text == "咪卡" or message_text == "MiKA":
-            message = group_helper_message(line_user_id)
-            line_bot_api.reply_message(event.reply_token, message)
-            return 0
         elif message_text == "近期活動":
             message = group_activity_message(group_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "@mika" or message_text == "咪卡" or message_text == "mika":
+            message = group_helper_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         
