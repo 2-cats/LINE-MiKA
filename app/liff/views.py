@@ -7,9 +7,8 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage,
 
 from . import liff
 from .. import db
-from .activity import (add_activity, add_group_activity,
-                       who_join_group_activity)
-from .card import add_card, report_card_issue
+from .activity import add_activity, add_group_activity, who_join_group_activity
+from .card import add_card, edit_card, report_card_issue, update_card
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -31,6 +30,17 @@ def line_add_card():
         else:
             return render_template('line/add_card_fail.html', message=result['message'])
 
+@liff.route("/line/edit_card", methods=['GET', 'POST'])
+def line_update_card():
+    if request.method == 'GET':
+        data = edit_card(request.args.to_dict())
+        return render_template(
+            'line/update_card.html',
+            data=data
+        )
+    elif request.method == 'POST':
+        result = update_card(request.form.to_dict())
+        return render_template('line/update_card_success.html')
 
 @liff.route("/line/add_activity", methods=['GET', 'POST'])
 def line_add_activity():

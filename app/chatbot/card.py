@@ -65,6 +65,22 @@ def card_management_message(line_user_id):
             )
         )
         contact_component.append(delete_my_card)
+        update_my_card = ButtonComponent(
+            style='link',
+            height='sm',
+            action=URIAction(
+                label='更新名片',
+                uri=''.join(
+                    [
+                        app.config['UPDATE_CARD_LINE_LIFF_URL'],
+                        '?id=',
+                        str(card.id)
+                    ]
+                ),
+                color='#d0021b'
+            )
+        )
+        contact_component.append(update_my_card)
 
         bubble_template = BubbleContainer(
             hero=image_component,
