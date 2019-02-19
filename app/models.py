@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import Flask
 from linebot import LineBotApi
+from sqlalchemy.orm import backref
 
 import config
 
@@ -20,11 +21,11 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    cards = db.relationship("Card", backref="user.id", lazy='noload')
-    issues = db.relationship("Issue", backref="user.id", lazy='noload')
-    activity_logs = db.relationship("ActivityLog", backref="user.id", lazy='noload')
-    send_picture_logs = db.relationship("SendPictureLog", backref="user.id", lazy='noload')
-    orders = db.relationship("Order", backref="user.id", lazy='noload')
+    cards = db.relationship("Card", lazy='noload')
+    issues = db.relationship("Issue", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", lazy='noload')
+    send_picture_logs = db.relationship("SendPictureLog", lazy='noload')
+    orders = db.relationship("Order", lazy='noload')
     def __repr__(self):
         return '<User %r>' % self.id
 
@@ -47,7 +48,7 @@ class Card(db.Model):
     phone_number = db.Column(db.String(64))
     tel_number = db.Column(db.String(64))
     address = db.Column(db.String(64))
-    address_cn = db.Column(db.String(64))
+    address_en = db.Column(db.String(64))
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
@@ -60,7 +61,7 @@ class Card(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    issues = db.relationship("Issue", backref="card.id", lazy='noload')
+    issues = db.relationship("Issue", lazy='noload')
 
     def __repr__(self):
         return '<Card %r>' % self.id
@@ -112,7 +113,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    activity_logs = db.relationship("ActivityLog", backref="activitys.id", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", lazy='noload')
 
     def __repr__(self):
         return '<Activity %r>' % self.id
@@ -144,7 +145,8 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    orders = db.relationship("Order", backref="product.id", lazy='noload')
+    orders = db.relationship("Order", lazy='noload')
+    order = db.relationship("Order", backref="product")
 
     def __repr__(self):
         return '<Product %r>' % self.id
@@ -161,6 +163,8 @@ class Order(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     canceled_at = db.Column(db.DateTime)
     deleted_at = db.Column(db.DateTime)
+
+    
 
     def __repr__(self):
         return '<Order %r>' % self.id
