@@ -9,6 +9,8 @@ from . import liff
 from .. import db
 from .activity import add_activity, add_group_activity, who_join_group_activity
 from .card import add_card, edit_card, report_card_issue, update_card
+from .order import my_order
+from .product import use_product, get_product_detail
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -82,4 +84,34 @@ def line_who_join_activity():
         return render_template(
             'line/who_join_group_activity.html',
             users=users
+        )
+
+@liff.route("/line/store", methods=['GET'])
+def line_store():
+    if request.method == 'GET':
+        data = request.args.to_dict()
+        orders = my_order(data['user_id'])
+        return render_template(
+            'line/store/my_order.html',
+            orders=orders
+        )
+
+@liff.route("/line/product/detail", methods=['GET'])
+def product_detail():
+    if request.method == 'GET':
+        data = request.args.to_dict()
+        product = get_product_detail(data['product_id'],data['user_id'])
+        return render_template(
+            'line/product/detail.html',
+            product=product
+        )
+
+@liff.route("/line/store/use", methods=['GET'])
+def store_use_product():
+    if request.method == 'GET':
+        data = request.args.to_dict()
+        orders = use_product(data['user_id'], data['product_id'])
+        return render_template(
+            'line/store/use_product.html',
+            orders=orders
         )
