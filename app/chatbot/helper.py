@@ -1,12 +1,19 @@
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            CarouselContainer, FlexSendMessage, MessageAction,
-                            PostbackAction, TextComponent, URIAction)
+                            CarouselContainer, FlexSendMessage, ImageComponent,
+                            MessageAction, PostbackAction, TextComponent,
+                            URIAction)
 
 
 def group_helper_message(line_user_id):
     carousel_template = CarouselContainer(
         contents=[
             BubbleContainer(
+                hero=ImageComponent(
+                    url='https://i.imgur.com/XICiMgE.jpg',
+                    size='full',
+                    aspect_ratio='5:4',
+                    aspect_mode='cover'
+                ),
                 body=BoxComponent(
                     layout='vertical',
                     contents=[
@@ -37,6 +44,12 @@ def group_helper_message(line_user_id):
                 )
             ),
             BubbleContainer(
+                hero=ImageComponent(
+                    url='https://i.imgur.com/JpX9kt6.jpg',
+                    size='full',
+                    aspect_ratio='5:4',
+                    aspect_mode='cover'
+                ),
                 body=BoxComponent(
                     layout='vertical',
                     contents=[

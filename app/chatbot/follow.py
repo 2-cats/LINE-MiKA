@@ -2,8 +2,8 @@ import datetime
 
 from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            FlexSendMessage, PostbackAction, TextComponent,
-                            URIAction)
+                            FlexSendMessage, ImageComponent, PostbackAction,
+                            TextComponent, URIAction)
 
 from .. import db
 from ..models import User
@@ -24,6 +24,12 @@ def follow_message(line_user_id):
             pass
     
     bubble_template = BubbleContainer(
+        hero=ImageComponent(
+            url='https://i.imgur.com/AOCMVKP.jpg',
+            size='full',
+            aspect_ratio='5:4',
+            aspect_mode='cover'
+        ),
         body=BoxComponent(
             layout='vertical',
             contents=[
