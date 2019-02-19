@@ -73,13 +73,24 @@ def card_management_message(line_user_id):
             )
         )
         contact_component.append(update_my_card)
-
         bubble_template = BubbleContainer(
             hero=ImageComponent(
-                url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                url=''.join([
+                    app.config['APP_URL'],
+                    card.cosplay_path
+                ]),
                 size='full',
                 aspect_ratio='20:13',
-                aspect_mode='cover'
+                aspect_mode='cover',
+                action=URIAction(
+                    uri=''.join(
+                        [
+                            app.config['EDIT_CARD_STYLE_LINE_LIFF_URL'],
+                            '?user_id=',
+                            str(user.id)
+                        ]
+                    )
+                )
             ),
             body=BoxComponent(
                 layout='vertical',
