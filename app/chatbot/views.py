@@ -12,8 +12,8 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_activity_message, group_activity_message,
-                       join_group_activity_message,
+from .activity import (add_activity_message, delete_my_activity,
+                       group_activity_message, join_group_activity_message,
                        leave_group_activity_message, my_activity_message,
                        my_join_group_activity, search_activity_message,
                        user_leave_and_private_activity)
@@ -131,17 +131,21 @@ def handle_postback(event):
         message = delete_my_card_message(postback_data[1])
         line_bot_api.reply_message(event.reply_token, message)
         return 0
-    elif  postback_data[0] == 'join_group_activity':
+    elif postback_data[0] == 'join_group_activity':
         # postback_data[1] is activity_id
         message = join_group_activity_message(postback_data[1], line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
-    elif  postback_data[0] == 'leave_group_activity':
+    elif postback_data[0] == 'leave_group_activity':
         # postback_data[1] is activity_id
         message = leave_group_activity_message(postback_data[1], line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
-    elif  postback_data[0] == 'scan_card_confirm':
+    elif postback_data[0] == 'delete_my_activity':
+        # postback_data[1] is activity_id
+        message = delete_my_activity(postback_data[1])
+        line_bot_api.reply_message(event.reply_token, message)
+    elif postback_data[0] == 'scan_card_confirm':
         message = scan_card_confirm_message()
         line_bot_api.reply_message(event.reply_token, message)
         return 0
