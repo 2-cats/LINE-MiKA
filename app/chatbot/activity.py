@@ -526,7 +526,6 @@ def add_activity_message(line_user_id):
 
 def my_activity_message(line_user_id):
     now = datetime.datetime.now()
-    print(now)
     activitys = Activity.query.filter(Activity.source_id==line_user_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.created_at.asc()).limit(9).all()
 
     if activitys:
