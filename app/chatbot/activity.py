@@ -526,6 +526,7 @@ def add_activity_message(line_user_id):
 
 def my_activity_message(line_user_id):
     now = datetime.datetime.now()
+    print(now)
     activitys = Activity.query.filter(Activity.source_id==line_user_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.created_at.asc()).limit(9).all()
 
     if activitys:
@@ -559,6 +560,22 @@ def my_activity_message(line_user_id):
                 ),
             )
             button_list.append(item)
+            item = ButtonComponent(
+                style='link',
+                height='sm',
+                action=PostbackAction(
+                    label='刪除活動',
+                    data=','.join(
+                        [
+                            'delete_my_activity',
+                            str(activity.id)
+                        ]
+                    )
+                ),
+            )
+            button_list.append(item)
+
+
 
             bubble_template = BubbleContainer(
                 body=BoxComponent(
@@ -1172,3 +1189,15 @@ def user_leave_and_private_activity(line_user_id):
         db.session.commit()
     except:
         pass
+
+def delete_my_activity(activity_id):
+    activity = Activity.query.filter_by(id=activity_id).first()
+    activity.deleted_at = datetime.datetime.now()
+    message = TextSendMessage(text='刪除失敗！')
+    if activity:
+        try:
+            db.session.commit()
+            message = TextSendMessage(text='刪除成功！')
+        except:
+            pass
+    return message
