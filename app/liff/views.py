@@ -22,59 +22,59 @@ def line_add_card():
     if request.method == 'GET':
         data = request.args.to_dict()
         return render_template(
-            'line/add_card.html',
+            'line/card/add.html',
             data=data
         )
     elif request.method == 'POST':
         result = add_card(request.form.to_dict())
         if result['status'] == "success":
-            return render_template('line/add_card_success.html')
+            return render_template('line/card/add_success.html')
         else:
-            return render_template('line/add_card_fail.html', message=result['message'])
+            return render_template('line/card/add_fail.html', message=result['message'])
 
 @liff.route("/line/edit_card", methods=['GET', 'POST'])
 def line_update_card():
     if request.method == 'GET':
         data = edit_card(request.args.to_dict())
         return render_template(
-            'line/update_card.html',
+            'line/update.html',
             data=data
         )
     elif request.method == 'POST':
         result = update_card(request.form.to_dict())
-        return render_template('line/update_card_success.html')
+        return render_template('line/update_success.html')
 
 @liff.route("/line/add_activity", methods=['GET', 'POST'])
 def line_add_activity():
     if request.method == 'GET':
-        return render_template('line/add_activity.html')
+        return render_template('line/activity/add.html')
     elif request.method == 'POST':
         add_activity(request.form.to_dict())
-        return render_template('line/add_activity_success.html')
+        return render_template('line/activity/add_success.html')
 
 @liff.route("/line/add_group_activity", methods=['GET', 'POST'])
 def line_add_group_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
         return render_template(
-            'line/add_group_activity.html',
+            'line/group_activity/add.html',
             data=data
         )
     elif request.method == 'POST':
         add_group_activity(request.form.to_dict())
-        return render_template('line/add_group_activity_success.html')
+        return render_template('line/group_activity/add_success.html')
 
 @liff.route("/line/report_card", methods=['GET', 'POST'])
 def line_report_card():
     if request.method == 'GET':
         data = request.args.to_dict()
         return render_template(
-            'line/report_card.html',
+            'line/report/card.html',
             data=data
         )
     elif request.method == 'POST':
         report_card_issue(request.form.to_dict())
-        return render_template('line/report_card_success.html')
+        return render_template('line/report/card_success.html')
 
 @liff.route("/line/who_join_activity", methods=['GET'])
 def line_who_join_activity():
@@ -82,7 +82,7 @@ def line_who_join_activity():
         data = request.args.to_dict()
         users = who_join_group_activity(data['activity_id'])
         return render_template(
-            'line/who_join_group_activity.html',
+            'line/group_activity/who_join.html',
             users=users
         )
 
