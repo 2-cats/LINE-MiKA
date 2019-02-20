@@ -21,14 +21,12 @@
     <div class="row" style="margin-top:-120px;">
         <div class="col-6"></div>
         <div class="col5">
-            <a data-fancybox href="{{ card['image_url'] }}"><img id="card-img" class="img-fluid" style="width:1px; height:1px;" src="{{ card['image_url'] }}"></a>
+            <a id="lightbox" data-fancybox href="{{ card['image_url'] }}"><img id="card-img" class="img-fluid" style="width:1px; height:1px;" src="{{ card['image_url'] }}"></a>
         </div>
         <div class="col-1"></div>
     </div>
-    <div class="row" style="margin-top:180px;">
-    <div class="col-12">
-        <a href="{{ card['image_url'] }}" class="btn btn-success btn-block" role="button">下載名片</a>
-    </div>
+    <div style="margin-top:200px;">
+        <small class="d-block mb-3 text-muted text-center">輕按名片可以放大、長按名片可以儲存喔！</small>
     </div>
 </div>
 

@@ -73,7 +73,6 @@ def handle_message(event):
     # Get common LINE user information
     line_user_id = event.source.user_id
     message_text = event.message.text
-    message_text = message_text.replace(' ', '')
 
     if event.source.type == 'user':
         if message_text == "我的名片":
@@ -105,6 +104,7 @@ def handle_message(event):
         return 0
         
     elif event.source.type == 'group':
+        message_text = message_text.replace(' ', '')
         message_text = message_text.lower()
         group_id = event.source.group_id
         if message_text == "我的名片" or message_text == "教練我想發名片":

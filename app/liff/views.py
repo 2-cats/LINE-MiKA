@@ -110,10 +110,10 @@ def product_detail():
 def store_use_product():
     if request.method == 'GET':
         data = request.args.to_dict()
-        orders = use_product(data['user_id'], data['product_id'])
+        user = use_product(data['user_id'], data['product_id'])
         return render_template(
             'line/product/use.html',
-            orders=orders
+            user=user
         )
 
 @liff.route("/line/card/send", methods=['GET'])

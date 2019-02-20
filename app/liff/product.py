@@ -27,6 +27,15 @@ def use_product(user_id, product_id):
         db.session.commit()
     except:
         pass
+    
+    user = {
+        "back_url": ''.join([
+            app.config['APP_URL'],
+            'line/store?user_id=',
+            str(user_id)
+        ])
+    }
+    return user
 
 def get_product_detail(product_id, user_id):
     product = Product.query.filter_by(

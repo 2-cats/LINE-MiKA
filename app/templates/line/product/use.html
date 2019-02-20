@@ -17,8 +17,9 @@
         <picture>
             <img class="rounded-circle img-fluid center-block" src="{{ url_for('static', filename='img/checked_sm.png') }}" class="img-fluid img-thumbnail">
         </picture>
-        <div class="col-md-4 text-center"> 
-            <button id="closewindowbutton" type="submit" class="btn btn-link">關閉視窗</button>
+        <div class="col-md-4 text-center p-2">
+        
+        <a href="{{user['back_url']}}" class="btn btn-success btn-block" role="button">返回</a> 
         </div>
     </div>
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
@@ -37,7 +38,6 @@
   <!-- LINE liff js -->
   <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <!-- Customer js file-->
-  <script src={{ url_for('static', filename='js/add_activity_success.js') }}></script>
-
+  <script src={{ url_for('static', filename='js/use_card_1.js') }}></script>
   </body>
 </html>
