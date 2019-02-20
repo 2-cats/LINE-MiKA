@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>MiKA STORE</title>
+  <title>妳好，這是我的名片</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/my_order.css') }}">
   <!-- Light box CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css">
 </head>
 <body>
 
-<div class="container pt-2">
-  <ul class="nav nav-tabs nav-justified">
-    <li class="nav-item"><a class="nav-link active" href="#">我的空間</a></li>
-    <li class="nav-item"><a class="nav-link"  href="#">名片動畫</a></li>
-    <li class="nav-item"><a class="nav-link"  href="#">名片角色</a></li>
-  </ul>
-  <br>
+<div class="container p-2">
 
-<div class="row">
-  
-</div>
-  
-<footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="container text-center">
-        <small class="d-block mb-3 text-muted">MiKA © 2019 </small>
+    <div class="row">
+        <div class="col-12">
+            <img class="img-fluid" src="https://4e9afb3b.ngrok.io/static/img/card/anime/default.gif">
+        </div>
     </div>
-</footer>
+
+    <div class="row" style="margin-top:-120px;">
+        <div class="col-6"></div>
+        <div class="col5">
+            <a data-fancybox href="{{ card['image_url'] }}"><img class="img-fluid card-img" style="width:1px; height:1px;" src="{{ card['image_url'] }}"></a>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row" style="margin-top:220px;">
+    <div class="col-12">
+        <a href="{{ card['image_url'] }}" class="btn btn-success btn-block" role="button">下載名片</a>
+    </div>
+    </div>
 </div>
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -37,7 +40,8 @@
 <!-- Light box plugin-->
 <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
 
-<script src="{{ url_for('static', filename='js/my_order.js') }}"></script>
+<script src="{{ url_for('static', filename='js/send_anime.js') }}"></script>
 </body>
 </html>

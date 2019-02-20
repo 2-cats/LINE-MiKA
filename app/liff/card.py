@@ -1,7 +1,12 @@
 
+from flask import Flask
+
 from .. import db
-from ..models import Card, User, Issue
+from ..models import Card, Issue, User
 from .map import convert_address
+
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
 
 def add_card(data):
     location = convert_address(data['address'])
@@ -104,6 +109,21 @@ def update_card(data):
             'status': 'fail',
             'message': '錯誤的名片 ID'
         }
+
+def get_card(data):
+    card = Card.query.filter_by(
+        id=data['card_id'],
+    ).first()
+    image_url = ""
+    if card.image_path is not None:
+        image_url = ''.join([
+            app.config['OCR_SCAN_CARD_RESOURCE'],
+            card.image_path
+        ])
+    card = {
+        "image_url": image_url
+    }
+    return card
 
 def report_card_issue(data):
     user = User.query.filter_by(line_user_id=data['line_user_id']).first()
