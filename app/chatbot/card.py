@@ -297,13 +297,26 @@ def search_card_message(keyword ,line_user_id):
                     )
                 )
                 contact_component.append(email_component)
+            
+            hero_image_action = []
+            if card.image_path is not None:
+                hero_image_action = URIAction(
+                    uri=''.join(
+                        [
+                            app.config['CARD_ANIME_LINE_LIFF_URL'],
+                            '?card_id=',
+                            str(card.id)
+                        ]
+                    )
+                )
 
             bubble_template = BubbleContainer(
                 hero=ImageComponent(
                     url=''.join([app.config['APP_URL'], card.cosplay_path]),
                     size='full',
                     aspect_ratio='20:13',
-                    aspect_mode='cover'
+                    aspect_mode='cover',
+                    action=hero_image_action
                 ),
                 body=BoxComponent(
                     layout='vertical',
@@ -466,12 +479,25 @@ def show_my_card_message(line_user_id):
                 )
                 contact_component.append(email_component)
 
+            hero_image_action = []
+            if card.image_path is not None:
+                hero_image_action = URIAction(
+                    uri=''.join(
+                        [
+                            app.config['CARD_ANIME_LINE_LIFF_URL'],
+                            '?card_id=',
+                            str(card.id)
+                        ]
+                    )
+                )
+
             bubble_template = BubbleContainer(
                 hero=ImageComponent(
                     url=''.join([app.config['APP_URL'], card.cosplay_path]),
                     size='full',
                     aspect_ratio='20:13',
-                    aspect_mode='cover'
+                    aspect_mode='cover',
+                    action=hero_image_action
                 ),
                 body=BoxComponent(
                     layout='vertical',

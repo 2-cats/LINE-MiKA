@@ -121,6 +121,7 @@ def get_card(data):
             card.image_path
         ])
     card = {
+        "name": card.name,
         "image_url": image_url
     }
     return card

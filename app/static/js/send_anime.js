@@ -4,7 +4,7 @@ window.onload = function (e) {
 
 function bouncingBall(){
     var bouncingBall = anime({
-        targets: '.card-img',
+        targets: '#card-img',
         scaleX: [
             {
                 value: [0, 340],
