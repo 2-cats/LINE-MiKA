@@ -8,9 +8,9 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage,
 from . import liff
 from .. import db
 from .activity import add_activity, add_group_activity, who_join_group_activity
-from .card import add_card, edit_card, report_card_issue, update_card
+from .card import add_card, edit_card, get_card, report_card_issue, update_card
 from .order import my_order
-from .product import use_product, get_product_detail
+from .product import get_product_detail, use_product
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -114,4 +114,13 @@ def store_use_product():
         return render_template(
             'line/product/use.html',
             orders=orders
+        )
+
+@liff.route("/line/card/send", methods=['GET'])
+def send_anime():
+    if request.method == 'GET':
+        card = get_card(request.args.to_dict())
+        return render_template(
+            'line/card/send_anime.html',
+            card=card
         )
