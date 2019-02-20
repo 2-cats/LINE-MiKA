@@ -112,6 +112,6 @@ def store_use_product():
         data = request.args.to_dict()
         orders = use_product(data['user_id'], data['product_id'])
         return render_template(
-            'line/store/use_product.html',
+            'line/product/use.html',
             orders=orders
         )
