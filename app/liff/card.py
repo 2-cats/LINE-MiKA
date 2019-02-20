@@ -115,7 +115,7 @@ def get_card(data):
         id=data['card_id'],
     ).first()
     image_url = ""
-    if card.image_path is not None:
+    if card.image_path != '':
         image_url = ''.join([
             app.config['OCR_SCAN_CARD_RESOURCE'],
             card.image_path
