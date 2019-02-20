@@ -49,7 +49,8 @@ def add_card(data):
                 phone_number=data['phone_number'],
                 tel_number=data['tel_number'],
                 public=public,
-                image_path=data['image_path']
+                image_path=data['image_path'],
+                view_count=0
             )
         db.session.add(card)
         try:
@@ -114,6 +115,14 @@ def get_card(data):
     card = Card.query.filter_by(
         id=data['card_id'],
     ).first()
+
+    card.view_count = card.view_count + 1
+    db.session.add(card)
+    try:
+        db.session.commit()
+    except:
+        pass
+
     image_url = ""
     if card.image_path != '':
         image_url = ''.join([
