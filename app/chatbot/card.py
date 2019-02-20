@@ -299,7 +299,7 @@ def search_card_message(keyword ,line_user_id):
                 contact_component.append(email_component)
             
             hero_image_action = []
-            if card.image_path is not None:
+            if card.image_path != "":
                 hero_image_action = URIAction(
                     uri=''.join(
                         [
@@ -480,7 +480,7 @@ def show_my_card_message(line_user_id):
                 contact_component.append(email_component)
 
             hero_image_action = []
-            if card.image_path is not None:
+            if card.image_path != "":
                 hero_image_action = URIAction(
                     uri=''.join(
                         [
