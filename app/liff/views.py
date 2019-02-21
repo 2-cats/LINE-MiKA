@@ -23,7 +23,7 @@ def line_add_card():
             return render_template('line/card/add_fail.html', message=result['message'])
 
 @liff.route("/line/card/edit", methods=['GET', 'POST'])
-def line_update_card():
+def line_edit_card():
     if request.method == 'GET':
         data = edit_card(request.args.to_dict())
         return render_template(
