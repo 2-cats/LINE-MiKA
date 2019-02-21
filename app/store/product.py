@@ -50,3 +50,50 @@ def get_product_detail(product_id, user_id):
         "description": product.description
     }
     return product
+
+def anime_store_product(user_id):
+    product_dates = []
+
+    # Query free product.
+    products = Product.query.filter_by(
+        product_type="anime",
+        deleted_at=None
+    ).all()
+
+    for product in products:
+        item = {
+            "name": product.name,
+            "demo_image_path": product.demo_image_path,
+            "product_id": product.id,
+            "user_id": user_id
+        }
+        product_dates.append(item)
+
+    user = {
+        "id": user_id
+    }
+
+    return product_dates, user
+
+def cosplay_store_product(user_id):
+    product_dates = []
+
+    # Query free product.
+    products = Product.query.filter_by(
+        product_type="cosplay",
+        deleted_at=None
+    ).all()
+
+    for product in products:
+        item = {
+            "name": product.name,
+            "demo_image_path": product.demo_image_path,
+            "product_id": product.id,
+            "user_id": user_id
+        }
+        product_dates.append(item)
+    
+    user = {
+        "id": user_id
+    }
+    return product_dates, user
