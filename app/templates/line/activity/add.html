@@ -13,7 +13,7 @@
 <body>
 
 <div class="container pt-2"> <!-- 置中用-->
-<form class="validated" action="/line/add_activity" method="post"><!-- ACTION是往哪裡發送數據-->
+<form class="validated" action="{{url_for('liff.line_add_activity')}}" method="post"><!-- ACTION是往哪裡發送數據-->
     <input id="line_user_id" type="hidden" name='line_user_id'>
 
 

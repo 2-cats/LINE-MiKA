@@ -27,12 +27,12 @@ def line_edit_card():
     if request.method == 'GET':
         data = edit_card(request.args.to_dict())
         return render_template(
-            'line/update.html',
+            'line/card/update.html',
             data=data
         )
     elif request.method == 'POST':
         result = update_card(request.form.to_dict())
-        return render_template('line/update_success.html')
+        return render_template('line/card/update_success.html')
 
 @liff.route("/line/card/send", methods=['GET'])
 def send_anime():
