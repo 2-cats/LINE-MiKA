@@ -13,7 +13,7 @@
   </head>
   <body>
   <div class="container pt-2">
-    <form method='POST' action='/line/add_card'>
+    <form method='POST' action='{{url_for('liff.line_add_card')}}'>
         <input id="line_user_id" type="hidden" name='line_user_id'>
         <input value="{{ data['image_path'] }}" type="hidden" name='image_path'>
         <div class="form-group">
