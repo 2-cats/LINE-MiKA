@@ -241,7 +241,7 @@ def nearby_card_message(lat, lng ,line_user_id):
         min_lat<Card.lat,
         Card.lat<max_lat,
         min_lng<Card.lng,
-        Card.lng<min_lng,
+        Card.lng<max_lng,
         Card.deleted_at==None
     ).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
