@@ -17,4 +17,6 @@ def create_app(config_name):
     app.register_blueprint(chatbot_blueprint)
     from .liff import liff as liff_blueprint
     app.register_blueprint(liff_blueprint)
+    from .store import store as store_blueprint
+    app.register_blueprint(store_blueprint)
     return app
