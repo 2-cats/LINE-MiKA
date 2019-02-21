@@ -53,7 +53,7 @@ class Card(db.Model):
     lng = db.Column(db.Float)
     rel_link = db.Column(db.String(64))
     image_path = db.Column(db.String(64))
-    anime_path = db.Column(db.String(64), default="img/card/cosplay/default.png")
+    anime_path = db.Column(db.String(64), default="img/card/anime/default.gif")
     cosplay_path = db.Column(db.String(64), default="img/card/cosplay/default.png")
     public = db.Column(db.Boolean, default=True)
     view_count = db.Column(db.Integer, default=0)

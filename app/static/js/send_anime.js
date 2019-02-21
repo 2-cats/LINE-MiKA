@@ -20,14 +20,14 @@ function showCard(){
             {
                 value: [0, 340],
                 duration: 1200,
-                delay: 1300
+                delay: 1500
             }
         ],
         scaleY: [
             {
                 value: [0, 180],
                 duration: 1200,
-                delay: 1300
+                delay: 1500
             }
         ]
       });
