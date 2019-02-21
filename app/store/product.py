@@ -14,7 +14,7 @@ def user_use_product(user_id, product_id):
     if product.product_type == "cosplay":
         card.cosplay_path = product.image_path
     elif product.product_type == "anime":
-        card.cosplay_path = product.image_path
+        card.anime_path = product.image_path
 
     db.session.add(card)
     try:
