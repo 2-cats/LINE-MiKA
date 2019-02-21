@@ -18,7 +18,8 @@ from .activity import (add_activity_message, delete_my_activity,
                        my_join_group_activity, search_activity_message,
                        user_leave_and_private_activity)
 from .card import (card_management_message, delete_my_card_message,
-                   search_card_message, show_my_card_message)
+                   nearby_card_message, search_card_message,
+                   show_my_card_message)
 from .error_message import alert_no_action_message
 from .follow import follow_message, unfollow
 from .helper import group_helper_message
@@ -169,7 +170,7 @@ def handle_loaction_message(event):
     """
     if event.source.type == 'user':
         line_user_id = event.source.user_id
-        message = alert_no_action_message(line_user_id)
+        message = nearby_card_message(event.message.latitude, event.message.longitude, line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 

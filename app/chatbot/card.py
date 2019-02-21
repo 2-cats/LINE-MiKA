@@ -103,7 +103,7 @@ def card_management_message(line_user_id):
                         size='md',
                     ),
                     TextComponent(
-                        text=card.industry,
+                        text=card.summary,
                         margin='md',
                         wrap=True,
                         color='#666666',
@@ -232,6 +232,192 @@ def delete_my_card_message(card_id):
             pass
     return message
 
+def nearby_card_message(lat, lng ,line_user_id):
+    max_lat = lat + 0.8
+    min_lat = lat - 0.8
+    max_lng = lng + 0.8
+    min_lng = lng - 0.8
+    cards = Card.query.filter(
+        min_lat<Card.lat,
+        Card.lat<max_lat,
+        min_lng<Card.lng,
+        Card.lng<min_lng,
+        Card.deleted_at==None
+    ).order_by(func.random()).limit(3).all()
+    carousel_template_columns = []
+    if cards:
+        for card in cards:
+            # Check hero image
+            image_component = []
+            line_component = []
+            contact_component = []
+            phone_component = ButtonComponent(
+                style='link',
+                height='sm',
+                action=URIAction(
+                    label='電話',
+                    uri=''.join(['tel:', card.phone_number])
+                )
+            )
+            contact_component.append(phone_component)
+            if card.line_id != '':
+                line_component = ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='LINE',
+                        uri=''.join(['line://ti/p/', card.line_id])
+                    )
+                )
+                contact_component.append(line_component)
+
+            if card.email != '':
+                email_component = ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='e-mail',
+                        uri=''.join(['mailto:', card.email])
+                    )
+                )
+                contact_component.append(email_component)
+            
+            hero_image_action = []
+            if card.image_path != "":
+                hero_image_action = URIAction(
+                    uri=''.join(
+                        [
+                            app.config['CARD_ANIME_LINE_LIFF_URL'],
+                            '?card_id=',
+                            str(card.id)
+                        ]
+                    )
+                )
+
+            bubble_template = BubbleContainer(
+                hero=ImageComponent(
+                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    size='full',
+                    aspect_ratio='20:13',
+                    aspect_mode='cover',
+                    action=hero_image_action
+                ),
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=card.company_name,
+                            wrap=True,
+                            weight='bold',
+                            color='#1DB446',
+                            size='md',
+                        ),
+                        TextComponent(
+                            text=card.summary,
+                            margin='md',
+                            wrap=True,
+                            color='#666666',
+                            size='sm',
+                        ),
+                        BoxComponent(
+                            margin='md',
+                            layout='horizontal',
+                            contents=[
+                                TextComponent(
+                                    text='姓名',
+                                    color='#666666',
+                                    flex=2,
+                                    size='md'
+                                ),
+                                TextComponent(
+                                    text=''.join([card.name, ' ', card.nickname]),
+                                    wrap=True,
+                                    flex=5,
+                                    color='#333333',
+                                    size='md'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            margin='md',
+                            layout='horizontal',
+                            contents=[
+                                TextComponent(
+                                    text='職稱',
+                                    color='#666666',
+                                    size='md',
+                                    flex=2
+                                ),
+                                TextComponent(
+                                    text=card.title,
+                                    wrap=True,
+                                    color='#333333',
+                                    size='md',
+                                    flex=5
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            margin='md',
+                            layout='horizontal',
+                            contents=[
+                                TextComponent(
+                                    text='地址',
+                                    color='#666666',
+                                    size='md',
+                                    flex=2
+                                ),
+                                TextComponent(
+                                    text=card.address,
+                                    wrap=True,
+                                    color='#333333',
+                                    size='md',
+                                    flex=5
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    contents=contact_component
+                )
+            )
+
+            carousel_template_columns.append(bubble_template)
+        message = FlexSendMessage(
+            alt_text='搜尋名片清單',
+            contents=CarouselContainer(
+                contents=carousel_template_columns
+            )
+        )
+        return message
+    else:
+        bubble_template = BubbleContainer(
+            body=BoxComponent(
+                layout='vertical',
+                contents=[
+                    TextComponent(
+                        text=''.join(['沒有名片']),
+                        wrap=True,
+                        weight='bold',
+                        size='lg',
+                        color='#1DB446',
+                    ),
+                    TextComponent(
+                        text='抱歉，我找不到你想要找的名片',
+                        wrap=True,
+                        size='md',
+                        margin='md'
+                    )
+                ]
+            )
+        )
+        message = FlexSendMessage(
+            alt_text='新增名片', contents=bubble_template)
+
+    return message
+
 def search_card_message(keyword ,line_user_id):
 ###
 #　　　　　　　　┏┓　　　┏┓+ +
@@ -327,7 +513,7 @@ def search_card_message(keyword ,line_user_id):
                             size='md',
                         ),
                         TextComponent(
-                            text=card.industry,
+                            text=card.summary,
                             margin='md',
                             wrap=True,
                             color='#666666',
@@ -508,7 +694,7 @@ def show_my_card_message(line_user_id):
                             size='md',
                         ),
                         TextComponent(
-                            text=card.industry,
+                            text=card.summary,
                             margin='md',
                             wrap=True,
                             color='#666666',
