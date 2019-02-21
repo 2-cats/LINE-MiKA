@@ -32,4 +32,7 @@ def my_order(user_id):
         }
         order_dates.append(item)
 
-    return order_dates
+    user = {
+        "id": user_id
+    }
+    return order_dates, user
