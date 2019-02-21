@@ -9,17 +9,37 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css">
     <title>活動新增成功</title>
   </head>
   <body>
 <div class="container pt-2">
-    <div class="pt-4 my-md-5 pt-md-5 text-center">
-        <picture>
-            <img class="rounded-circle img-fluid center-block" src="{{ url_for('static', filename='img/checked_sm.png') }}" class="img-fluid img-thumbnail">
-        </picture>
-        <div class="col-md-4 text-center"> 
-            <button id="closewindowbutton" type="submit" class="btn btn-link">關閉視窗</button>
-        </div>
+    <div class="row">
+      <div class="col-3">
+      </div>
+      <div class="col-6">
+        <a data-fancybox href="https://i.imgur.com/CUZuDjQ.png"><img src="https://i.imgur.com/CUZuDjQ.png" class="img-thumbnail"></a>
+      </div>
+      <div class="col-3">
+      </div>
+    </div>
+    <div class="row pt-2">
+      <div class="col-1">
+      </div>
+      <div class="col-10">
+        <p>太好了！成功新增活動了！趕快回對話視窗按<code>我的活動</code>！ 💪</p>
+      </div>
+      <div class="col-1">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+      </div>
+      <div class="col-4">
+        <button id="closewindowbutton" type="submit" class="btn btn-link">返回對話</button>
+      </div>
+      <div class="col-4">
+      </div>
     </div>
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="container text-center">
@@ -36,7 +56,12 @@
 
   <!-- LINE liff js -->
   <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
-    <!-- Customer js file-->
+    
+   <!-- Light box plugin-->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+
+
+  <!-- Customer js file-->
   <script src={{ url_for('static', filename='js/add_activity_success.js') }}></script>
 
   </body>
