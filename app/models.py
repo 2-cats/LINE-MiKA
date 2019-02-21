@@ -21,11 +21,11 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    cards = db.relationship("Card", lazy='noload')
-    issues = db.relationship("Issue", lazy='noload')
-    activity_logs = db.relationship("ActivityLog", lazy='noload')
-    send_picture_logs = db.relationship("SendPictureLog", lazy='noload')
-    orders = db.relationship("Order", lazy='noload')
+    cards = db.relationship("Card", lazy='dynamic')
+    issues = db.relationship("Issue", lazy='dynamic')
+    activity_logs = db.relationship("ActivityLog", lazy='dynamic')
+    send_picture_logs = db.relationship("SendPictureLog", lazy='dynamic')
+    orders = db.relationship("Order", lazy='dynamic')
     def __repr__(self):
         return '<User %r>' % self.id
 
@@ -61,7 +61,7 @@ class Card(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    issues = db.relationship("Issue", lazy='noload')
+    issues = db.relationship("Issue", lazy='dynamic')
 
     def __repr__(self):
         return '<Card %r>' % self.id
@@ -113,7 +113,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    activity_logs = db.relationship("ActivityLog", lazy='noload')
+    activity_logs = db.relationship("ActivityLog", lazy='dynamic')
 
     def __repr__(self):
         return '<Activity %r>' % self.id
@@ -145,7 +145,7 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    orders = db.relationship("Order", lazy='noload')
+    orders = db.relationship("Order", lazy='dynamic')
     order = db.relationship("Order", backref="product")
 
     def __repr__(self):
