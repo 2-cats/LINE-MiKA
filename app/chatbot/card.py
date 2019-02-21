@@ -77,6 +77,7 @@ def card_management_message(line_user_id):
             hero=ImageComponent(
                 url=''.join([
                     app.config['APP_URL'],
+                    'static/',
                     card.cosplay_path
                 ]),
                 size='full',
@@ -296,7 +297,11 @@ def nearby_card_message(lat, lng ,line_user_id):
 
             bubble_template = BubbleContainer(
                 hero=ImageComponent(
-                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    url=''.join([
+                        app.config['APP_URL'],
+                        'static/',
+                        card.cosplay_path
+                    ]),
                     size='full',
                     aspect_ratio='20:13',
                     aspect_mode='cover',
@@ -496,7 +501,11 @@ def search_card_message(keyword ,line_user_id):
 
             bubble_template = BubbleContainer(
                 hero=ImageComponent(
-                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    url=''.join([
+                        app.config['APP_URL'],
+                        'static/',
+                        card.cosplay_path
+                    ]),
                     size='full',
                     aspect_ratio='20:13',
                     aspect_mode='cover',
@@ -677,7 +686,11 @@ def show_my_card_message(line_user_id):
 
             bubble_template = BubbleContainer(
                 hero=ImageComponent(
-                    url=''.join([app.config['APP_URL'], card.cosplay_path]),
+                    url=''.join([
+                        app.config['APP_URL'],
+                        'static/',
+                        card.cosplay_path
+                    ]),
                     size='full',
                     aspect_ratio='20:13',
                     aspect_mode='cover',
