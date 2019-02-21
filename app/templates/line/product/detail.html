@@ -21,7 +21,7 @@
 
 <div class="row">
   <div class="col-5">
-  <a data-fancybox href="{{product['demo_image_url']}}"><img src="{{product['demo_image_url']}}" class="img-thumbnail"></a>
+  <a data-fancybox href="{{ url_for('static', filename=product['demo_image_path']) }}"><img src="{{ url_for('static', filename=product['demo_image_path']) }}" class="img-thumbnail"></a>
   </div>
   <div class="col-7">
     <small><u>{{product['author']}}</u></small></br>
@@ -31,7 +31,7 @@
   </div>
 </div>
 <div class="row p-3">
-  <a href="{{product['button_url']}}" class="btn btn-success btn-block" role="button">{{product['button_text']}}</a>
+  <a href="{{url_for('store.use_product', user_id=product['user_id'], product_id=product['id'])}}" class="btn btn-success btn-block" role="button">{{product['button_text']}}</a>
   <div class="p-3">{{product['description']}}</div>
 </div>
   

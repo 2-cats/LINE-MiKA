@@ -55,10 +55,10 @@
   {% for order in orders %}
     <div class="col-4 target" id="product-card">
       <div>
-        <a href="{{order['detail_url']}}"><img src="{{order['demo_image_path']}}" class="img-thumbnail"></a>
+        <a href="{{url_for('store.product_detail', user_id=order['user_id'], product_id=order['product_id'])}}"><img src="{{ url_for('static', filename=order['demo_image_path']) }}" class="img-thumbnail"></a>
       </div>
       <div class="pt-2">
-        <a href="{{order['detail_url']}}"><p class="text-sm-center">{{order['name']}}</p></a>
+        <a href="{{url_for('store.product_detail', user_id=order['user_id'], product_id=order['product_id'])}}"><p class="text-sm-center">{{order['name']}}</p></a>
       </div>
     </div>
   {% endfor %}

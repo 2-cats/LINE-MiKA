@@ -1,23 +1,13 @@
 from flask import Flask, abort, current_app, render_template, request
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import (AudioMessage, FollowEvent, ImageMessage,
-                            LocationMessage, MessageEvent, StickerMessage,
-                            TextMessage, TextSendMessage, UnfollowEvent)
 
 from . import liff
 from .. import db
 from .activity import add_activity, add_group_activity, who_join_group_activity
 from .card import add_card, edit_card, get_card, report_card_issue, update_card
-from .order import my_order
-from .product import get_product_detail, use_product
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_pyfile('config.py')
-line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
-handler = WebhookHandler(app.config["LINE_CHANNEL_SECRET"])
 
-@liff.route("/line/add_card", methods=['GET', 'POST'])
+@liff.route("/line/card/add", methods=['GET', 'POST'])
 def line_add_card():
     if request.method == 'GET':
         data = request.args.to_dict()
@@ -32,7 +22,7 @@ def line_add_card():
         else:
             return render_template('line/card/add_fail.html', message=result['message'])
 
-@liff.route("/line/edit_card", methods=['GET', 'POST'])
+@liff.route("/line/card/edit", methods=['GET', 'POST'])
 def line_update_card():
     if request.method == 'GET':
         data = edit_card(request.args.to_dict())
@@ -44,7 +34,16 @@ def line_update_card():
         result = update_card(request.form.to_dict())
         return render_template('line/update_success.html')
 
-@liff.route("/line/add_activity", methods=['GET', 'POST'])
+@liff.route("/line/card/send", methods=['GET'])
+def send_anime():
+    if request.method == 'GET':
+        card = get_card(request.args.to_dict())
+        return render_template(
+            'line/card/send_anime.html',
+            card=card
+        )
+
+@liff.route("/line/activity/add", methods=['GET', 'POST'])
 def line_add_activity():
     if request.method == 'GET':
         return render_template('line/activity/add.html')
@@ -52,7 +51,7 @@ def line_add_activity():
         add_activity(request.form.to_dict())
         return render_template('line/activity/add_success.html')
 
-@liff.route("/line/add_group_activity", methods=['GET', 'POST'])
+@liff.route("/line/group_activity/add", methods=['GET', 'POST'])
 def line_add_group_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
@@ -64,7 +63,7 @@ def line_add_group_activity():
         add_group_activity(request.form.to_dict())
         return render_template('line/group_activity/add_success.html')
 
-@liff.route("/line/report_card", methods=['GET', 'POST'])
+@liff.route("/line/card/report", methods=['GET', 'POST'])
 def line_report_card():
     if request.method == 'GET':
         data = request.args.to_dict()
@@ -76,7 +75,7 @@ def line_report_card():
         report_card_issue(request.form.to_dict())
         return render_template('line/report/card_success.html')
 
-@liff.route("/line/who_join_activity", methods=['GET'])
+@liff.route("/line/activity/user", methods=['GET'])
 def line_who_join_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
@@ -84,43 +83,4 @@ def line_who_join_activity():
         return render_template(
             'line/group_activity/who_join.html',
             users=users
-        )
-
-@liff.route("/line/store", methods=['GET'])
-def line_store():
-    if request.method == 'GET':
-        data = request.args.to_dict()
-        orders = my_order(data['user_id'])
-        return render_template(
-            'line/store/my_order.html',
-            orders=orders
-        )
-
-@liff.route("/line/product/detail", methods=['GET'])
-def product_detail():
-    if request.method == 'GET':
-        data = request.args.to_dict()
-        product = get_product_detail(data['product_id'],data['user_id'])
-        return render_template(
-            'line/product/detail.html',
-            product=product
-        )
-
-@liff.route("/line/store/use", methods=['GET'])
-def store_use_product():
-    if request.method == 'GET':
-        data = request.args.to_dict()
-        user = use_product(data['user_id'], data['product_id'])
-        return render_template(
-            'line/product/use.html',
-            user=user
-        )
-
-@liff.route("/line/card/send", methods=['GET'])
-def send_anime():
-    if request.method == 'GET':
-        card = get_card(request.args.to_dict())
-        return render_template(
-            'line/card/send_anime.html',
-            card=card
         )
