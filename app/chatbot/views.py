@@ -24,6 +24,7 @@ from .error_message import alert_no_action_message
 from .follow import follow_message, unfollow
 from .helper import group_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
+from .leave import bot_leave_group
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -198,6 +199,14 @@ def handle_leave(event):
     Handle leave event
     '''
     user_leave_and_private_activity(event.source.user_id)
+    return 0
+
+@handler.add(LeaveEvent)
+def handle_leave(event):
+    '''
+    Handle leave event
+    '''
+    bot_leave_group(event.source.group_id)
     return 0
 
 @handler.add(JoinEvent)
