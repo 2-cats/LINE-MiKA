@@ -91,67 +91,87 @@ def scan_card_image(image_id, line_user_id):
     data = {
         "image_url": ''.join([app.config['OCR_SCAN_CARD_RESOURCE'], file_name]),
     }
+    try:
+        response = requests.post(
+            app.config['OCR_SCAN_CARD_API_PATH'],
+            json = data,
+            headers={'Connection':'close'}
+        )
+        response_json = json.loads(response.text)
 
-    response = requests.post(
-        app.config['OCR_SCAN_CARD_API_PATH'],
-        json = data
-    )
-
-    response_json = json.loads(response.text)
-
-    if response_json['status'] == 'success':
-        bubble_template = BubbleContainer(
-            body=BoxComponent(
-                layout='vertical',
-                contents=[
-                    TextComponent(
-                        text='最後一個步驟',
-                        weight='bold',
-                        color='#1DB446',
-                        size='md',
-                    ),
-                    TextComponent(
-                        text='我已經將您的名片分析完成，請確認一下有沒有問題',
-                        margin='md',
-                        wrap=True,
-                        color='#666666',
-                        size='sm',
-                    )
-                ]
-            ),
-            footer=BoxComponent(
-                layout='vertical',
-                contents=[
-                    ButtonComponent(
-                        style='link',
-                        height='sm',
-                        action=URIAction(
-                            label='下一步驟',
-                            uri=''.join(
-                                [
-                                    app.config["ADD_CARD_LINE_LIFF_URL"],
-                                    '?',
-                                    'name=', urllib.parse.quote_plus(response_json['card']['personal']['name']),
-                                    '&nickname=', urllib.parse.quote_plus(response_json['card']['personal']['nickname']),
-                                    '&title=', urllib.parse.quote_plus(response_json['card']['personal']['title']),
-                                    '&summary=', urllib.parse.quote_plus(response_json['card']['office']['summary']),
-                                    '&company_name=', urllib.parse.quote_plus(response_json['card']['office']['name']),
-                                    '&email=', urllib.parse.quote_plus(response_json['card']['office']['email']),
-                                    '&tel_number=', urllib.parse.quote_plus(response_json['card']['office']['tel_number']),
-                                    '&fax_number=', urllib.parse.quote_plus(response_json['card']['office']['fax_number']),
-                                    '&tax_number=', urllib.parse.quote_plus(response_json['card']['office']['tax_number']),
-                                    '&phone_number=', urllib.parse.quote_plus(response_json['card']['personal']['phone_number']),
-                                    '&line_id=', urllib.parse.quote_plus(response_json['card']['office']['line_id']),
-                                    '&address=', urllib.parse.quote_plus(response_json['card']['office']['address']),
-                                    '&image_path=', urllib.parse.quote_plus(file_name)
-                                ]
+        if response_json['status'] == 'success':
+            bubble_template = BubbleContainer(
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text='最後一個步驟',
+                            weight='bold',
+                            color='#1DB446',
+                            size='md',
+                        ),
+                        TextComponent(
+                            text='我已經將您的名片分析完成，請確認一下有沒有問題',
+                            margin='md',
+                            wrap=True,
+                            color='#666666',
+                            size='sm',
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(
+                                label='下一步驟',
+                                uri=''.join(
+                                    [
+                                        app.config["ADD_CARD_LINE_LIFF_URL"],
+                                        '?',
+                                        'name=', urllib.parse.quote_plus(response_json['card']['personal']['name']),
+                                        '&nickname=', urllib.parse.quote_plus(response_json['card']['personal']['nickname']),
+                                        '&title=', urllib.parse.quote_plus(response_json['card']['personal']['title']),
+                                        '&summary=', urllib.parse.quote_plus(response_json['card']['office']['summary']),
+                                        '&company_name=', urllib.parse.quote_plus(response_json['card']['office']['name']),
+                                        '&email=', urllib.parse.quote_plus(response_json['card']['office']['email']),
+                                        '&tel_number=', urllib.parse.quote_plus(response_json['card']['office']['tel_number']),
+                                        '&fax_number=', urllib.parse.quote_plus(response_json['card']['office']['fax_number']),
+                                        '&tax_number=', urllib.parse.quote_plus(response_json['card']['office']['tax_number']),
+                                        '&phone_number=', urllib.parse.quote_plus(response_json['card']['personal']['phone_number']),
+                                        '&line_id=', urllib.parse.quote_plus(response_json['card']['office']['line_id']),
+                                        '&address=', urllib.parse.quote_plus(response_json['card']['office']['address']),
+                                        '&image_path=', urllib.parse.quote_plus(file_name)
+                                    ]
+                                )
                             )
                         )
-                    )
-                ]
+                    ]
+                )
             )
-        )
-    else:
+        else:
+            bubble_template = BubbleContainer(
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text='錯誤',
+                            weight='bold',
+                            size='md',
+                        ),
+                        TextComponent(
+                            text=response_json['message'],
+                            margin='md',
+                            wrap=True,
+                            color='#666666',
+                            size='sm',
+                        )
+                    ]
+                )
+            )
+    except:
         bubble_template = BubbleContainer(
             body=BoxComponent(
                 layout='vertical',
@@ -162,7 +182,7 @@ def scan_card_image(image_id, line_user_id):
                         size='md',
                     ),
                     TextComponent(
-                        text=response_json['message'],
+                        text='咪卡正在忙著處理其他事情，暫時無法幫你辨識名片，請稍後再試',
                         margin='md',
                         wrap=True,
                         color='#666666',
