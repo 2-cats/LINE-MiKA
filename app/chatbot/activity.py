@@ -20,7 +20,7 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 
 def group_activity_message(source_id):
     now = datetime.datetime.now()
-    activitys =  Activity.query.filter(Activity.source_id==source_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.start_at.asc()).limit(9)
+    activitys =  Activity.query.filter(Activity.source_id==source_id, Activity.deleted_at==None, Activity.end_at>now).order_by(Activity.start_at.asc()).limit(9).all()
     carousel_template_columns = []
     if activitys:
         for activity in activitys:
@@ -204,9 +204,9 @@ def group_activity_message(source_id):
             carousel_template_columns.append(bubble_template)
     bubble_template = BubbleContainer(
         hero=ImageComponent(
-            url='https://i.imgur.com/EsVTFD6.png',
+            url='https://i.imgur.com/JpX9kt6.jpg',
             size='full',
-            aspect_ratio='20:13',
+            aspect_ratio='5:4',
             aspect_mode='cover'
         ),
         footer=BoxComponent(
@@ -526,7 +526,7 @@ def add_activity_message(line_user_id):
 
 def my_activity_message(line_user_id):
     now = datetime.datetime.now()
-    activitys = Activity.query.filter(Activity.source_id==line_user_id, Activity.deleted_at==None, Activity.start_at>now).order_by(Activity.created_at.asc()).limit(9).all()
+    activitys = Activity.query.filter(Activity.source_id==line_user_id, Activity.deleted_at==None, Activity.end_at>now).order_by(Activity.start_at.asc()).limit(9).all()
 
     if activitys:
         carousel_template_columns = []

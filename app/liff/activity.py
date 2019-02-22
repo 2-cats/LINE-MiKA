@@ -79,10 +79,6 @@ def add_group_activity(data):
         session_count=1
     )
     db.session.add(activity)
-    try:
-        db.session.commit()
-    except:
-        pass
 
     # Log activity
     activity_log = ActivityLog(
