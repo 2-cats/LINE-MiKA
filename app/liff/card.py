@@ -50,7 +50,18 @@ def add_card(data):
                 tel_number=data['tel_number'],
                 public=public,
                 image_path=data['image_path'],
-                view_count=0
+                view_count=0,
+                description=''.join(
+                    [
+                        data['company_name'],
+                        '、',
+                        data['industry'],
+                        '、',
+                        data['address'],
+                        '、',
+                        data['summary']
+                    ]
+                )
             )
         db.session.add(card)
         try:
