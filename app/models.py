@@ -56,6 +56,7 @@ class Card(db.Model):
     anime_path = db.Column(db.String(64), default="img/card/anime/default.gif")
     cosplay_path = db.Column(db.String(64), default="img/card/cosplay/default.png")
     public = db.Column(db.Boolean, default=True)
+    description = db.Column(db.String(128))
     view_count = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)

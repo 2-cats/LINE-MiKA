@@ -448,7 +448,7 @@ def search_card_message(keyword ,line_user_id):
 #　　　　　　　　　　┗┻┛　┗┻┛+ + + +
 ##
     keyword = keyword[0]
-    cards = Card.query.filter(Card.summary.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+    cards = Card.query.filter(Card.description.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
     if cards:
         for card in cards:
