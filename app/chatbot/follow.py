@@ -6,7 +6,7 @@ from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             TextComponent, URIAction)
 
 from .. import db
-from ..models import User
+from ..models import User, Activity
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -74,6 +74,15 @@ def follow_message(line_user_id):
 def unfollow(line_user_id):
     user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
     user.deleted_at = datetime.datetime.now()
+    db.session.add(user)
+    
+    activitys = Activity.query.filter_by(
+        source_id=line_user_id,
+        deleted_at=None).all()
+    
+    for activity in activitys:
+        activity.deleted_at = datetime.datetime.now()
+        db.session.add(activity)
     try:
         db.session.commit()
     except:

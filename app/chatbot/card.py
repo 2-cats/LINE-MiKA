@@ -81,7 +81,7 @@ def card_management_message(line_user_id):
                     card.cosplay_path
                 ]),
                 size='full',
-                aspect_ratio='20:13',
+                aspect_ratio='5:4',
                 aspect_mode='cover',
                 action=URIAction(
                     uri=''.join(
@@ -507,7 +507,7 @@ def search_card_message(keyword ,line_user_id):
                         card.cosplay_path
                     ]),
                     size='full',
-                    aspect_ratio='20:13',
+                    aspect_ratio='5:4',
                     aspect_mode='cover',
                     action=hero_image_action
                 ),
@@ -692,7 +692,7 @@ def show_my_card_message(line_user_id):
                         card.cosplay_path
                     ]),
                     size='full',
-                    aspect_ratio='20:13',
+                    aspect_ratio='5:4',
                     aspect_mode='cover',
                     action=hero_image_action
                 ),

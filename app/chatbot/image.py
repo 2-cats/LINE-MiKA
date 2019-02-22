@@ -7,7 +7,8 @@ import requests
 from flask import Flask
 from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
-                            FlexSendMessage, TextComponent, URIAction)
+                            FlexSendMessage, ImageComponent, TextComponent,
+                            URIAction)
 
 from .. import db
 from ..models import SendPictureLog, User
@@ -21,6 +22,12 @@ SCAN_CARD_TMP_PATH = 'app/static/tmp/card_tmp.png'
 
 def scan_card_confirm_message():
     bubble_template = BubbleContainer(
+        hero=ImageComponent(
+            url='https://i.imgur.com/P5NlYBg.jpg',
+            size='full',
+            aspect_ratio='5:4',
+            aspect_mode='cover'
+        ),
         body=BoxComponent(
             layout='vertical',
             contents=[

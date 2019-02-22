@@ -1157,14 +1157,26 @@ def my_join_group_activity(line_user_id):
             )
     else:
         bubble_template = BubbleContainer(
+            hero=ImageComponent(
+                url='https://i.imgur.com/fpFCI1H.jpg',
+                size='full',
+                aspect_ratio='5:4',
+                aspect_mode='cover'
+            ),
             body=BoxComponent(
                 layout='vertical',
                 contents=[
                     TextComponent(
                         text='您尚未有任何活動！',
-                        weight='bold',
                         color='#1DB446',
+                        size='lg',
+                        weight='bold'
+                    ),
+                    TextComponent(
+                        text='試著把我邀請到你常用的群組，讓我幫你管理活動吧',
                         size='md',
+                        margin='sm',
+                        wrap=True
                     )
                 ]
             )
