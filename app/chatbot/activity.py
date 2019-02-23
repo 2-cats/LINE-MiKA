@@ -751,7 +751,6 @@ def search_activity_message(keyword ,source_id):
     if activitys:
         for activity in activitys:
             footerbox = []
-            print (activity.group_link)
             if activity.group_link!=None:
                 footerbox = BoxComponent(
                     layout='vertical',
