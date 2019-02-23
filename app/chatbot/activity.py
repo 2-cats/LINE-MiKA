@@ -742,12 +742,31 @@ def my_activity_message(line_user_id):
         return message
 
 def search_activity_message(keyword ,source_id):
-    activitys = Activity.query.filter(Activity.title.like('%{}%'.format(keyword)) ,Activity.public == 1,Activity.deleted_at == None).order_by(func.random()).limit(3).all()
-
+    activitys = Activity.query.filter(
+        Activity.title.like('%{}%'.format(keyword)),
+        Activity.public == 1,
+        Activity.deleted_at == None
+    ).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
-    
     if activitys:
         for activity in activitys:
+            footerbox = []
+            print (activity.group_link)
+            if activity.group_link!=None:
+                footerbox = BoxComponent(
+                    layout='vertical',
+                    spacing='sm',
+                    contents=[
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(
+                                label='前往活動群組',
+                                uri=str(activity.group_link)
+                            )
+                        )
+                    ]
+                )
             bubble_template = BubbleContainer(
                 body=BoxComponent(
                     layout='vertical',
@@ -854,20 +873,7 @@ def search_activity_message(keyword ,source_id):
                         )
                     ]
                 ),
-                footer=BoxComponent(
-                    layout='vertical',
-                    spacing='sm',
-                    contents=[
-                        ButtonComponent(
-                            style='link',
-                            height='sm',
-                            action=URIAction(
-                                label='前往活動群組',
-                                uri=str(activity.group_link)
-                            )
-                        )
-                    ]
-                )
+                footer=footerbox
             )
             carousel_template_columns.append(bubble_template)
         message = FlexSendMessage(
