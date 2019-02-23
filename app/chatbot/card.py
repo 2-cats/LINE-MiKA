@@ -424,31 +424,12 @@ def nearby_card_message(lat, lng ,line_user_id):
     return message
 
 def search_card_message(keyword ,line_user_id):
-###
-#　　　　　　　　┏┓　　　┏┓+ +
-#　　　　　　　┏┛┻━━━┛┻┓ + +
-#　　　　　　　┃　　　　　　　┃ 　
-#　　　　　　　┃　　　━　　　┃ ++ + + +
-#　　　　　　 ████━████ ┃+
-#　　　　　　　┃　　　　　　　┃ + 注意喔！
-#　　　　　　　┃　　　┻　　　┃
-#　　　　　　　┃　　　　　　　┃ + +
-#　　　　　　　┗━┓　　　┏━┛
-#　　　　　　　　　┃　　　┃　　　　　　　　　　　
-#　　　　　　　　　┃　　　┃ + + + +
-#　　　　　　　　　┃　　　┃　　　　關鍵字我會給 list ，但是這邊還是只接收 string 　　　　
-#　　　　　　　　　┃　　　┃ + 　　所以暫時用 keyword[0] 作為搜尋字串
-#　　　　　　　　　┃　　　┃
-#　　　　　　　　　┃　　　┃　　+　　　　　　　　　
-#　　　　　　　　　┃　 　　┗━━━┓ + +
-#　　　　　　　　　┃ 　　　　　　　┣┓
-#　　　　　　　　　┃ 　　　　　　　┏┛
-#　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
-#　　　　　　　　　　┃┫┫　┃┫┫
-#　　　　　　　　　　┗┻┛　┗┻┛+ + + +
-##
     keyword = keyword[0]
-    cards = Card.query.filter(Card.description.like('%{}%'.format(keyword)) ,Card.deleted_at == None).order_by(func.random()).limit(3).all()
+    cards = Card.query.filter(
+        Card.description.like('%{}%'.format(keyword)),
+        Card.deleted_at == None,
+        Card.public == 1
+    ).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
     if cards:
         for card in cards:
