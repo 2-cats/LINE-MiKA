@@ -204,7 +204,7 @@ def group_activity_message(source_id):
             carousel_template_columns.append(bubble_template)
     bubble_template = BubbleContainer(
         hero=ImageComponent(
-            url='https://i.imgur.com/JpX9kt6.jpg',
+            url='https://i.imgur.com/Gtj8dTV.jpg',
             size='full',
             aspect_ratio='5:4',
             aspect_mode='cover'
