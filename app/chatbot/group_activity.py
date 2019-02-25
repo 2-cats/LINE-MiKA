@@ -19,7 +19,6 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 
 
 def group_activity_message(source_id):
-    source_id = "C14e2f8b361c8743dbca869fc884637e9"
     now = datetime.datetime.now()
     group = Group.query.filter(
         Group.group_id==source_id,
