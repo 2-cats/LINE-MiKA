@@ -1023,6 +1023,27 @@ def my_join_group_activity(line_user_id):
                             )
                         ]
                     ),
+                    footer=BoxComponent(
+                        layout='vertical',
+                        spacing='sm',
+                        contents=[
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
+                                    label='位置導航',
+                                    uri=''.join(
+                                        [
+                                            'https://www.google.com/maps/search/?api=1&query=',
+                                            str(activity.lat),
+                                            ',',
+                                            str(activity.lng)
+                                        ]
+                                    )
+                                ),
+                            )
+                        ]
+                    )
                 )
                 carousel_template_columns.append(bubble_template)
             else:
@@ -1140,6 +1161,21 @@ def my_join_group_activity(line_user_id):
                                 style='link',
                                 height='sm',
                                 action=URIAction(
+                                    label='位置導航',
+                                    uri=''.join(
+                                        [
+                                            'https://www.google.com/maps/search/?api=1&query=',
+                                            str(activity.lat),
+                                            ',',
+                                            str(activity.lng)
+                                        ]
+                                    )
+                                ),
+                            ),
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
                                     label='前往活動群組',
                                     uri=activity.group_link
                                 ),
@@ -1148,12 +1184,6 @@ def my_join_group_activity(line_user_id):
                     )
                 )
                 carousel_template_columns.append(bubble_template)
-                message = FlexSendMessage(
-                    alt_text='群組活動清單',
-                    contents=CarouselContainer(
-                        contents=carousel_template_columns
-                    )
-                )    
             message = FlexSendMessage(
                 alt_text='群組活動清單',
                 contents=CarouselContainer(
