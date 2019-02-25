@@ -12,18 +12,20 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 
 from . import chatbot
 from .. import db
-from .activity import (add_activity_message, delete_my_activity,
-                       group_activity_message, join_group_activity_message,
-                       leave_group_activity_message, my_activity_message,
-                       my_join_group_activity, search_activity_message,
-                       user_leave_and_private_activity)
+from .activity import delete_my_activity, my_activity_message
 from .card import (card_management_message, delete_my_card_message,
                    nearby_card_message, search_card_message,
                    show_my_card_message)
 from .error_message import alert_no_action_message
 from .follow import follow_message, unfollow
+from .group_activity import (group_activity_message,
+                             join_group_activity_message,
+                             leave_group_activity_message,
+                             my_join_group_activity, search_activity_message,
+                             user_leave_and_private_activity)
 from .helper import group_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
+from .join import bot_join_group
 from .leave import bot_leave_group
 
 app = Flask(__name__, instance_relative_config=True)
@@ -214,6 +216,7 @@ def handle_join(event):
     '''
     Handle join event
     '''
+    bot_join_group(event.source.group_id)
     message = group_helper_message(event.source.user_id)
     line_bot_api.reply_message(event.reply_token, message)
     return 0
