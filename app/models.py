@@ -23,11 +23,23 @@ class User(db.Model):
 
     cards = db.relationship("Card", lazy='dynamic')
     issues = db.relationship("Issue", lazy='dynamic')
-    activity_logs = db.relationship("ActivityLog", lazy='dynamic')
+    activity_logs = db.relationship("GroupActivityLog", lazy='dynamic')
     send_picture_logs = db.relationship("SendPictureLog", lazy='dynamic')
     orders = db.relationship("Order", lazy='dynamic')
     def __repr__(self):
         return '<User %r>' % self.id
+
+class Group(db.Model):
+    __tablename__ = 'groups'
+    id = db.Column(db.Integer, primary_key = True)
+    group_id = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    group_activity = db.relationship("GroupActivity", lazy='dynamic')
+    def __repr__(self):
+        return '<Group %r>' % self.id
 
 class Card(db.Model):
     __tablename__ = 'cards'
@@ -80,23 +92,45 @@ class Issue(db.Model):
     def __repr__(self):
         return '<Issues %r>' % self.id
 
-class ActivityLog(db.Model):
-    __tablename__ = 'activity_logs'
+class GroupActivityLog(db.Model):
+    __tablename__ = 'group_activity_logs'
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    activity_id = db.Column(db.Integer, db.ForeignKey('activitys.id'))
+    group_activity_id = db.Column(db.Integer, db.ForeignKey('group_activitys.id'))
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<ActivityLog %r>' % self.id
+        return '<GroupActivityLog %r>' % self.id
 
 class Activity(db.Model):
     __tablename__ = 'activitys'
     id = db.Column(db.Integer, primary_key = True)
-    source_type = db.Column(db.String(64))
-    source_id = db.Column(db.String(64))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    title = db.Column(db.String(64))
+    description = db.Column(db.String(64))
+    organizer = db.Column(db.String(64))
+    address = db.Column(db.String(64))
+    lat = db.Column(db.Float)
+    lng = db.Column(db.Float)
+    rel_link = db.Column(db.String(64))
+    session_limit = db.Column(db.Integer)
+    session_count = db.Column(db.Integer)
+    group_link = db.Column(db.String(64))
+    public = db.Column(db.Boolean, default=True)
+    start_at = db.Column(db.DateTime, default=datetime.now)
+    end_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+    def __repr__(self):
+        return '<Activity %r>' % self.id
+
+class GroupActivity(db.Model):
+    __tablename__ = 'group_activitys'
+    id = db.Column(db.Integer, primary_key = True)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     title = db.Column(db.String(64))
     description = db.Column(db.String(64))
     organizer = db.Column(db.String(64))
@@ -114,7 +148,7 @@ class Activity(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
 
-    activity_logs = db.relationship("ActivityLog", lazy='dynamic')
+    activity_logs = db.relationship("GroupActivityLog", lazy='dynamic')
 
     def __repr__(self):
         return '<Activity %r>' % self.id

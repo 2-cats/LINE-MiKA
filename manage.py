@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
 from app import create_app, db
-from app.models import (Activity, ActivityLog, Card, Issue, Order, Product,
+from app.models import (Activity, GroupActivityLog, Card, Issue, Order, Product,
                         SendPictureLog, User)
 
 COV = None
@@ -22,7 +22,7 @@ def make_shell_context():
         app=app,
         db=db,
         Activity=Activity,
-        ActivityLog=ActivityLog,
+        ActivityLog=GroupActivityLog,
         Card=Card,
         Issue=Issue,
         Order=Order,
