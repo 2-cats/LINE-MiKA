@@ -2,6 +2,8 @@ import datetime
 import json
 import urllib
 
+from flask import Flask
+from linebot import LineBotApi
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
                             PostbackAction, SeparatorComponent, TextComponent,
@@ -10,6 +12,11 @@ from sqlalchemy import func
 
 from .. import db
 from ..models import Activity, User
+
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
+line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
+
 
 def my_activity_message(line_user_id):
     user = User.query.filter(
