@@ -23,7 +23,7 @@ from .group_activity import (group_activity_message,
                              leave_group_activity_message,
                              my_join_group_activity, search_activity_message,
                              user_leave_and_private_activity)
-from .helper import group_helper_message
+from .helper import group_helper_message, store_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
 from .join import bot_join_group
 from .leave import bot_leave_group
@@ -89,6 +89,10 @@ def handle_message(event):
             return 0
         elif message_text == "我的群組活動":
             message = my_join_group_activity(line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "更換角色":
+            message = store_helper_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif bool(re.search('找名片 ', message_text)):

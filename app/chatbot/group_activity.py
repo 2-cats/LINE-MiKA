@@ -19,6 +19,7 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 
 
 def group_activity_message(source_id):
+    source_id = "C14e2f8b361c8743dbca869fc884637e9"
     now = datetime.datetime.now()
     group = Group.query.filter(
         Group.group_id==source_id,
@@ -508,8 +509,8 @@ def check_time_can_join(start_at):
 def search_activity_message(keyword ,source_id):
     activitys = GroupActivity.query.filter(
         GroupActivity.title.like('%{}%'.format(keyword)),
-        Activity.public == 1,
-        Activity.deleted_at == None
+        GroupActivity.public == 1,
+        GroupActivity.deleted_at == None
     ).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
     if activitys:
