@@ -2,7 +2,8 @@ from flask import Flask, abort, current_app, render_template, request
 
 from . import liff
 from .. import db
-from .activity import add_activity, add_group_activity, who_join_group_activity
+from .activity import add_activity
+from .group_activity import add_group_activity, who_join_group_activity
 from .card import add_card, edit_card, get_card, report_card_issue, update_card
 
 app = Flask(__name__, instance_relative_config=True)
