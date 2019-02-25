@@ -13,6 +13,7 @@ from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
 from . import chatbot
 from .. import db
 from .activity import delete_my_activity, my_activity_message
+from .admin import admin_door_message
 from .card import (card_management_message, delete_my_card_message,
                    nearby_card_message, search_card_message,
                    show_my_card_message)
@@ -93,6 +94,10 @@ def handle_message(event):
             return 0
         elif message_text == "更換角色":
             message = store_helper_message(line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "谷林發大財":
+            message = admin_door_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif bool(re.search('找名片 ', message_text)):
