@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -62,7 +62,7 @@
                 name="name"
                 type="text"
                 value="{{ data['name'] }}"
-                placeholder="你的名字" required>
+                placeholder="輸入名字，例如艾瑞克" required>
         </div>
         <div class="form-group">
             <label for="nickname">暱稱</label>
@@ -70,7 +70,7 @@
                 name="nickname"
                 type="text"
                 value="{{ data['nickname'] }}"
-                placeholder="一個響亮的名稱，或許是內湖金城武">
+                placeholder="你的暱稱，例如內湖金城武">
         </div>
         <div class="form-group">
             <label for="title" class="required">職稱</label>
@@ -78,7 +78,7 @@
                 name="title"
                 type="text"
                 value="{{ data['title'] }}"
-                placeholder="工程師？或是攻城獅？或者是你的職稱" required>
+                placeholder="請輸入職稱" required>
         </div>
         <div class="form-group">
             <label for="company_name" class="required">公司名稱</label>
@@ -94,7 +94,7 @@
                 type="phone"
                 pattern="[0-9]{8}"
                 value="{{ data['tax_number'] }}"
-                placeholder="請輸入您的統一編號">
+                placeholder="統一編號，例如 50849424">
         </div>
         <div class="form-group">
             <label for="email">電子信箱</label>
@@ -103,16 +103,16 @@
                 type="email"
                 value="{{ data['email'] }}"
                 pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$"
-                placeholder="hello@hello.com">
+                placeholder="電子信箱，例如 hello@hello.com">
         </div>
         <div class="form-group">
             <label for="tel_number">公司電話</label>
             <input class="form-control"
                 name="tel_number"
                 type="phone"
-                pattern="^\(?(\d{2})\)?[\s\-]?(\d{4})\-?(\d{4})$"
+                pattern="^(\d{2})\-?(\d{4})\-?(\d{4})$"
                 value="{{ data['tel_number'] }}"
-                placeholder="請在這輸入您的公司電話號碼" >
+                placeholder="公司電話號碼，例如 02-8231-5949" >
         </div>
         <div class="form-group">
             <label for="fax_number">公司傳真</label>
@@ -121,7 +121,7 @@
                 type="phone"
                 pattern="[0-9]{8}"
                 value="{{ data['fax_number'] }}"
-                placeholder="請在這輸入您的公司傳真號碼" >
+                placeholder="輸入傳真號碼，例如 82315949" >
         </div>
         <div class="form-group">
             <label for="phone_number" class="required">聯繫電話</label>
@@ -129,8 +129,8 @@
                 name="phone_number"
                 type="phone"
                 value="{{ data['phone_number'] }}"
-                pattern="(^09\d{8}$)|(^\(?(\d{2})\)?[\s\-]?(\d{4})\-?(\d{4})$)"
-                placeholder="請在這輸入您的個人聯繫電話號碼">
+                pattern="(^09\d{8}$)|(^(\d{2})\-?(\d{4})\-?(\d{4})$)"
+                placeholder="輸入電話，例如 02-8231-5949">
         </div>
         <div class="form-group">
             <label for="line_id">LINE@</label>
@@ -139,7 +139,7 @@
                 type="text"
                 pattern="@+[0-9A-Za-z]+"
                 value="{{ data['line_id'] }}"
-                placeholder="你也可以留下LINE@，但是記得加@">
+                placeholder="LINE@ ID，例如 @mikatw">
         </div>
         <div class="form-group">
             <label for="address" class="required">公司地址</label>
@@ -147,7 +147,7 @@
                 name="address"
                 type="text"
                 value="{{ data['address'] }}"
-                placeholder="您的公司在哪？" required>
+                placeholder="公司地址" required>
         </div>
         <div class="form-group">
             <label for="summary" class="required">營業項目</label>
@@ -157,7 +157,7 @@
                 cols="32" 
                 value="{{ data['summary'] }}"
                 maxlength="20"
-                placeholder="掃地兼撞鐘也說不定" required></textarea>
+                placeholder="二十字內的公司介紹" required></textarea>
         </div>
         <div class="form-check">
             <input class="form-check-input"
