@@ -1,7 +1,14 @@
+from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
                             MessageAction, PostbackAction, TextComponent,
                             URIAction)
+
+from .. import db
+from ..models import User
+
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
 
 
 def group_helper_message(line_user_id):
@@ -84,4 +91,64 @@ def group_helper_message(line_user_id):
         
     message = FlexSendMessage(
         alt_text='蹦蹦！蹦～找我嗎？', contents=carousel_template)
+    return message
+
+
+def store_helper_message(line_user_id):
+    user = User.query.filter_by(
+        line_user_id=line_user_id,
+        deleted_at=None
+    ).first()
+    if user is None:
+        user = User(
+                line_user_id=line_user_id
+            )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
+    
+    bubble_template = BubbleContainer(
+        body=BoxComponent(
+            layout='vertical',
+            contents=[
+                TextComponent(
+                     text='MiKA STORE',
+                    wrap=True,
+                    color='#1DB446',
+                    weight= 'bold',
+                    size='lg',
+                ),
+                TextComponent(
+                    text='你可以在這裏更換名片角色或者是遞名片的動畫，妝點你的卡片！',
+                    wrap=True,
+                    size='md',
+                    margin='md'
+                )
+            ]
+        ),
+        footer=BoxComponent(
+            layout='vertical',
+            spacing="sm",
+            contents=[
+                ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='打開',
+                        uri=''.join(
+                            [
+                                app.config['EDIT_CARD_STYLE_LINE_LIFF_URL'],
+                                '?user_id=',
+                                str(user.id)
+                            ]
+                        )
+                    )
+                )
+            ]
+        )
+    )
+    message = FlexSendMessage(
+        alt_text='MiKA STORE！', contents=bubble_template)
     return message
