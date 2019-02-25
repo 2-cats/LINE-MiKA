@@ -41,6 +41,17 @@ class Group(db.Model):
     def __repr__(self):
         return '<Group %r>' % self.id
 
+class Admin(db.Model):
+    __tablename__ = 'admins'
+    id = db.Column(db.Integer, primary_key = True)
+    line_user_id = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<Admin %r>' % self.id
+
 class Card(db.Model):
     __tablename__ = 'cards'
     id = db.Column(db.Integer, primary_key = True)

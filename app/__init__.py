@@ -19,4 +19,6 @@ def create_app(config_name):
     app.register_blueprint(liff_blueprint)
     from .store import store as store_blueprint
     app.register_blueprint(store_blueprint)
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
     return app
