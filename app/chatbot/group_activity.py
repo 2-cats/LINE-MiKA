@@ -506,10 +506,12 @@ def check_time_can_join(start_at):
     return False
 
 def search_activity_message(keyword ,source_id):
+    now = datetime.datetime.now()
     activitys = GroupActivity.query.filter(
         GroupActivity.title.like('%{}%'.format(keyword)),
         GroupActivity.public == 1,
-        GroupActivity.deleted_at == None
+        GroupActivity.deleted_at == None,
+        GroupActivity.end_at > now
     ).order_by(func.random()).limit(3).all()
     carousel_template_columns = []
     if activitys:
