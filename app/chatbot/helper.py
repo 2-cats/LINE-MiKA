@@ -1,9 +1,11 @@
+import urllib
+
 from flask import Flask
 from linebot.models import (BoxComponent, BubbleContainer, ButtonComponent,
                             CarouselContainer, FlexSendMessage, ImageComponent,
-                            MessageAction, PostbackAction, TextComponent,
-                            URIAction,SeparatorComponent,MessageAction)
-import urllib
+                            MessageAction, PostbackAction, SeparatorComponent,
+                            TextComponent, URIAction)
+
 from .. import db
 from ..models import User
 
@@ -40,37 +42,35 @@ def group_helper_message(source_id):
                     ]
                 ),
                 footer=BoxComponent(
-                            layout='horizontal',
-                            spacing='sm',
-                            contents=[
-                                ButtonComponent(
-                                    style='link',
-                                    height='sm',
-                                    action=MessageAction(label='近期活動', text='近期活動')
-                                ),
-                                SeparatorComponent(
-
-                                ),
-                                ButtonComponent(
-                                    style='link',
-                                    height='sm',
-                                    action=URIAction(
-                                        label='新增活動',
-                                        uri=''.join(
-                                            [
-                                                app.config['ADD_GROUP_ACTIVITY_LIFF_URL'],
-                                                '?',
-                                                'source_id=',
-                                                urllib.parse.quote_plus(str(source_id))
-                                            ]
-                                        )
-                                    ),
+                    layout='horizontal',
+                    spacing='sm',
+                    contents=[
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=MessageAction(
+                                label='近期活動',
+                                text='近期活動'
+                            )
+                        ),
+                        SeparatorComponent(),
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(
+                                label='新增活動',
+                                uri=''.join(
+                                    [
+                                        app.config['ADD_GROUP_ACTIVITY_LIFF_URL'],
+                                        '?',
+                                        'source_id=',
+                                        urllib.parse.quote_plus(str(source_id))
+                                    ]
                                 )
-                            ]
+                            ),
                         )
-
-
-
+                    ]
+                )
             ),
             BubbleContainer(
                 hero=ImageComponent(
