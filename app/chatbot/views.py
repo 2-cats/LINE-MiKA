@@ -129,7 +129,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif message_text == "@mika" or message_text == "咪卡" or message_text == "mika":
-            message = group_helper_message(line_user_id)
+            message = group_helper_message(group_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         
