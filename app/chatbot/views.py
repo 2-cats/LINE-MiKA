@@ -218,14 +218,6 @@ def handle_leave(event):
     '''
     Handle leave event
     '''
-    user_leave_and_private_activity(event.source.user_id)
-    return 0
-
-@handler.add(LeaveEvent)
-def handle_leave(event):
-    '''
-    Handle leave event
-    '''
     bot_leave_group(event.source.group_id)
     return 0
 
@@ -235,6 +227,6 @@ def handle_join(event):
     Handle join event
     '''
     bot_join_group(event.source.group_id)
-    message = group_helper_message(event.source.user_id)
+    message = group_helper_message(event.source.group_id)
     line_bot_api.reply_message(event.reply_token, message)
     return 0
