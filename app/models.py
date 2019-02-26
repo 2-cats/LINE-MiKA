@@ -222,3 +222,15 @@ class Order(db.Model):
 
     def __repr__(self):
         return '<Order %r>' % self.id
+
+class Keyword(db.Model):
+    __tablename__ = 'keywords'
+    id = db.Column(db.Integer, primary_key = True)
+    keyword = db.Column(db.String(64))
+    reply = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<Keyword %r>' % self.id
