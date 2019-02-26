@@ -28,6 +28,7 @@ from .helper import group_helper_message, store_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
 from .join import bot_join_group
 from .leave import bot_leave_group
+from .keyword import keyword_query
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -112,6 +113,10 @@ def handle_message(event):
             message = search_activity_message(message_text, line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
+        message = keyword_query(message_text)
+        if message :
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
         message = search_card_message(message_text, line_user_id)
         line_bot_api.reply_message(event.reply_token, message)
         return 0
@@ -130,6 +135,10 @@ def handle_message(event):
             return 0
         elif message_text == "@mika" or message_text == "咪卡" or message_text == "mika":
             message = group_helper_message(group_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        message = keyword_query(message_text)
+        if message :
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         
