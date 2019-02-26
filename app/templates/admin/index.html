@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/my_order.css') }}">
-
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <body>
 
@@ -18,52 +18,51 @@
         <li class="nav-item"><a class="nav-link" href="{{ url_for("admin.activity", line_user_id=args['line_user_id'])}}">公開活動</a></li>
     </ul>
     
-    <input type="hidden" id="user_count" value="{{ data['user_count'] }}"></input>
-    <input type="hidden" id="group_count" value="{{ data['group_count'] }}"></input>
-    
-    <div class="row p-1">
-    <div class="col-6">
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">咪卡好友</div>
-        <div class="card-body">
-            <p class="card-text text-right" id="user">{{ data['user_count'] }}</p>
-        </div>
-    </div>
-    </div>
-    <div class="col-6">
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">咪卡群組</div>
-        <div class="card-body">
-            <p class="card-text text-right" id="group" >{{ data['group_count'] }}</p>
-        </div>
-    </div>
-    </div>
+    <table class="table table-hover">
+    <tbody>
+        <tr>
+        <th scope="row"><i class="fas fa-user"></i>&nbsp追蹤用戶數</th>
+        <td>{{ data['follow_count'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-user-slash"></i>&nbsp封鎖用戶數</th>
+        <td>{{ data['unfollow_count'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-users"></i>&nbsp已加群組數</th>
+        <td>{{ data['join_group'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-user-alt-slash"></i>&nbsp已離群組數</th>
+        <td>{{ data['leave_group'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-id-card"></i>&nbsp名片建立數</th>
+        <td>{{ data['card_num'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="far fa-id-card"></i>&nbsp名片刪除數</th>
+        <td>{{ data['del_card_num'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-calendar-check"></i>&nbsp個人活動數</th>
+        <td>{{ data['activity_num'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="far fa-calendar-check"></i>&nbsp取消個人活動數</th>
+        <td>{{ data['cancel_activity_num'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-skiing"></i>&nbsp群組活動數</th>
+        <td>{{ data['g_activity_num'] }}</td>
+        </tr>
+        <tr>
+        <th scope="row"><i class="fas fa-skiing-nordic"></i>&nbsp取消群組活動數</th>
+        <td>{{ data['cancel_g_activity_num'] }}</td>
+        </tr>
+    </tbody>
+    </table>
 
-    <div class="row p-1">
-    <div class="col-4">
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">總名片</div>
-        <div class="card-body">
-            <p class="card-text text-right" id="user">{{ data['card_count'] }}</p>
-        </div>
-    </div>
-    </div>
-    <div class="col-4">
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">個人活動</div>
-        <div class="card-body">
-            <p class="card-text text-right" id="user">{{ data['activity_count'] }}</p>
-        </div>
-    </div>
-    </div>
-    <div class="col-4">
-    <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div class="card-header">群組活動</div>
-        <div class="card-body">
-            <p class="card-text text-right" id="group" >{{ data['group_activity_count'] }}</p>
-        </div>
-    </div>
-    </div>
   </div>
   
 <footer class="pt-4 my-md-5 pt-md-5 bproduct-top">
@@ -77,7 +76,5 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-<script src="{{ url_for('static', filename='js/admin_index.js') }}"></script>
 </body>
 </html>
