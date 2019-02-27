@@ -36,17 +36,6 @@ def card_management_message(line_user_id):
                 )
             )
             contact_component.append(line_component)
-
-        if card.email != '':
-            email_component = ButtonComponent(
-                style='link',
-                height='sm',
-                action=URIAction(
-                    label='e-mail',
-                    uri=''.join(['mailto:', card.email])
-                )
-            )
-            contact_component.append(email_component)
         delete_my_card = ButtonComponent(
             style='link',
             height='sm',
@@ -282,7 +271,7 @@ def nearby_card_message(lat, lng ,line_user_id):
                     )
                 )
                 contact_component.append(email_component)
-            
+
             hero_image_action = []
             if card.image_path != "":
                 hero_image_action = URIAction(
@@ -467,7 +456,7 @@ def search_card_message(keyword ,line_user_id):
                     )
                 )
                 contact_component.append(email_component)
-            
+
             hero_image_action = []
             if card.image_path != "":
                 hero_image_action = URIAction(

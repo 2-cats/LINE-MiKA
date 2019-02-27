@@ -803,6 +803,41 @@ def my_join_group_activity(line_user_id):
                             )
                         ]
                     ),
+                    footer=BoxComponent(
+                        layout='vertical',
+                        spacing='sm',
+                        contents=[
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
+                                    label='位置導航',
+                                    uri=''.join(
+                                        [
+                                            'https://www.google.com/maps/search/?api=1&query=',
+                                            str(activity.lat),
+                                            ',',
+                                            str(activity.lng)
+                                        ]
+                                    )
+                                ),
+                            ),
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
+                                    label='有誰參加',
+                                    uri=''.join(
+                                        [
+                                            app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
+                                            '?activity_id=',
+                                            str(activity.id)
+                                        ]
+                                    )
+                                )
+                            )
+                        ]
+                    )
                 )
                 carousel_template_columns.append(bubble_template)
             else:
@@ -920,10 +955,39 @@ def my_join_group_activity(line_user_id):
                                 style='link',
                                 height='sm',
                                 action=URIAction(
+                                    label='位置導航',
+                                    uri=''.join(
+                                        [
+                                            'https://www.google.com/maps/search/?api=1&query=',
+                                            str(activity.lat),
+                                            ',',
+                                            str(activity.lng)
+                                        ]
+                                    )
+                                ),
+                            ),
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
+                                    label='有誰參加',
+                                    uri=''.join(
+                                        [
+                                            app.config['WHO_JOIN_ACTIVITY_LIFF_URL'],
+                                            '?activity_id=',
+                                            str(activity.id)
+                                        ]
+                                    )
+                                )
+                            ),
+                            ButtonComponent(
+                                style='link',
+                                height='sm',
+                                action=URIAction(
                                     label='前往活動群組',
                                     uri=activity.group_link
                                 ),
-                            )
+                            ),
                         ]
                     )
                 )
