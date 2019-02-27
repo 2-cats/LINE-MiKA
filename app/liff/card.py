@@ -43,6 +43,7 @@ def add_card(data):
                 email=data['email'],
                 fax_number=data['fax_number'],
                 tax_number=data['tax_number'],
+                rel_link=data['rel_link'],
                 address=data['address'],
                 lat=location[0],
                 lng=location[1],

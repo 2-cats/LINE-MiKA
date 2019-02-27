@@ -15,60 +15,27 @@ app.config.from_pyfile('config.py')
 
 
 def card_management_message(line_user_id):
-    user = User.query.filter_by(line_user_id=line_user_id, deleted_at=None).first()
-    card = Card.query.filter_by(user_id=user.id, deleted_at=None).order_by(Card.created_at.desc()).first()
+    user = User.query.filter_by(
+        line_user_id=line_user_id,
+        deleted_at=None
+    ).first()
+    card = Card.query.filter_by(
+        user_id=user.id,
+        deleted_at=None
+    ).first()
 
     message = []
 
     if card:
-        # Check hero image
-        image_component = []
-        line_component = []
-        contact_component = []
-
-        if card.line_id != '':
-            line_component = ButtonComponent(
-                style='link',
-                height='sm',
-                action=URIAction(
-                    label='LINE',
-                    uri=''.join(['line://ti/p/', card.line_id])
-                )
-            )
-            contact_component.append(line_component)
-        delete_my_card = ButtonComponent(
-            style='link',
-            height='sm',
-            action=PostbackAction(
-                label='刪除名片',
-                data=','.join(['delete_my_card', str(card.id)]),
-                color='#d0021b'
-            )
-        )
-        contact_component.append(delete_my_card)
-        update_my_card = ButtonComponent(
-            style='link',
-            height='sm',
-            action=URIAction(
-                label='更新名片',
-                uri=''.join(
-                    [
-                        app.config['UPDATE_CARD_LINE_LIFF_URL'],
-                        '?id=',
-                        str(card.id)
-                    ]
-                ),
-                color='#d0021b'
-            )
-        )
-        contact_component.append(update_my_card)
         bubble_template = BubbleContainer(
             hero=ImageComponent(
-                url=''.join([
-                    app.config['APP_URL'],
-                    'static/',
-                    card.cosplay_path
-                ]),
+                url=''.join(
+                    [
+                        app.config['APP_URL'],
+                        'static/',
+                        card.cosplay_path
+                    ]
+                ),
                 size='full',
                 aspect_ratio='5:4',
                 aspect_mode='cover',
@@ -110,7 +77,13 @@ def card_management_message(line_user_id):
                                 size='md'
                             ),
                             TextComponent(
-                                text=''.join([card.name, ' ', card.nickname]),
+                                text=''.join(
+                                    [
+                                        card.name,
+                                        ' ',
+                                        card.nickname
+                                    ]
+                                ),
                                 wrap=True,
                                 flex=5,
                                 color='#333333',
@@ -160,7 +133,37 @@ def card_management_message(line_user_id):
             ),
             footer=BoxComponent(
                 layout='vertical',
-                contents=contact_component
+                contents=[
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=PostbackAction(
+                            label='刪除名片',
+                            data=','.join(
+                                [
+                                    'delete_my_card',
+                                    str(card.id)
+                                ]
+                            ),
+                            color='#d0021b'
+                        )
+                    ),
+                    ButtonComponent(
+                        style='link',
+                        height='sm',
+                        action=URIAction(
+                            label='更新名片',
+                            uri=''.join(
+                                [
+                                    app.config['UPDATE_CARD_LINE_LIFF_URL'],
+                                    '?id=',
+                                    str(card.id)
+                                ]
+                            ),
+                            color='#d0021b'
+                        )
+                    )
+                ]
             )
         )
         message_item = FlexSendMessage(
