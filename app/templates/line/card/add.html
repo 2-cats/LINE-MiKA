@@ -149,6 +149,15 @@
                 value="{{ data['address'] }}"
                 placeholder="公司地址" required>
         </div>
+       <div class="form-group">
+            <label for="fax_number">公司網址</label>
+            <input class="form-control"
+                name="rel_link"
+                type="text"
+                pattern="^https://([\w-]+\.)+(/?[\w\-./?%&=]*)?$"
+                value="{{ data['rel_link'] }}"
+                placeholder="輸入公司網址，如https://..." >
+        </div>
         <div class="form-group">
             <label for="summary" class="required">營業項目</label>
             <textarea class="form-control"
