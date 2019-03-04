@@ -288,7 +288,7 @@ def join_group_activity_message(activity_id, line_user_id):
                         size='md',
                     ),
                     TextComponent(
-                        text='請先跟咪卡我成為好友，才能加入活動喔',
+                        text='請先跟咪卡我成為好友，才能加入活動，加我好友後，還可以快速方便的查詢群組活動喔！',
                         margin='md',
                         wrap=True,
                         color='#666666',
@@ -385,7 +385,6 @@ def join_group_activity_message(activity_id, line_user_id):
         text=content
     )
 
-
 def leave_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(
         line_user_id=str(line_user_id),
@@ -424,7 +423,7 @@ def leave_group_activity_message(activity_id, line_user_id):
                         size='md',
                     ),
                     TextComponent(
-                        text='請先跟咪卡我成為好友，我才知道你加入了什麼活動喔',
+                        text='請先跟咪卡我成為好友，才能加入活動，加我好友後，還可以快速方便的查詢群組活動喔！',
                         margin='md',
                         wrap=True,
                         color='#666666',
@@ -673,7 +672,6 @@ def search_activity_message(keyword ,source_id):
             alt_text='新增活動', contents=bubble_template)
 
     return message
-
 
 def my_join_group_activity(line_user_id):
     now = datetime.datetime.now()

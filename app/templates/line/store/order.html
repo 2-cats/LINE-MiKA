@@ -44,25 +44,40 @@
 </br>
 <input id="line_user_id" type="hidden" name='line_user_id'>
 
-
-<div class="row" id="productTable">
-  {% for order in orders %}
-    <div class="col-4 target" id="product-card">
+<h5>名片角色</h5>
+<div class="row p-2">
+  {% for cosplay in cosplay_dates %}
+    <div class="col-4 target">
       <div>
-        <a href="{{url_for('store.product_detail', user_id=order ['user_id'], product_id=order['product_id'])}}"><img src="{{ url_for('static', filename=order['demo_image_path']) }}" class="img-thumbnail"></a>
+        <a href="{{url_for('store.product_detail', user_id=cosplay['user_id'], product_id=cosplay['product_id'])}}"><img src="{{ url_for('static', filename=cosplay['demo_image_path']) }}" class="img-thumbnail"></a>
       </div>
       <div class="pt-2">
-        <a href="{{url_for('store.product_detail', user_id=order ['user_id'], product_id=order['product_id'])}}"><p class="text-sm-center">{{order['name']}}</p></a>
+        <a href="{{url_for('store.product_detail', user_id=cosplay['user_id'], product_id=cosplay['product_id'])}}"><p class="text-sm-center">{{cosplay['name']}}</p></a>
       </div>
     </div>
   {% endfor %}
 </div>
-  
-<footer class="pt-4 my-md-5 pt-md-5 bproduct-top">
-    <div class="container text-center">
+<hr>
+<h5>名片動畫</h5>
+<div class="row p-2">
+
+  {% for anime in anime_dates %}
+    <div class="col-4 target">
+      <div>
+        <a href="{{url_for('store.product_detail', user_id=anime['user_id'], product_id=anime['product_id'])}}"><img src="{{ url_for('static', filename=anime['demo_image_path']) }}" class="img-thumbnail"></a>
+      </div>
+      <div class="pt-2">
+        <a href="{{url_for('store.product_detail', user_id=anime['user_id'], product_id=anime['product_id'])}}"><p class="text-sm-center">{{anime['name']}}</p></a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="footer border-top">
+    <div class="text-center">
         <small class="d-block mb-3 text-muted">MiKA © 2019 </small>
     </div>
-</footer>
+</div>
 </div>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

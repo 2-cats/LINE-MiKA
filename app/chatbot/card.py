@@ -438,16 +438,6 @@ def search_card_message(keyword ,line_user_id):
                 )
             )
             contact_component.append(phone_component)
-            if card.line_id != '':
-                line_component = ButtonComponent(
-                    style='link',
-                    height='sm',
-                    action=URIAction(
-                        label='LINE',
-                        uri=''.join(['line://ti/p/', card.line_id])
-                    )
-                )
-                contact_component.append(line_component)
 
             if card.email != '':
                 email_component = ButtonComponent(
@@ -459,6 +449,17 @@ def search_card_message(keyword ,line_user_id):
                     )
                 )
                 contact_component.append(email_component)
+
+            if card.rel_link != '':
+                rel_link_component = ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='相關連結',
+                        uri=card.rel_link
+                    )
+                )
+                contact_component.append(rel_link_component)
 
             hero_image_action = []
             if card.image_path != "":
@@ -623,16 +624,6 @@ def show_my_card_message(line_user_id):
                 )
             )
             contact_component.append(phone_component)
-            if card.line_id != '':
-                line_component = ButtonComponent(
-                    style='link',
-                    height='sm',
-                    action=URIAction(
-                        label='LINE',
-                        uri=''.join(['line://ti/p/', card.line_id])
-                    )
-                )
-                contact_component.append(line_component)
 
             if card.email != '':
                 email_component = ButtonComponent(
@@ -644,6 +635,17 @@ def show_my_card_message(line_user_id):
                     )
                 )
                 contact_component.append(email_component)
+            
+            if card.rel_link != '':
+                rel_link_component = ButtonComponent(
+                    style='link',
+                    height='sm',
+                    action=URIAction(
+                        label='相關連結',
+                        uri=card.rel_link
+                    )
+                )
+                contact_component.append(rel_link_component)
 
             hero_image_action = []
             if card.image_path != "":
