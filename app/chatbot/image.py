@@ -111,13 +111,13 @@ def scan_card_image(image_id, line_user_id):
                 layout='vertical',
                 contents=[
                     TextComponent(
-                        text='最後一個步驟',
+                        text='名片分析完成',
                         weight='bold',
                         color='#1DB446',
                         size='md',
                     ),
                     TextComponent(
-                        text='我已經將您的名片分析完成，請確認一下有沒有問題',
+                        text='我還在學習中，請您協助我確認分析後的結果是否正確！',
                         margin='md',
                         wrap=True,
                         color='#666666',

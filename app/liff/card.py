@@ -35,7 +35,6 @@ def add_card(data):
                 user_id=user.id,
                 name=data['name'],
                 nickname=data['nickname'],
-                line_id=data['line_id'],
                 company_name=data['company_name'],
                 title=data['title'],
                 industry=data['industry'],
@@ -92,7 +91,6 @@ def update_card(data):
     if card:
         card.name=data['name']
         card.nickname=data['nickname']
-        card.line_id=data['line_id']
         card.company_name=data['company_name']
         card.title=data['title']
         card.industry=data['industry']
