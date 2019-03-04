@@ -27,6 +27,17 @@ def card_management_message(line_user_id):
     message = []
 
     if card:
+        hero_image_action = []
+        if card.image_path != "":
+            hero_image_action = URIAction(
+                uri=''.join(
+                    [
+                        app.config['CARD_ANIME_LINE_LIFF_URL'],
+                        '?card_id=',
+                        str(card.id)
+                    ]
+                )
+            )
         bubble_template = BubbleContainer(
             hero=ImageComponent(
                 url=''.join(
@@ -39,15 +50,7 @@ def card_management_message(line_user_id):
                 size='full',
                 aspect_ratio='5:4',
                 aspect_mode='cover',
-                action=URIAction(
-                    uri=''.join(
-                        [
-                            app.config['EDIT_CARD_STYLE_LINE_LIFF_URL'],
-                            '?user_id=',
-                            str(user.id)
-                        ]
-                    )
-                )
+                action=hero_image_action
             ),
             body=BoxComponent(
                 layout='vertical',
