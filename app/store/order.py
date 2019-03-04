@@ -2,7 +2,8 @@ from ..models import Order, Product
 
 
 def my_order(user_id):
-    order_dates = []
+    cosplay_dates = []
+    anime_dates = []
 
     # Query free product.
     products = Product.query.filter_by(
@@ -16,7 +17,10 @@ def my_order(user_id):
             "product_id": product.id,
             "user_id": user_id
         }
-        order_dates.append(item)
+        if product.product_type == "cosplay":
+            cosplay_dates.append(item)
+        else:
+            anime_dates.append(item)
     
     # Query order history.
     orders = Order.query.filter_by(
@@ -30,9 +34,11 @@ def my_order(user_id):
             "product_id": order.product.id,
             "user_id": user_id
         }
-        order_dates.append(item)
-
+        if product.product_type == "cosplay":
+            cosplay_dates.append(item)
+        else:
+            anime_dates.append(item)
     user = {
         "id": user_id
     }
-    return order_dates, user
+    return cosplay_dates, anime_dates, user

@@ -14,8 +14,9 @@ def order_index():
         datas = my_order(data['user_id'])
         return render_template(
             'line/store/order.html',
-            orders=datas[0],
-            user=datas[1],
+            cosplay_dates=datas[0],
+            anime_dates=datas[1],
+            user=datas[2],
         )
 
 @store.route("/line/store/anime", methods=['GET'])
