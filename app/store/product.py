@@ -2,6 +2,7 @@ from .. import db
 from ..models import Card, Order, Product
 
 def user_use_product(user_id, product_id):
+    message = ""
     product = Product.query.filter_by(
         id = product_id
     ).first()
@@ -10,22 +11,30 @@ def user_use_product(user_id, product_id):
         Card.user_id==user_id,
         Card.deleted_at==None
     ).first()
+    if card :
+        if product.product_type == "cosplay":
+            card.cosplay_path = product.image_path
+        elif product.product_type == "anime":
+            card.anime_path = product.image_path
 
-    if product.product_type == "cosplay":
-        card.cosplay_path = product.image_path
-    elif product.product_type == "anime":
-        card.anime_path = product.image_path
-
-    db.session.add(card)
-    try:
-        db.session.commit()
-    except:
-        pass
-    
-    user = {
+        db.session.add(card)
+        try:
+            db.session.commit()
+        except:
+            message = '更換失敗，請重新嘗試！'
+    else:
+        message = '你沒有新增過名片喔！請先新增名片'
+        
+    datas = {
         "id": user_id
     }
-    return user
+    datas = {
+        "messages": message,
+        "user": {
+            "id": user_id
+        }
+    }
+    return datas
 
 def get_product_detail(product_id, user_id):
     product = Product.query.filter_by(

@@ -55,8 +55,9 @@ def product_detail():
 def use_product():
     if request.method == 'GET':
         data = request.args.to_dict()
-        user = user_use_product(data['user_id'], data['product_id'])
+        data = user_use_product(data['user_id'], data['product_id'])
         return render_template(
             'line/product/use.html',
-            user=user
+            user=data['user'],
+            messages=data['messages']
         )

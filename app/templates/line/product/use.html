@@ -9,18 +9,38 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>更換成功</title>
+    <title>
+    {% if messages %}
+      更換失敗
+    {% else %}
+      更換成功
+    {% endif %}
+    </title>
   </head>
   <body>
 <div class="container pt-2">
     <div class="pt-4 my-md-5 pt-md-5 text-center">
+        
+      {% if messages %}
+        <div class="col-md-4 text-center p-2">
+          <picture>
+              <img class="rounded-circle img-fluid center-block" src="{{ url_for('static', filename='img/cancel_sm.png') }}" class="img-fluid img-thumbnail">
+          </picture>
+        </div>
+        <div class="col-md-4 text-center p-2">
+          {{ messages }}
+        </div>
+      {% else %}
+      <div class="col-md-4 text-center p-2">
         <picture>
             <img class="rounded-circle img-fluid center-block" src="{{ url_for('static', filename='img/checked_sm.png') }}" class="img-fluid img-thumbnail">
         </picture>
-        <div class="col-md-4 text-center p-2">
-        
-        <a href="{{url_for('store.order_index', user_id=user['id'])}}" class="btn btn-success btn-block" role="button">返回</a> 
-        </div>
+      </div>
+      {% endif %}
+      <div class="col-md-4 text-center p-2">
+      
+      <a href="{{url_for('store.order_index', user_id=user['id'])}}" class="btn btn-success btn-block" role="button">繼續逛</a> 
+      </div>
     </div>
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="container text-center">
