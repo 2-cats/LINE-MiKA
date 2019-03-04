@@ -385,7 +385,6 @@ def join_group_activity_message(activity_id, line_user_id):
         text=content
     )
 
-
 def leave_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(
         line_user_id=str(line_user_id),
@@ -673,7 +672,6 @@ def search_activity_message(keyword ,source_id):
             alt_text='新增活動', contents=bubble_template)
 
     return message
-
 
 def my_join_group_activity(line_user_id):
     now = datetime.datetime.now()
