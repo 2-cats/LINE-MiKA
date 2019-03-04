@@ -15,6 +15,7 @@
 
 <body>
 <div class="container pt-2">
+    {% if users %}
     <div class="row">
         {% for user in users %}
             <div class="col-4 pr-1 pb-3">
@@ -31,6 +32,9 @@
             </div>
         {% endfor %}
     </div>
+    {% else %}
+   <p>此活動無人參加唷！！</p>
+    {% endif %}
 </div>
 
 <footer class="pt-4 my-md-5 pt-md-5 border-top">
