@@ -107,6 +107,7 @@ def update_card(data):
         card.tel_number=data['tel_number']
         card.public=public
         card.image_path=data['image_path']
+        card.rel_link=data['rel_link']
 
         db.session.add(card)
         try:
