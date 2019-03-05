@@ -142,6 +142,7 @@ class GroupActivity(db.Model):
     __tablename__ = 'group_activitys'
     id = db.Column(db.Integer, primary_key = True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    activity_type = db.Column(db.String(64))
     title = db.Column(db.String(64))
     description = db.Column(db.String(64))
     organizer = db.Column(db.String(64))
