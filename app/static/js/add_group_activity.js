@@ -18,6 +18,7 @@ function showGroupLink(){
         } else {
             $("#group-link").hide();
             $("#group_link_form").prop('required',false);
+            $("#group_link_form").prop('value','');
         }
     });
 }
