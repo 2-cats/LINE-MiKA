@@ -79,8 +79,9 @@ def handle_message(event):
     # Get common LINE user information
     line_user_id = event.source.user_id
     message_text = event.message.text
+    source_type = event.source.type
 
-    if event.source.type == 'user':
+    if source_type == 'user':
         if message_text == "我的名片":
             message = card_management_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
@@ -121,7 +122,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
         
-    elif event.source.type == 'group':
+    elif source_type == 'group':
         message_text = message_text.replace(' ', '')
         message_text = message_text.lower()
         group_id = event.source.group_id
@@ -135,6 +136,15 @@ def handle_message(event):
             return 0
         elif message_text == "@mika" or message_text == "咪卡" or message_text == "mika":
             message = group_helper_message(group_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        message = keyword_query(message_text)
+        if message :
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+    elif source_type == 'room':
+        if message_text == "我的名片":
+            message = show_my_card_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         message = keyword_query(message_text)
