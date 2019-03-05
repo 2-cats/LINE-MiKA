@@ -46,6 +46,13 @@ def group_activity_message(source_id):
                             color='#1DB446'
                         ),
                         TextComponent(
+                            text=activity.activity_type,
+                            size='sm',
+                            wrap=True,
+                            margin='md',
+                            color='#666666'
+                        ),
+                        TextComponent(
                             text=activity.description,
                             size='sm',
                             wrap=True,
