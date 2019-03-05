@@ -44,6 +44,7 @@ def add_group_activity(data):
     # Insert activity
     activity = GroupActivity(
         group_id=group.id,
+        activity_type=data['activity_type'],
         title=data['title'],
         description=data['description'],
         start_at=''.join([data['start_date_at'], ' ', data['start_time_at']]),
