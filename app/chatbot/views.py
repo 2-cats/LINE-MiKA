@@ -105,7 +105,7 @@ def handle_message(event):
         elif bool(re.search('找名片 ', message_text)):
             keywords = message_text.replace('找名片 ', '')
             keyword_list = keywords.split(' ')
-            message = search_card_message(keyword_list, line_user_id)
+            message = search_card_message(keyword_list[0], line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         elif bool(re.search('找活動', message_text)):

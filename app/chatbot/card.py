@@ -419,19 +419,21 @@ def nearby_card_message(lat, lng ,line_user_id):
     return message
 
 def search_card_message(keyword ,line_user_id):
-    keyword = keyword[0]
     cards = Card.query.filter(
         Card.description.like('%{}%'.format(keyword)),
         Card.deleted_at == None,
         Card.public == 1
     ).order_by(func.random()).limit(3).all()
+
     carousel_template_columns = []
+    print (cards)
     if cards:
         for card in cards:
             # Check hero image
             image_component = []
             line_component = []
             contact_component = []
+
             phone_component = ButtonComponent(
                 style='link',
                 height='sm',
@@ -452,14 +454,15 @@ def search_card_message(keyword ,line_user_id):
                     )
                 )
                 contact_component.append(email_component)
-
+        
             if card.rel_link != '':
+                print (str(card.rel_link))
                 rel_link_component = ButtonComponent(
                     style='link',
                     height='sm',
                     action=URIAction(
                         label='相關連結',
-                        uri=card.rel_link
+                        uri=str(card.rel_link)
                     )
                 )
                 contact_component.append(rel_link_component)
