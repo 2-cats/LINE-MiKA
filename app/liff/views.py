@@ -21,7 +21,7 @@ def line_add_card():
         if result['status'] == "success":
             return render_template('line/card/add_success.html')
         else:
-            return render_template('line/card/add_fail.html', message=result['message'])
+            return render_template('line/card/add_fail.html', messages=result['messages'])
 
 @liff.route("/line/card/edit", methods=['GET', 'POST'])
 def line_edit_card():

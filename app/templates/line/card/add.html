@@ -110,16 +110,16 @@
             <input class="form-control"
                 name="tel_number"
                 type="phone"
-                pattern="^(\d{2})\-?(\d{4})\-?(\d{4})$"
+                pattern="^(\d{9,10})$"
                 value="{{ data['tel_number'] }}"
-                placeholder="公司電話號碼，例如 02-8231-5949" >
+                placeholder="公司電話號碼，例如 0282315949" >
         </div>
         <div class="form-group">
             <label for="fax_number">公司傳真</label>
             <input class="form-control"
                 name="fax_number"
                 type="phone"
-                pattern="[0-9]{8}"
+                pattern="^[0-9]{8}$"
                 value="{{ data['fax_number'] }}"
                 placeholder="輸入傳真號碼，例如 82315949" >
         </div>
@@ -129,8 +129,8 @@
                 name="phone_number"
                 type="phone"
                 value="{{ data['phone_number'] }}"
-                pattern="(^09\d{8}$)|(^(\d{2})\-?(\d{4})\-?(\d{4})$)"
-                placeholder="輸入電話，例如 02-8231-5949">
+                pattern="^(\d{9,10})$"
+                placeholder="輸入電話，例如 0282315949">
         </div>
         <div class="form-group">
             <label for="address" class="required">公司地址</label>
