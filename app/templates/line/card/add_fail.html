@@ -14,7 +14,9 @@
   <body>
 <div class="container pt-2">
     <div class="pt-4 my-md-5 pt-md-5 text-center">
-        <p>{{ message }}</p>
+        {% for message in messages%}
+          <p>{{ message }}</p>
+        {% endfor %}
         <div class="col-md-4 text-center"> 
             <button id="closewindowbutton" type="submit" class="btn btn-link">關閉視窗</button>
         </div>

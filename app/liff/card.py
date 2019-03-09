@@ -1,4 +1,6 @@
 
+import re
+
 from flask import Flask
 
 from .. import db
@@ -26,11 +28,32 @@ def add_card(data):
     ).order_by(Card.created_at.desc()).first()
 
     if card:
+        messages = []
+        messages.append('一個人僅限一張名片，請先至『名片管理』刪除不需要的名片後，再新增一張名片！')
         return {
             'status': 'fail',
-            'message': '一個人僅限一張名片，請先至『名片管理』刪除不需要的名片後，再新增一張名片！'
+            'messages': messages
         }
     else:
+        # check card in backend
+        messages = []
+        if data['email']:
+            if not bool(re.search(r'^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$', data['email'])):
+                messages.append('不正確的電子郵件信箱')
+        if data['tel_number']:
+            if not bool(re.search(r'^(\d{9,10})$', data['tel_number'])):
+                messages.append('不正確的電話號碼')
+        if data['phone_number']:
+            if not bool(re.search(r'^(\d{9,10})$', data['phone_number'] )):
+                messages.append('不正確的手機號碼')
+        if data['rel_link']:
+            if not bool(re.search(r'^https:\/\/([\w\-./?%&=]+)', data['rel_link'] )):
+                messages.append('不正確的公司網址')
+        if messages: 
+            return {
+                'status': 'fail',
+                'messages': messages
+            }
         card = Card(
                 user_id=user.id,
                 name=data['name'],
