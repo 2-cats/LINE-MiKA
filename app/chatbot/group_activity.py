@@ -258,33 +258,144 @@ def group_activity_message(source_id):
     return message
 
 def join_group_activity_message(activity_id, line_user_id):
+
+    # Query user
     user = User.query.filter_by(
         line_user_id=str(line_user_id),
         deleted_at=None
     ).first()
 
-    # Check is user or not
-    if user is None:
-        user = User(
-                line_user_id=line_user_id
-            )
-        db.session.add(user)
+    # Check user us exist
+    if user:
+        # Query model activity
+        activity = GroupActivity.query.filter_by(
+            id=activity_id
+        ).first()
+        
+        # Get user profile from LINE
         try:
-            db.session.commit()
+            user_profile = line_bot_api.get_profile(line_user_id)
+            user_dict = json.loads(str(user_profile))
         except:
-            pass
+            bubble_template = BubbleContainer(
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text='加入失敗',
+                            weight='bold',
+                            color='#1DB446',
+                            size='md',
+                        ),
+                        TextComponent(
+                            text='請先跟咪卡我成為好友，才能加入活動，加我好友後，還可以快速方便的查詢群組活動喔！',
+                            margin='md',
+                            wrap=True,
+                            color='#666666',
+                            size='sm',
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    spacing="sm",
+                    contents=[
 
-    # Query model activity
-    activity = GroupActivity.query.filter_by(
-        id=activity_id
-    ).first()
-    
-    # Get user data
-    try:
-        user_profile = line_bot_api.get_profile(line_user_id)
-        user_dict = json.loads(str(user_profile))
-    except:
-        bubble_template = BubbleContainer(
+                        ButtonComponent(
+                            style='link',
+                            height='sm',
+                            action=URIAction(label='好！加好友！', uri=app.config['LINE_AT_ID']),
+                        )
+                    ]
+                )
+            )
+            message = FlexSendMessage(
+                alt_text='加入失敗', contents=bubble_template)
+            return message
+
+        if activity.deleted_at is not None:
+            message = TextSendMessage(
+                text=''.join([
+                    user_dict['displayName'],
+                    ' 想參加活動 ',
+                    activity.title,
+                    ' ，但是活動已經提前結束了喔'
+                ]) 
+            )
+            return message
+
+        # Check now time is can join activity
+        if check_time_can_join(activity.start_at):
+            # Check activity session limit can join
+            if activity.session_limit > activity.session_count:
+                
+                # Query activity log
+                activity_log = GroupActivityLog.query.filter_by(
+                    group_activity_id=str(activity_id),
+                    user_id=user.id,
+                    deleted_at=None
+                ).first()
+
+                if activity_log is None:
+                    activity_log = GroupActivityLog(
+                        group_activity_id=activity_id,
+                        user_id=user.id
+                    )
+
+                    # Update activity log
+                    db.session.add(activity_log)
+                    try:
+                        activity.session_count = activity.session_count + 1
+                        db.session.commit()
+
+                        # Update activity
+                        db.session.add(activity)
+                        try:
+                            db.session.commit()
+                            content = ''.join(
+                                [
+                                    user_dict['displayName'],
+                                    ' 成功參加活動 ',
+                                    activity.title,
+                                    ' 囉！'
+                                ]
+                            )
+                        except:
+                            pass
+                    except:
+                        pass
+                else:
+                    content = ''.join(
+                        [
+                            user_dict['displayName'],
+                            ' 您重複參加活動 ',
+                            activity.title,
+                            ' 囉！'
+                        ]
+                    )
+            else:
+                content = ''.join(
+                    [
+                        user_dict['displayName'],
+                        ' 想參加活動 ',
+                        activity.title,
+                        ' ，但是人數已經超過上限'
+                    ]
+                )
+        else:
+            content = ''.join(
+                [
+                    user_dict['displayName'],
+                    ' 想參加活動 ',
+                    activity.title,
+                    ' ，但是活動時間已經開始或是結束'
+                ]
+            )
+        message = TextSendMessage(
+            text=content
+        )
+    else:
+        content = bubble_template = BubbleContainer(
             body=BoxComponent(
                 layout='vertical',
                 contents=[
@@ -317,80 +428,8 @@ def join_group_activity_message(activity_id, line_user_id):
             )
         )
         message = FlexSendMessage(
-            alt_text='加入失敗', contents=bubble_template)
-        return message
-
-    # Check now time is can join activity
-    if check_time_can_join(activity.start_at):
-        # Check activity session limit can join
-        if activity.session_limit > activity.session_count:
-            
-            # Query activity log
-            activity_log = GroupActivityLog.query.filter_by(
-                group_activity_id=str(activity_id),
-                user_id=user.id,
-                deleted_at=None
-            ).first()
-
-            if activity_log is None:
-                activity_log = GroupActivityLog(
-                    group_activity_id=activity_id,
-                    user_id=user.id
-                )
-
-                # Update activity log
-                db.session.add(activity_log)
-                try:
-                    activity.session_count = activity.session_count + 1
-                    db.session.commit()
-
-                    # Update activity
-                    db.session.add(activity)
-                    try:
-                        db.session.commit()
-                        content = ''.join(
-                            [
-                                user_dict['displayName'],
-                                ' 成功參加活動 ',
-                                activity.title,
-                                ' 囉！'
-                            ]
-                        )
-                    except:
-                        pass
-                except:
-                    pass
-            else:
-                content = ''.join(
-                    [
-                        user_dict['displayName'],
-                        ' 您重複參加活動 ',
-                        activity.title,
-                        ' 囉！'
-                    ]
-                )
-        else:
-            content = ''.join(
-                [
-                    user_dict['displayName'],
-                    ' 想參加活動 ',
-                    activity.title,
-                    ' ，但是人數已經超過上限'
-                ]
-            )
-    else:
-        content = ''.join(
-            [
-                user_dict['displayName'],
-                ' 想參加活動 ',
-                activity.title,
-                ' ，但是活動時間已經開始或是結束'
-            ]
-        )
-
-    return TextSendMessage(
-        text=content
-    )
+                alt_text='加入失敗', contents=bubble_template)
+    return message
 
 def leave_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(
@@ -475,6 +514,8 @@ def leave_group_activity_message(activity_id, line_user_id):
             if activity.session_count == 0:    
                 activity.deleted_at = datetime.datetime.now()
                 other_message = '，因為沒人參與活動，所以活動提前結束。'
+            
+            activity.deleted_at = datetime.datetime.now() 
 
             # Update activity
             db.session.add(activity)
