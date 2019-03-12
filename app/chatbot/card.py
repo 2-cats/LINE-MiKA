@@ -652,6 +652,22 @@ def show_my_card_message(line_user_id):
                     )
                 )
                 contact_component.append(rel_link_component)
+            map_component = ButtonComponent(
+                style='link',
+                height='sm',
+                action=URIAction(
+                    label='導航至公司',
+                    uri=''.join(
+                        [
+                            'https://www.google.com/maps/search/?api=1&query=',
+                            str(card.lat),
+                            ',',
+                            str(card.lng)
+                        ]
+                    )
+                ),
+            )
+            contact_component.append(map_component)
 
             hero_image_action = []
             if card.image_path != "":
