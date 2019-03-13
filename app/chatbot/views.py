@@ -143,9 +143,15 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, message)
             return 0
     elif source_type == 'room':
+        room_id = event.source.room_id
         if message_text == "我的名片":
             message = show_my_card_message(line_user_id)
             line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif message_text == "咪卡退下":
+            message = TextSendMessage(text='好的，希望我有機會再為您服務！')
+            line_bot_api.reply_message(event.reply_token, message)
+            line_bot_api.leave_room(room_id)
             return 0
         message = keyword_query(message_text)
         if message :
@@ -223,20 +229,16 @@ def handle_sticker_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return 0
 
-@handler.add(LeaveEvent)
-def handle_leave(event):
-    '''
-    Handle leave event
-    '''
-    bot_leave_group(event.source.group_id)
-    return 0
 
 @handler.add(JoinEvent)
 def handle_join(event):
     '''
     Handle join event
     '''
-    bot_join_group(event.source.group_id)
-    message = group_helper_message(event.source.group_id)
-    line_bot_api.reply_message(event.reply_token, message)
-    return 0
+    source_type = event.source.type
+
+    if source_type == 'group':
+        bot_join_group(event.source.group_id)
+        message = group_helper_message(event.source.group_id)
+        line_bot_api.reply_message(event.reply_token, message)
+        return 0
