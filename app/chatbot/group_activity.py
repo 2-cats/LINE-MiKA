@@ -269,7 +269,8 @@ def join_group_activity_message(activity_id, line_user_id):
     if user:
         # Query model activity
         activity = GroupActivity.query.filter_by(
-            id=activity_id
+            id=activity_id,
+            deleted_at=None
         ).first()
         
         # Get user profile from LINE
@@ -507,15 +508,12 @@ def leave_group_activity_message(activity_id, line_user_id):
         # Update activity log
         db.session.add(activity_log)
         try:
-            
             db.session.commit()
             activity.session_count = activity.session_count - 1
             other_message = ''
             if activity.session_count == 0:    
                 activity.deleted_at = datetime.datetime.now()
                 other_message = '，因為沒人參與活動，所以活動提前結束。'
-            
-            activity.deleted_at = datetime.datetime.now() 
 
             # Update activity
             db.session.add(activity)
