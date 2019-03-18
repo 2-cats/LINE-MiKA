@@ -5,6 +5,7 @@ from app.chatbot.card import (card_management_message, delete_my_card_message, n
 from app.models import User, Card
 
 
+
 class CardManagementMessageTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -178,7 +179,6 @@ class CardManagementMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class CardManagementMessageNoCardTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -191,7 +191,6 @@ class CardManagementMessageNoCardTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -289,7 +288,6 @@ class CardManagementMessageNoCardTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class CardManagementMessageHaveImgurlTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -302,7 +300,6 @@ class CardManagementMessageHaveImgurlTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -470,9 +467,6 @@ class DeleteMyCardMessageTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
 
-
-
-
         card = Card(
             user_id='1',
             name='test',
@@ -524,8 +518,6 @@ class DeleteMyCardMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
-
 class NearByCardMessageTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -538,7 +530,6 @@ class NearByCardMessageTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -706,7 +697,6 @@ class NearByCardMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class NearByCardMessageForNoCardTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -719,7 +709,6 @@ class NearByCardMessageForNoCardTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -793,7 +782,6 @@ class NearByCardMessageForNoCardTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class NearByCardMessageTestCase2(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -806,7 +794,6 @@ class NearByCardMessageTestCase2(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -998,7 +985,6 @@ class SearchCardMessageTestCase(unittest.TestCase):
             deleted_at=None
         )
 
-
         db.session.add_all([user])
         db.session.commit()
 
@@ -1182,7 +1168,6 @@ class SearchCardMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class SearchNoCardMessageTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -1195,7 +1180,6 @@ class SearchNoCardMessageTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -1273,7 +1257,6 @@ class SearchNoCardMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-
 class SearchCardMessageForNoLinkTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
@@ -1286,7 +1269,6 @@ class SearchCardMessageForNoLinkTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -1486,7 +1468,6 @@ class ShowMyCardMessageTestCase(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
@@ -1694,7 +1675,6 @@ class ShowMyCardMessageForNoCardTestCase(unittest.TestCase):
             deleted_at=None
         )
 
-
         db.session.add_all([user])
         db.session.commit()
 
@@ -1802,7 +1782,6 @@ class ShowMyCardMessageForNoUserTestCase(unittest.TestCase):
             deleted_at=datetime.datetime.now()
         )
 
-
         db.session.add_all([user])
         db.session.commit()
 
@@ -1835,6 +1814,7 @@ class ShowMyCardMessageForNoUserTestCase(unittest.TestCase):
             view_count='0',
             deleted_at=None
         )
+
         db.session.add_all([card])
         db.session.commit()
         self.result_message = show_my_card_message('line_user_id')
@@ -1909,7 +1889,6 @@ class ShowMyCardMessageTestCase2(unittest.TestCase):
             line_user_id='line_user_id',
             deleted_at=None
         )
-
 
         db.session.add_all([user])
         db.session.commit()
