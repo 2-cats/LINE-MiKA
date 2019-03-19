@@ -225,7 +225,7 @@ class MyActivityMessageTestCase(unittest.TestCase):
             self.expected_message
         )
 
-class MyActivityMessageTestCase2(unittest.TestCase):
+class MyActivityHaveRellinkMessageTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
@@ -450,7 +450,7 @@ class MyActivityMessageTestCase2(unittest.TestCase):
         db.drop_all()  # Drop database
         self.app_context.pop()
 
-    def test_my_activity_message2(self):
+    def test_my_activity_message_with_rellink(self):
 
         self.assertEqual(
             json.loads(str(self.result_message)),
