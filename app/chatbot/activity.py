@@ -130,7 +130,7 @@ def my_activity_message(line_user_id):
                                     color='#666666'
                                 ),
                                 TextComponent(
-                                    text=activity.start_at.strftime("%Y/%m/%d %H:%M"),
+                                    text=activity.end_at.strftime("%Y/%m/%d %H:%M"),
                                     size='sm',
                                     flex=5,
                                     margin='sm',
