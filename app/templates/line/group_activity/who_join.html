@@ -39,7 +39,8 @@
     <div class="row">
         <div class="col-12">
             <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
-                <input id="line_user_id" type="hidden" name='line_user_id'>
+                <input id="line_user_id" type="hidden" name="line_user_id">
+                <input type="hidden" name="activity_id" value="{{ activity_id }}">
                 <div class="form-group">
                     <input class="form-control"
                         name="companion"

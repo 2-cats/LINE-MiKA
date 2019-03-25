@@ -96,35 +96,40 @@ def who_join_group_activity(activity_id):
     return datas
 
 def group_activity_join_companion(companion, line_user_id, group_activity_id):
+    now = datetime.datetime.now()
+    messages = []
+
     user = User.query.filter_by(
         line_user_id=line_user_id,
         deleted_at=None
     ).first()
-    now = datetime.datetime.now()
-    groupActivity = GroupActivity.query.filter(
+    
+    group_activity = GroupActivity.query.filter(
         GroupActivity.id == group_activity_id,
         GroupActivity.deleted_at == None,
         GroupActivity.end_at > now
     ).first()
 
-    if groupActivity:
-        #為了防手賤
-        activity_for_user = GroupActivityLog.query.filter(
-            GroupActivityLog.group_activity_id == groupActivity.id,
+    if group_activity:
+        group_activity_log = GroupActivityLog.query.filter(
+            GroupActivityLog.group_activity_id == group_activity.id,
             GroupActivityLog.user_id == user.id
         ).first()
 
-        if groupActivity.session_count + int(companion) > groupActivity.session_limit:
-            messages = ['編輯失敗，超過活動人數上限。']
+        companion_num = int(group_activity.session_count) - int(group_activity_log.companion) + int(companion)
+        if int(companion) < 0:
+            messages.append('編輯失敗，輸入了負數')
+        elif companion_num > group_activity.session_limit:
+            messages.append('編輯失敗，超過活動人數上限。')
         else:
-            groupActivity.session_count = int(companion) + int(groupActivity.session_count)
-            activity_for_user.companion = companion
-            db.session.add(groupActivity, activity_for_user)
+            group_activity.session_count = companion_num
+            group_activity_log.companion = companion
+            db.session.add(group_activity, group_activity_log)
             try:
                 db.session.commit()
             except:
                 pass
-            messages = ['新增成功']
+            messages.append('新增成功')
     else:
-        messages = ['活動已過期或無此活動']
+        messages.append('活動已過期或無此活動')
     return messages
