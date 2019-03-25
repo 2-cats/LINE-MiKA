@@ -151,7 +151,7 @@ class AdminDoorMessageTestCase(unittest.TestCase):
         db.session.add_all([user])
         db.session.commit()
          #if posrback card.id=1
-        self.result_message = store_helper_message("line_user_id")
+        self.result_message = store_helper_message("no_line_user_id")
         self.expected_message = {
             "type": "flex",
             "altText": "MiKA STORE！",
