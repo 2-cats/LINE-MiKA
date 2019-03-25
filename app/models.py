@@ -108,6 +108,7 @@ class GroupActivityLog(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     group_activity_id = db.Column(db.Integer, db.ForeignKey('group_activitys.id'))
+    companion = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
     deleted_at = db.Column(db.DateTime)
