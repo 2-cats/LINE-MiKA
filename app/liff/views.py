@@ -3,8 +3,9 @@ from flask import Flask, abort, current_app, render_template, request
 from . import liff
 from .. import db
 from .activity import add_activity
-from .group_activity import add_group_activity, who_join_group_activity
 from .card import add_card, edit_card, get_card, report_card_issue, update_card
+from .group_activity import (add_group_activity, group_activity_join_companion,
+                             who_join_group_activity)
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -80,8 +81,19 @@ def line_report_card():
 def line_who_join_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
-        users = who_join_group_activity(data['activity_id'])
+        datas = who_join_group_activity(data['activity_id'])
         return render_template(
             'line/group_activity/who_join.html',
-            users=users
+            datas=datas
+        )
+
+@liff.route("/line/activity/user/companion", methods=['POST'])
+def line_edit_group_activity_companion():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        messages = group_activity_join_companion(data['companion'], data['line_user_id'])
+        print (messages)
+        return render_template(
+            'line/group_activity/join_companion.html',
+            messages= messages
         )

@@ -77,18 +77,29 @@ def add_group_activity(data):
         pass
 
 def who_join_group_activity(activity_id):
-    activity_logs = User.query.join(
-        GroupActivityLog, User.id==GroupActivityLog.user_id
-    ).filter(
+    activitys =  GroupActivityLog.query.filter(
         GroupActivityLog.group_activity_id==str(activity_id),
         GroupActivityLog.deleted_at==None
     ).all()
-    users = []
-    for activity_log in activity_logs:
+    datas = []
+    for activity in activitys:
         try:
-            user = line_bot_api.get_profile(activity_log.line_user_id)
+            user = line_bot_api.get_profile(activity.user.line_user_id)
             user_dict = json.loads(str(user))
-            users.append(user_dict)
+            data = {
+                'user_data': user_dict,
+                'companion': activity.companion,
+            }
+            datas.append(data)
         except:
             pass
-    return users
+    return datas
+
+def group_activity_join_companion(companion, line_user_id):
+    # TODO
+    messages =[
+        'example_massage_1',
+        'example_massage_2'
+    ]
+    # TODO
+    return messages

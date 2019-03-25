@@ -2,7 +2,6 @@ import json
 import re
 
 from flask import Flask, abort, current_app, render_template, request
-from flask_mqtt import Mqtt
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (AudioMessage, FollowEvent, ImageMessage, JoinEvent,
