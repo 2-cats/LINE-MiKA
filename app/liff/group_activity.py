@@ -1,4 +1,4 @@
-import json
+import json, datetime
 
 from flask import Flask
 from linebot import LineBotApi
@@ -33,7 +33,7 @@ def add_group_activity(data):
     # Check user is exist, Create user if not
     if user is None:
         user = User(
-                line_user_id=data['line_user_id']
+            line_user_id=data['line_user_id']
             )
         db.session.add(user)
         try:
@@ -77,9 +77,9 @@ def add_group_activity(data):
         pass
 
 def who_join_group_activity(activity_id):
-    activitys =  GroupActivityLog.query.filter(
-        GroupActivityLog.group_activity_id==str(activity_id),
-        GroupActivityLog.deleted_at==None
+    activitys = GroupActivityLog.query.filter(
+        GroupActivityLog.group_activity_id == str(activity_id),
+        GroupActivityLog.deleted_at == None
     ).all()
     datas = []
     for activity in activitys:
@@ -95,11 +95,36 @@ def who_join_group_activity(activity_id):
             pass
     return datas
 
-def group_activity_join_companion(companion, line_user_id):
-    # TODO
-    messages =[
-        'example_massage_1',
-        'example_massage_2'
-    ]
-    # TODO
+def group_activity_join_companion(companion, line_user_id, group_activity_id):
+    user = User.query.filter_by(
+        line_user_id=line_user_id,
+        deleted_at=None
+    ).first()
+    now = datetime.datetime.now()
+    groupActivity = GroupActivity.query.filter(
+        GroupActivity.id == group_activity_id,
+        GroupActivity.deleted_at == None,
+        GroupActivity.end_at > now
+    ).first()
+
+    if groupActivity:
+        #為了防手賤
+        activity_for_user = GroupActivityLog.query.filter(
+            GroupActivityLog.group_activity_id == groupActivity.id,
+            GroupActivityLog.user_id == user.id
+        ).first()
+
+        if groupActivity.session_count + int(companion) > groupActivity.session_limit:
+            messages = ['編輯失敗，超過活動人數上限。']
+        else:
+            groupActivity.session_count = int(companion) + int(groupActivity.session_count)
+            activity_for_user.companion = companion
+            db.session.add(groupActivity, activity_for_user)
+            try:
+                db.session.commit()
+            except:
+                pass
+            messages = ['新增成功']
+    else:
+        messages = ['活動已過期或無此活動']
     return messages
