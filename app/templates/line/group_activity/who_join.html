@@ -8,32 +8,50 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/who_join_activity.css') }}">
     <title>誰參加活動</title>
 </head>
 
 <body>
 <div class="container pt-2">
-    {% if users %}
+    {% if datas %}
     <div class="row">
-        {% for user in users %}
+        {% for data in datas %}
             <div class="col-4 pr-1 pb-3">
                 <div class="card shadow-sm" id="userCard">
                     <div class="pl-3 pt-3">
-                        <img src="{{user['pictureUrl']}}" class="userPicture img-thumbnail rounded-circle center-block">
+                        <img src="{{ data['user_data']['pictureUrl'] }}" class="userPicture img-thumbnail rounded-circle center-block">
                     </div>
                     <div class="card-body">
                         <div class="card-body-display-name">
-                            <h5 class="card-title flex-5">{{user['displayName']}}</h5>
+                            <h5 class="card-title flex-6">{{ data['user_data']['displayName'] }}</h5>
+                        </div>
+                        <div>
+                            <i class="fas fa-user-friends"></i>&nbsp{{ data['companion'] }}
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    <div class="row">
+        <div class="col-12">
+            <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
+                <input id="line_user_id" type="hidden" name='line_user_id'>
+                <div class="form-group">
+                    <input class="form-control"
+                        name="companion"
+                        placeholder="有攜伴？你可以在這填寫人數"
+                        type="number" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">送出編輯</button>
+            </form>
+        </div>
+    </div>
     {% else %}
-   <p>此活動無人參加唷！！</p>
+        <p>此活動無人參加唷！！</p>
     {% endif %}
 </div>
 
@@ -52,7 +70,7 @@
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
 
 <!-- Include js file -->
-<script src="{{ url_for('static', filename='js/report_card.js') }}"></script>
+<script src="{{ url_for('static', filename='js/who_join_activity.js') }}"></script>
 
 </body>
 </html>
