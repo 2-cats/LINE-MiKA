@@ -160,11 +160,24 @@ def group_activity_join_companion(companion, line_user_id, group_activity_id):
 
     return messages
 
-def check_group_activity(group_activity_id):
+def check_group_activity_is_end(group_activity_id):
+    """check_group_activity_is_end function.
+
+    Check group activity is end or not
+
+    :param group_activity_id: string for group activity id
+    :return: boolean for result
+    """
     now = datetime.datetime.now()
+
+    # query group activity end_at is greater than now
     result = GroupActivity.query.filter(
         GroupActivity.id == group_activity_id,
         GroupActivity.deleted_at == None,
         GroupActivity.end_at > now
     ).first()
+
+    result = False
+    if result:
+        return True
     return result
