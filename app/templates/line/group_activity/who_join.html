@@ -36,23 +36,23 @@
             </div>
         {% endfor %}
     </div>
-    {% if group_activity %}
-    <div class="row">
-        <div class="col-12">
-            <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
-                <input id="line_user_id" type="hidden" name="line_user_id">
-                <input type="hidden" name="activity_id" value="{{ activity_id }}">
-                <div class="form-group">
-                    <input class="form-control"
-                        name="companion"
-                        placeholder="有攜伴？你可以在這填寫人數"
-                        type="number" required>
+        {% if activity_is_end == false %}
+            <div class="row">
+                <div class="col-12">
+                    <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
+                        <input id="line_user_id" type="hidden" name="line_user_id">
+                        <input type="hidden" name="activity_id" value="{{ activity_id }}">
+                        <div class="form-group">
+                            <input class="form-control"
+                                name="companion"
+                                placeholder="有攜伴？你可以在這填寫人數"
+                                type="number" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">送出編輯</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">送出編輯</button>
-            </form>
-        </div>
-    </div>
-    {% endif %}
+            </div>
+        {% endif %}
     {% else %}
         <p>此活動無人參加唷！！</p>
     {% endif %}
