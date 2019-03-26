@@ -169,11 +169,14 @@ def check_group_activity_is_end(group_activity_id):
     :return: boolean for result
     """
     now = datetime.datetime.now()
+
+    # query group activity end_at is greater than now
     result = GroupActivity.query.filter(
         GroupActivity.id == group_activity_id,
         GroupActivity.deleted_at == None,
         GroupActivity.end_at > now
     ).first()
+
     result = False
     if result:
         return True
