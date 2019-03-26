@@ -5,7 +5,7 @@ from .. import db
 from .activity import add_activity
 from .card import add_card, edit_card, get_card, report_card_issue, update_card
 from .group_activity import (add_group_activity, group_activity_join_companion,
-                             who_join_group_activity)
+                             who_join_group_activity, check_group_activity)
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -82,10 +82,12 @@ def line_who_join_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
         datas = who_join_group_activity(data['activity_id'])
+        group_activity = check_group_activity(data['activity_id'])
         return render_template(
             'line/group_activity/who_join.html',
             datas=datas,
-            activity_id=data['activity_id']
+            activity_id=data['activity_id'],
+            group_activity=group_activity
         )
 
 @liff.route("/line/activity/user/companion", methods=['POST'])
