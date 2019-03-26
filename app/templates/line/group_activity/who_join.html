@@ -36,6 +36,7 @@
             </div>
         {% endfor %}
     </div>
+    {% if group_activity %}
     <div class="row">
         <div class="col-12">
             <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
@@ -51,6 +52,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     {% else %}
         <p>此活動無人參加唷！！</p>
     {% endif %}

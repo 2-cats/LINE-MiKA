@@ -159,3 +159,12 @@ def group_activity_join_companion(companion, line_user_id, group_activity_id):
         messages.append('活動已過期或無此活動')
 
     return messages
+
+def check_group_activity(group_activity_id):
+    now = datetime.datetime.now()
+    result = GroupActivity.query.filter(
+        GroupActivity.id == group_activity_id,
+        GroupActivity.deleted_at == None,
+        GroupActivity.end_at > now
+    ).first()
+    return result
