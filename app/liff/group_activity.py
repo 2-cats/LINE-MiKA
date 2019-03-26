@@ -96,40 +96,66 @@ def who_join_group_activity(activity_id):
     return datas
 
 def group_activity_join_companion(companion, line_user_id, group_activity_id):
+    """group_activity_join_companion function.
+
+    Group activity join companion.
+
+    :param companion: string for companion
+    :param line_user_id: string for LINE user id
+    :param group_activity_id: string for group activity id
+    :return: result
+    """
     now = datetime.datetime.now()
     messages = []
 
+    # Query User
     user = User.query.filter_by(
         line_user_id=line_user_id,
         deleted_at=None
     ).first()
     
+    # Query group activity
     group_activity = GroupActivity.query.filter(
         GroupActivity.id == group_activity_id,
         GroupActivity.deleted_at == None,
         GroupActivity.end_at > now
     ).first()
 
+    # If group activit is exist
     if group_activity:
+        # Query LINE user is join group activit
         group_activity_log = GroupActivityLog.query.filter(
             GroupActivityLog.group_activity_id == group_activity.id,
-            GroupActivityLog.user_id == user.id
+            GroupActivityLog.user_id == user.id,
+            GroupActivity.deleted_at == None
         ).first()
 
-        companion_num = int(group_activity.session_count) - int(group_activity_log.companion) + int(companion)
-        if int(companion) < 0:
-            messages.append('編輯失敗，輸入了負數')
-        elif companion_num > group_activity.session_limit:
-            messages.append('編輯失敗，超過活動人數上限。')
+        # If LINE user was joined
+        if group_activity_log:
+            # check companion number
+            companion_num = int(group_activity.session_count) - int(group_activity_log.companion) + int(companion)
+
+            # error check: companion number is a positive number
+            if int(companion) < 0:
+                messages.append('編輯失敗，輸入了負數')
+            # error check: companion number is less than the maximum number of session limit
+            elif companion_num > group_activity.session_limit:
+                messages.append('編輯失敗，超過活動人數上限。')
+            # success: commit group activity
+            else:
+                group_activity.session_count = companion_num
+                group_activity_log.companion = companion
+                db.session.add(group_activity, group_activity_log)
+                try:
+                    db.session.commit()
+                except:
+                    pass
+                messages.append('新增成功')
+        # If LINE user was not joined
         else:
-            group_activity.session_count = companion_num
-            group_activity_log.companion = companion
-            db.session.add(group_activity, group_activity_log)
-            try:
-                db.session.commit()
-            except:
-                pass
-            messages.append('新增成功')
+            messages.append('你尚未參加此活動')
+    # If group activit is not exist
     else:
         messages.append('活動已過期或無此活動')
+
     return messages
