@@ -313,6 +313,16 @@ def join_group_activity_message(activity_id, line_user_id):
             message = FlexSendMessage(
                 alt_text='加入失敗', contents=bubble_template)
             return message
+        if activity is None:
+            message = TextSendMessage(
+                text=''.join([
+                    user_dict['displayName'],
+                    ' 想參加活動 ',
+                    activity.title,
+                    ' ，但是活動已經提前結束了喔'
+                ])
+            )
+            return message
 
         # Check now time is can join activity
         if check_time_can_join(activity.start_at):
