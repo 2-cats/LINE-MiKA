@@ -264,13 +264,14 @@ def join_group_activity_message(activity_id, line_user_id):
         line_user_id=str(line_user_id),
         deleted_at=None
     ).first()
+    print(activity_id)
+    print(line_user_id)
 
     # Check user us exist
     if user:
         # Query model activity
         activity = GroupActivity.query.filter_by(
-            id=activity_id,
-            deleted_at=None
+            id=activity_id
         ).first()
 
         # Get user profile from LINE
@@ -313,7 +314,7 @@ def join_group_activity_message(activity_id, line_user_id):
             message = FlexSendMessage(
                 alt_text='加入失敗', contents=bubble_template)
             return message
-        if activity is None:
+        if activity.deleted_at is not None:
             message = TextSendMessage(
                 text=''.join([
                     user_dict['displayName'],
