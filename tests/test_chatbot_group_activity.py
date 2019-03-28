@@ -861,6 +861,83 @@ class LeaveGroupActivityMessageTestCase(unittest.TestCase):
             json.loads(str(self.result_message)),
             self.expected_message
         )
+#normal case with companion
+class LeaveGroupActivityWithCompanionMessageTestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app('testing')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
+
+        # Create fake User data
+        user = User(
+            #True line user id
+            line_user_id='Ud739a32831d46aa18507233eb0a68e60',
+            deleted_at=None
+        )
+
+        db.session.add_all([user])
+        db.session.commit()
+
+        group = Group(
+            group_id='group_id',
+            deleted_at=None
+        )
+
+        db.session.add_all([group])
+        db.session.commit()
+
+        now = datetime.datetime.now()
+
+        activity = GroupActivity(
+            group_id=group.id,
+            activity_type='體育',
+            title='員工旅遊',
+            description='谷林發大財',
+            organizer='谷林運算',
+            address='鹿兒島',
+            lat='31.5969',
+            lng='130.557',
+            rel_link='',
+            session_limit='50',
+            session_count='10',
+            group_link='',
+            public=True,
+            start_at=now + datetime.timedelta(hours=5),
+            end_at=now + datetime.timedelta(hours=8),
+            deleted_at=None
+        )
+
+        db.session.add_all([activity])
+        db.session.commit()
+
+        activity_log = GroupActivityLog(
+            group_activity_id=activity.id,
+            user_id=user.id,
+            companion='5',
+            deleted_at=None
+        )
+
+        db.session.add_all([activity_log])
+        db.session.commit()
+
+        self.result_message = leave_group_activity_message(activity.id, user.line_user_id)
+        self.expected_message = {
+            "type": "text",
+            "text": "小寶 退出活動 員工旅遊"
+        }
+
+    def tearDown(self):
+        db.session.remove()  # Remove database session
+        db.drop_all()  # Drop database
+        self.app_context.pop()
+
+    def test_leave_group_activity_with_companion_message(self):
+
+        self.assertEqual(
+            json.loads(str(self.result_message)),
+            self.expected_message
+        )
 #wrong user id
 class WrongUserIdLeaveGroupActivityMessageTestCase(unittest.TestCase):
     def setUp(self):

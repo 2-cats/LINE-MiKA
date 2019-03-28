@@ -264,9 +264,6 @@ def join_group_activity_message(activity_id, line_user_id):
         line_user_id=str(line_user_id),
         deleted_at=None
     ).first()
-    print(activity_id)
-    print(line_user_id)
-
     # Check user us exist
     if user:
         # Query model activity
@@ -510,7 +507,7 @@ def leave_group_activity_message(activity_id, line_user_id):
         db.session.add(activity_log)
         try:
             db.session.commit()
-            activity.session_count = activity.session_count - 1
+            activity.session_count = activity.session_count - 1 - int(activity_log.companion)
             other_message = ''
             if activity.session_count == 0:
                 activity.deleted_at = datetime.datetime.now()
