@@ -15,54 +15,99 @@
 </head>
 
 <body>
-<div class="container pt-2">
+<div class="container-fluid pt-2">
     {% if datas %}
-    <div class="row">
+    <div class="row p-2" id="user-list">
         {% for data in datas %}
-            <div class="col-4 pr-1 pb-3">
-                <div class="card shadow-sm" id="userCard">
-                    <div class="pl-3 pt-3">
-                        <img src="{{ data['user_data']['pictureUrl'] }}" class="userPicture img-thumbnail rounded-circle center-block">
-                    </div>
-                    <div class="card-body">
-                        <div class="card-body-display-name">
-                            <h5 class="card-title flex-6">{{ data['user_data']['displayName'] }}</h5>
-                        </div>
-                        <div>
-                            帶</i>&nbsp{{ data['companion'] }}&nbsp人
-                        </div>
-                    </div>
-                </div>
+            <!-- Start List Join Group Activity User -->
+            <div class="p-1 col-3 col-sm-3 col-md-3 cl-lg-4 col-xl-4" align="center">
+                <img src="{{ data['user_data']['pictureUrl'] }}" class="user-picture img-thumbnail rounded-circle">
+                <h6>{{ data['user_data']['displayName'] }}</h6>
+                <small>帶</i>&nbsp{{ data['companion'] }}&nbsp人</small>
             </div>
+            <!-- End List Join Group Activity User -->
         {% endfor %}
     </div>
         {% if activity_is_end == false %}
-            <div class="row">
-                <div class="col-12">
-                    <form method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
-                        <input id="line_user_id" type="hidden" name="line_user_id">
-                        <input type="hidden" name="activity_id" value="{{ activity_id }}">
-                        <div class="form-group">
-                            <input class="form-control"
-                                name="companion"
-                                placeholder="有攜伴？你可以在這填寫人數"
-                                type="number" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">送出編輯</button>
-                    </form>
-                </div>
+            <!-- Start User Edit Companion Number -->
+            <div class="pt-2 pb-2">
+                <form class="form-row" method='POST' action='{{url_for('liff.line_edit_group_activity_companion')}}'>
+                    <input id="line_user_id" type="hidden" name="line_user_id">
+                    <input type="hidden" name="activity_id" value="{{ activity_id }}">
+                    <div class="col-3">
+                    <p class="pt-1">攜伴數</p>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control"
+                            name="companion"
+                            type="number" required>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit mb-2" class="btn btn-primary">修改</button>
+                    </div>
+                </form>
             </div>
+            <!-- End User Edit Companion Number -->
         {% endif %}
+        <!-- Start User Note -->
+        <div class="fixed-bottom p-2" id="comment-div">
+            <form class="form-row" method='POST' action='{{url_for('liff.line_group_activity_comment')}}'>
+                <input id="line_user_id" type="hidden" name="line_user_id">
+                <input type="hidden" name="activity_id" value="{{ activity_id }}">
+                <div class="col-10">
+                    <input id="comment"
+                        class="form-control"
+                        name="comment"
+                        placeholder="留言"
+                        type="text" required>
+                </div>
+                <div class="col-2">
+                    <button type="submit mb-2" class="btn btn-primary">送出</button>
+                </div>
+            </form>
+        </div>
+        <!-- End User Note -->
     {% else %}
-        <p>此活動無人參加唷！！</p>
+        <!-- Start Show No User Join -->
+        <div align="center">
+            <p>此活動無人參加唷！！</p>
+        </div>
+        <!-- End Show No User Join -->
     {% endif %}
-</div>
 
-<footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="container text-center">
-        <small class="d-block mb-3 text-muted">MiKA © 2019 </small>
+    <div class="border-top p-1">
     </div>
-</footer>
+    
+        {% if comments%}
+            {%for comment in comments%}
+                <div class='quote'>
+                    <div class="row">
+                        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <img class='round-avatar img-thumbnaile' src='{{ comment.user_data.pictureUrl }}'>
+                        </div>
+                        <div class="col-9 col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                            <div class='speech-bubble left'>
+                                <p>
+                                    {{ comment.user_data.displayName }}
+                                    <span class='time-ago'>
+                                        {{comment.datetime}}
+                                    </span>
+                                </p>
+                                <blockquote>
+                                {{ comment.comment }}
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div align="center">
+                <p>還沒有人留言喔！</p>
+            </div>
+        {% endif%}
+    
+</div>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

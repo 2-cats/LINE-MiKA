@@ -1,15 +1,88 @@
-.userPicture{
-    width:70px;
-    height:70px
+body {
+  padding-bottom: 60px; 
 }
 
-.card-body{
-    max-height: 100px;
-    min-height: 100px;
+.user-picture{
+  width: 60px;
+  height: 60px
 }
 
-.card-body-display-name{
-    height: 50px; 
-    overflow: hidden;
-    text-overflow: ellipsis;
+#comment-div{
+    height: 60px;
+    -webkit-box-shadow: 0px -2px 1px rgba(215, 215, 215, 0.75);
+    -moz-box-shadow: 0px -2px 1px rgba(215, 215, 215, 0.75);
+    box-shadow: 0px -2px 1px rgba(215, 215, 215, 0.75);
+    background-color: white;
 }
+
+#comment-field{
+    background: url(https://i.imgur.com/VovV9zP.png) no-repeat scroll 7px 7px;
+    padding-left:30px;
+}
+
+
+.quote {
+    display: inline-block;
+  }
+  .quote p {
+    font-weight: 500;
+  }
+  .quote blockquote {
+    color: tint(#2D4154, 20%);
+    margin: 0;
+  }
+  .quote p .time-ago {
+    font-size: 90%;
+    color: tint(#2D4154, 40%);
+  }
+  .quote .round-avatar {
+    border-radius: 50%;
+    border: 1px solid #E0E8ED;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    float: left;
+    margin-right: 0.5em;
+    width: 60px;
+    height: 60px
+  }
+  .quote .speech-bubble {
+    float: left;
+  }
+  .quote .speech-bubble.left {
+    border: 1px solid #E0E8ED;
+    border-radius: 6px;
+    position: relative;
+    margin-left: 9px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    margin-right: 4px;
+    margin-bottom: 4px;
+    padding: 1ex 1em;
+    background: #FDFDFE;
+  }
+  .quote .speech-bubble.left:after, .quote .speech-bubble.left:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+  }
+  .quote .speech-bubble.left:after {
+    top: 16px;
+  }
+  .quote .speech-bubble.left:before {
+    top: 14px;
+  }
+  .quote .speech-bubble.left:after {
+    border: 8px solid transparent;
+    border-right: 8px solid #FDFDFE;
+    left: -8px;
+    border-left: none;
+  }
+  .quote .speech-bubble.left:before {
+    border: 10px solid transparent;
+    border-right: 10px solid #E0E8ED;
+    left: -10px;
+    border-left: none;
+  }
+  .quote .speech-bubble p {
+    line-height: 1.3em;
+    margin: 0;
+  }
+  

@@ -1,11 +1,15 @@
-from flask import Flask, abort, current_app, render_template, request
+from flask import (Flask, abort, current_app, redirect, render_template,
+                   request, url_for)
 
 from . import liff
 from .. import db
 from .activity import add_activity
 from .card import add_card, edit_card, get_card, report_card_issue, update_card
-from .group_activity import (add_group_activity, group_activity_join_companion,
-                             who_join_group_activity, check_group_activity_is_end)
+from .group_activity import (add_group_activity, check_group_activity_is_end,
+                             group_activity_comment,
+                             group_activity_join_companion,
+                             send_group_activity_comment,
+                             who_join_group_activity)
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -82,12 +86,14 @@ def line_who_join_activity():
     if request.method == 'GET':
         data = request.args.to_dict()
         datas = who_join_group_activity(data['activity_id'])
+        comments = group_activity_comment(data['activity_id'])
         activity_is_end = check_group_activity_is_end(data['activity_id'])
         return render_template(
             'line/group_activity/who_join.html',
             datas=datas,
             activity_id=data['activity_id'],
-            activity_is_end=activity_is_end
+            activity_is_end=activity_is_end,
+            comments=comments,
         )
 
 @liff.route("/line/activity/user/companion", methods=['POST'])
@@ -103,3 +109,15 @@ def line_edit_group_activity_companion():
             'line/group_activity/join_companion.html',
             messages=messages
         )
+
+
+@liff.route("/line/activity/user/comment", methods=['POST'])
+def line_group_activity_comment():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        messages = send_group_activity_comment(
+            data['comment'],
+            data['line_user_id'],
+            data['activity_id']
+        )
+        return redirect(url_for('liff.line_who_join_activity', activity_id=data['activity_id']))

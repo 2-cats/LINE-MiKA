@@ -24,6 +24,7 @@ class User(db.Model):
     cards = db.relationship("Card", lazy='dynamic')
     issues = db.relationship("Issue", lazy='dynamic')
     group_activity_logs = db.relationship("GroupActivityLog", lazy='dynamic')
+    group_activity_comments = db.relationship("GroupActivityComment", lazy='dynamic')
     send_picture_logs = db.relationship("SendPictureLog", lazy='dynamic')
     orders = db.relationship("Order", lazy='dynamic')
     def __repr__(self):
@@ -117,6 +118,21 @@ class GroupActivityLog(db.Model):
 
     def __repr__(self):
         return '<GroupActivityLog %r>' % self.id
+
+class GroupActivityComment(db.Model):
+    __tablename__ = 'group_activity_comment'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    group_activity_id = db.Column(db.Integer, db.ForeignKey('group_activitys.id'))
+    comment = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+    deleted_at = db.Column(db.DateTime)
+
+    user = db.relationship("User", back_populates="group_activity_comments")
+
+    def __repr__(self):
+        return '<GroupActivityComment %r>' % self.id
 
 class Activity(db.Model):
     __tablename__ = 'activitys'

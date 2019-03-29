@@ -1,10 +1,12 @@
-import json, datetime
+import datetime
+import json
 
 from flask import Flask
 from linebot import LineBotApi
 
 from .. import db
-from ..models import Group, GroupActivity, GroupActivityLog, User
+from ..models import (Group, GroupActivity, GroupActivityComment,
+                      GroupActivityLog, User)
 from .map import convert_address
 
 app = Flask(__name__, instance_relative_config=True)
@@ -76,9 +78,9 @@ def add_group_activity(data):
     except:
         pass
 
-def who_join_group_activity(activity_id):
+def who_join_group_activity(group_activity_id):
     activitys = GroupActivityLog.query.filter(
-        GroupActivityLog.group_activity_id == str(activity_id),
+        GroupActivityLog.group_activity_id == str(group_activity_id),
         GroupActivityLog.deleted_at == None
     ).all()
     datas = []
@@ -94,6 +96,85 @@ def who_join_group_activity(activity_id):
         except:
             pass
     return datas
+
+def group_activity_comment(group_activity_id):
+    """group_activity_comment function.
+
+    Query group activity comment by activity id
+
+    :param group_activity_id: string for group activity id
+    :return: result
+    """
+    comments = GroupActivityComment.query.filter(
+        GroupActivityComment.group_activity_id == str(group_activity_id),
+        GroupActivityComment.deleted_at == None
+    ).order_by(
+        GroupActivityComment.created_at.desc()
+    ).all()
+
+    datas = []
+    for comment in comments:
+        try:
+            user = line_bot_api.get_profile(comment.user.line_user_id)
+            user_dict = json.loads(str(user))
+            data = {
+                'user_data': user_dict,
+                'comment': comment.comment,
+                'datetime': comment.created_at.strftime("%m月%d日 %H:%M"),
+            }
+            datas.append(data)
+        except:
+            pass
+    print (datas)
+    return datas
+
+def send_group_activity_comment(comment, line_user_id, activity_id):
+    """send_group_activity_comment function.
+
+    Send group activity comment to group activity
+
+    :param comment: string for comment
+    :param line_user_id: string for line user id
+    :param activity_id: string for group activity id
+    :return: message
+    """
+    message = []
+    user = User.query.filter_by(
+        line_user_id=line_user_id,
+        deleted_at=None
+    ).first()
+
+    # Check user is exist, Create user if not
+    if user is None:
+        user = User(
+            line_user_id=line_user_id
+        )
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            pass
+
+    # Query group activity
+    group_activity = GroupActivity.query.filter(
+        GroupActivity.id == activity_id,
+        GroupActivity.deleted_at == None
+    ).first()
+
+    # Insert activity comment
+    activity_comment = GroupActivityComment(
+        user_id=user.id,
+        group_activity_id=group_activity.id,
+        comment=comment,
+    )
+    db.session.add(activity_comment)
+    try:
+        db.session.commit()
+    except:
+        pass
+
+    return message
+    
 
 def group_activity_join_companion(companion, line_user_id, group_activity_id):
     """group_activity_join_companion function.
