@@ -125,7 +125,6 @@ def group_activity_comment(group_activity_id):
             datas.append(data)
         except:
             pass
-    print (datas)
     return datas
 
 def send_group_activity_comment(comment, line_user_id, activity_id):
