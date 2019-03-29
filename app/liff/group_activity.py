@@ -164,7 +164,7 @@ def send_group_activity_comment(comment, line_user_id, activity_id):
     activity_comment = GroupActivityComment(
         user_id=user.id,
         group_activity_id=group_activity.id,
-        comment=comment,
+        comment=str(comment),
     )
     db.session.add(activity_comment)
     try:
