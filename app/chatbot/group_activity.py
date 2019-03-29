@@ -731,9 +731,9 @@ def my_join_group_activity(line_user_id):
         GroupActivityLog,
         GroupActivityLog.group_activity_id == GroupActivity.id
     ).filter(
-        GroupActivityLog.user_id == user_id.id,
-        GroupActivity.deleted_at == None,
-        GroupActivity.start_at > now
+        GroupActivityLog.user_id==user_id.id,
+        GroupActivity.deleted_at==None,
+        GroupActivity.end_at>now
     ).order_by(
         GroupActivity.start_at.asc()
     ).limit(10).all()
