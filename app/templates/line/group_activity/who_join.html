@@ -52,7 +52,7 @@
         <!-- Start User Note -->
         <div class="fixed-bottom p-2" id="comment-div">
             <form class="form-row" method='POST' action='{{url_for('liff.line_group_activity_comment')}}'>
-                <input id="line_user_id" type="hidden" name="line_user_id">
+                <input id="comment_line_user_id" type="hidden" name="line_user_id">
                 <input type="hidden" name="activity_id" value="{{ activity_id }}">
                 <div class="col-10">
                     <input id="comment"
