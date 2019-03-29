@@ -116,7 +116,7 @@ def line_group_activity_comment():
     if request.method == 'POST':
         data = request.form.to_dict()
         messages = send_group_activity_comment(
-            data['comment'],
+            str(data['comment']),
             data['line_user_id'],
             data['activity_id']
         )
