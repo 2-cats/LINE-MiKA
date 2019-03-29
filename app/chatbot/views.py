@@ -140,7 +140,7 @@ def handle_message(event):
         elif message_text == "咪卡退下":
             message = TextSendMessage(text='好的，希望我有機會再為您服務！')
             line_bot_api.reply_message(event.reply_token, message)
-            line_bot_api.leave_room(room_id)
+            line_bot_api.leave_group(group_id)
             return 0
         message = keyword_query(message_text)
         if message :
