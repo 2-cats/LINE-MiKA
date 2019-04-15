@@ -21,13 +21,13 @@ line_bot_api = LineBotApi(app.config["LINE_CHANNEL_ACCESS_TOKEN"])
 def group_activity_message(source_id):
     now = datetime.datetime.now()
     group = Group.query.filter(
-        Group.group_id==source_id,
-        Group.deleted_at==None
+        Group.group_id == source_id,
+        Group.deleted_at == None
     ).first()
     activitys = GroupActivity.query.filter(
-        GroupActivity.group_id==group.id,
-        GroupActivity.deleted_at==None,
-        GroupActivity.end_at>now
+        GroupActivity.group_id == group.id,
+        GroupActivity.deleted_at == None,
+        GroupActivity.end_at > now
     ).order_by(
         GroupActivity.start_at.asc()
     ).limit(9).all()
@@ -41,7 +41,7 @@ def group_activity_message(source_id):
                         TextComponent(
                             text=activity.title,
                             wrap=True,
-                            weight= 'bold',
+                            weight='bold',
                             size='md',
                             color='#1DB446'
                         ),
@@ -257,22 +257,20 @@ def group_activity_message(source_id):
     )
     return message
 
-def join_group_activity_message(activity_id, line_user_id):
 
+def join_group_activity_message(activity_id, line_user_id):
     # Query user
     user = User.query.filter_by(
         line_user_id=str(line_user_id),
         deleted_at=None
     ).first()
-
     # Check user us exist
     if user:
         # Query model activity
         activity = GroupActivity.query.filter_by(
-            id=activity_id,
-            deleted_at=None
+            id=activity_id
         ).first()
-        
+
         # Get user profile from LINE
         try:
             user_profile = line_bot_api.get_profile(line_user_id)
@@ -313,7 +311,6 @@ def join_group_activity_message(activity_id, line_user_id):
             message = FlexSendMessage(
                 alt_text='加入失敗', contents=bubble_template)
             return message
-
         if activity.deleted_at is not None:
             message = TextSendMessage(
                 text=''.join([
@@ -321,7 +318,7 @@ def join_group_activity_message(activity_id, line_user_id):
                     ' 想參加活動 ',
                     activity.title,
                     ' ，但是活動已經提前結束了喔'
-                ]) 
+                ])
             )
             return message
 
@@ -329,7 +326,7 @@ def join_group_activity_message(activity_id, line_user_id):
         if check_time_can_join(activity.start_at):
             # Check activity session limit can join
             if activity.session_limit > activity.session_count:
-                
+
                 # Query activity log
                 activity_log = GroupActivityLog.query.filter_by(
                     group_activity_id=str(activity_id),
@@ -429,8 +426,9 @@ def join_group_activity_message(activity_id, line_user_id):
             )
         )
         message = FlexSendMessage(
-                alt_text='加入失敗', contents=bubble_template)
+            alt_text='加入失敗', contents=bubble_template)
     return message
+
 
 def leave_group_activity_message(activity_id, line_user_id):
     user = User.query.filter_by(
@@ -441,8 +439,8 @@ def leave_group_activity_message(activity_id, line_user_id):
     # Check is user or not
     if user is None:
         user = User(
-                line_user_id=line_user_id
-            )
+            line_user_id=line_user_id
+        )
         db.session.add(user)
         try:
             db.session.commit()
@@ -453,7 +451,7 @@ def leave_group_activity_message(activity_id, line_user_id):
     activity = GroupActivity.query.filter_by(
         id=activity_id
     ).first()
-    
+
     # Get user data
     try:
         user_profile = line_bot_api.get_profile(line_user_id)
@@ -509,9 +507,9 @@ def leave_group_activity_message(activity_id, line_user_id):
         db.session.add(activity_log)
         try:
             db.session.commit()
-            activity.session_count = activity.session_count - 1
+            activity.session_count = activity.session_count - 1 - int(activity_log.companion)
             other_message = ''
-            if activity.session_count == 0:    
+            if activity.session_count == 0:
                 activity.deleted_at = datetime.datetime.now()
                 other_message = '，因為沒人參與活動，所以活動提前結束。'
 
@@ -524,7 +522,7 @@ def leave_group_activity_message(activity_id, line_user_id):
                         user_dict['displayName'],
                         ' 退出活動 ',
                         activity.title,
-                        other_message 
+                        other_message
                     ]
                 )
             except:
@@ -544,13 +542,15 @@ def leave_group_activity_message(activity_id, line_user_id):
         text=content
     )
 
+
 def check_time_can_join(start_at):
     now = datetime.datetime.now()
     if start_at >= now:
         return True
     return False
 
-def search_activity_message(keyword ,source_id):
+
+def search_activity_message(keyword, source_id):
     now = datetime.datetime.now()
     activitys = GroupActivity.query.filter(
         GroupActivity.title.like('%{}%'.format(keyword)),
@@ -562,7 +562,7 @@ def search_activity_message(keyword ,source_id):
     if activitys:
         for activity in activitys:
             footerbox = []
-            if activity.group_link!=None:
+            if activity.group_link != None:
                 footerbox = BoxComponent(
                     layout='vertical',
                     spacing='sm',
@@ -584,7 +584,7 @@ def search_activity_message(keyword ,source_id):
                         TextComponent(
                             text=activity.title,
                             wrap=True,
-                            weight= 'bold',
+                            weight='bold',
                             size='md',
                             color='#1DB446'
                         ),
@@ -719,16 +719,17 @@ def search_activity_message(keyword ,source_id):
 
     return message
 
+
 def my_join_group_activity(line_user_id):
     now = datetime.datetime.now()
-    user_id=User.query.filter_by(
+    user_id = User.query.filter_by(
         line_user_id=line_user_id,
         deleted_at=None
     ).first()
 
-    activitys=GroupActivity.query.join(
+    activitys = GroupActivity.query.join(
         GroupActivityLog,
-        GroupActivityLog.group_activity_id==GroupActivity.id
+        GroupActivityLog.group_activity_id == GroupActivity.id
     ).filter(
         GroupActivityLog.user_id==user_id.id,
         GroupActivity.deleted_at==None,
@@ -1041,7 +1042,7 @@ def my_join_group_activity(line_user_id):
                     contents=CarouselContainer(
                         contents=carousel_template_columns
                     )
-                )    
+                )
             message = FlexSendMessage(
                 alt_text='群組活動清單',
                 contents=CarouselContainer(
@@ -1078,16 +1079,17 @@ def my_join_group_activity(line_user_id):
             alt_text='新增活動', contents=bubble_template)
     return message
 
+
 def user_leave_and_private_activity(line_user_id):
     activitys = Activity.query.filter_by(
         source_id=line_user_id,
         deleted_at=None,
         public=True
     ).all()
-    
+
     for activity in activitys:
         activity.public = False
-        activity.group_link=None
+        activity.group_link = None
         db.session.add(activity)
     try:
         db.session.commit()
