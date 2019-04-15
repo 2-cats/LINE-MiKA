@@ -23,11 +23,12 @@ from .group_activity import (group_activity_message,
                              leave_group_activity_message,
                              my_join_group_activity, search_activity_message,
                              user_leave_and_private_activity)
+from .echo import gtts_echo
 from .helper import group_helper_message, store_helper_message
 from .image import scan_card_confirm_message, scan_card_image_message
 from .join import bot_join_group
-from .leave import bot_leave_group
 from .keyword import keyword_query
+from .leave import bot_leave_group
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -111,6 +112,11 @@ def handle_message(event):
             message_text = message_text.replace('找活動', '')
             message_text = message_text.replace(' ', '')
             message = search_activity_message(message_text, line_user_id)
+            line_bot_api.reply_message(event.reply_token, message)
+            return 0
+        elif bool(re.search('咪卡說', message_text)):
+            message_text = message_text.replace('咪卡說', '')
+            message = gtts_echo(message_text)
             line_bot_api.reply_message(event.reply_token, message)
             return 0
         message = keyword_query(message_text)
