@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask
 from linebot.models import TextSendMessage
 
@@ -10,6 +12,6 @@ def gtts_echo(text):
         content = {
             "text": text
         }
-        mqtt.publish('/mika/echo', str(content))
+        mqtt.publish('/mika/echo', json.dumps(content).encode("UTF-8"))
         return TextSendMessage(text='已送出！')
     return TextSendMessage(text='這個功能被關閉了')
