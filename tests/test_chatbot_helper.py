@@ -136,7 +136,7 @@ class GroupHelperMessageTestCase(unittest.TestCase):
         )
 
 
-class AdminDoorMessageTestCase(unittest.TestCase):
+class StoreHelperMessageTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
@@ -184,7 +184,7 @@ class AdminDoorMessageTestCase(unittest.TestCase):
                             "action": {
                                 "label": "打開",
                                 "type": "uri",
-                                "uri": "line://app/1615255233-eXg8l0Yg?user_id=1"
+                                "uri": "line://app/1615255233-eXg8l0Yg?user_id=2"
                             },
                             "height": "sm",
                             "style": "link",
@@ -203,7 +203,7 @@ class AdminDoorMessageTestCase(unittest.TestCase):
         db.drop_all()  # Drop database
         self.app_context.pop()
 
-    def test_admin_door_message(self):
+    def test_store_helper_message(self):
 
         self.assertEqual(
             json.loads(str(self.result_message)),

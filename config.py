@@ -1,13 +1,13 @@
 from flask import Flask
-
+import os
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
 class Config:
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    @staticmethod
-    def init_app(app):
-        pass
+   SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+   @staticmethod
+   def init_app(app):
+       pass
 
 class DevelopmentConfig(Config):
     DEBUG = False
@@ -57,8 +57,8 @@ class ProductionConfig(Config):
     MQTT_PASSWORD = app.config['MQTT_PASSWORD']
 
 config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
+   'development': DevelopmentConfig,
+   'testing': TestingConfig,
+   'production': ProductionConfig,
+   'default': DevelopmentConfig
 }
